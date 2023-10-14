@@ -247,7 +247,7 @@ round(mean(df[df$Maternal.Smoker=="True",]$Birth.Weight),3), "and
 diff = c()
 for (i in 1:10000) {
   df$Maternal.Smoker.New = sample(df$Maternal.Smoker)
-  diff_val = abs(mean(df[df$Maternal.Smoker.New=="True",]$Birth.Weight)-
+  diff_val = (mean(df[df$Maternal.Smoker.New=="True",]$Birth.Weight)-
             mean(df[df$Maternal.Smoker.New=="False",]$Birth.Weight))
   diff = append(diff, diff_val)
 }
@@ -257,14 +257,14 @@ print(paste("The mean and variance of differences are",
 
 ```{r}
 hist(diff, main = "", xlab="Distribution of difference of means",
-     ylab="", probability = TRUE, ylim = c(0,1), xlim = c(0,10))
+     ylab="", probability = TRUE, ylim = c(0,1), xlim = c(-5,10))
 ```
 
 \flushleft{(iv)Plot the observed difference you obtained in (ii) and overlay this point to the histogram mentioned in (iii).}
 
 ```{r}
 hist(diff, main = "", xlab="Distribution of difference of means",
-     ylab="", probability = TRUE, ylim = c(0,1), xlim=c(0,10))
+     ylab="", probability = TRUE, ylim = c(0,1), xlim=c(-5,10))
 points(x=obs_diff,y=0,pch=19)
 ```
 
@@ -277,5 +277,5 @@ print(paste("The observed difference is", round(k,2),
 ```
 
 ```{=tex}
-Using the Chebychev's Inequality, that says, for any $k > 0$ we have $$P(|X-\mu| \geq k \sigma) \leq \frac{1}{k^{2}}$$ Since, we got k = 12, from Chebychev's Inequality, we get $P(|X-\mu| \geq 13 \sigma) \leq \frac{1}{12^{2}} = 0.0069$. This means that the probability to observe a value as large as 9.2661 is less than 0.69 \%.
+Using the Chebychev's Inequality, that says, for any $k > 0$ we have $$P(|X-\mu| \geq k \sigma) \leq \frac{1}{k^{2}}$$ Since, we got k = 8, from Chebychev's Inequality, we get $P(|X-\mu| \geq 8 \sigma) \leq \frac{1}{8^{2}} = 0.015625$. This means that the probability to observe a value as large as 9.2661 is less than 1.56 \%.
 ```
