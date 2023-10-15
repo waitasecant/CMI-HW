@@ -103,7 +103,7 @@ unif = runif(10000, min = 160-4*sqrt(30), max = 160+4*sqrt(30))
 # Samples from Poisson Distribution with actual mean = 60, variance = 160
 pois = rpois(10000,lambda = 160)
 # Samples from Normal Distribution with actual mean = 160, variance = 160
-norm = rnorm(1000, mean = 160, sd = 4*sqrt(10))
+norm = rnorm(10000, mean = 160, sd = 4*sqrt(10))
 ```
 
 \flushleft{(ii) Randomly select 100 individuals from all three (a, b, c above) simulated population and calculate the sample mean height.}
@@ -277,5 +277,5 @@ print(paste("The observed difference is", round(k,2),
 ```
 
 ```{=tex}
-Using the Chebychev's Inequality, that says, for any $k > 0$ we have $$P(|X-\mu| \geq k \sigma) \leq \frac{1}{k^{2}}$$ Since, we got k = 8, from Chebychev's Inequality, we get $P(|X-\mu| \geq 8 \sigma) \leq \frac{1}{8^{2}} = 0.015625$. This means that the probability to observe a value as large as 9.2661 is less than 1.56 \%.
+Using the Chebychev's Inequality, that says, for any $k > 0$ we have $$P(|X-\mu| \geq k \sigma) \leq \frac{1}{k^{2}}$$ Since, we got k = 8, from Chebychev's Inequality, we get $P(|X-\mu| \geq 8 \sigma) \leq \frac{1}{8^{2}} = 0.015625$. This means that the probability to observe a value as large as 9.2661 is less than 1.56 \%. Hence we can conclude that the two distributions in the underlying population are different.
 ```
