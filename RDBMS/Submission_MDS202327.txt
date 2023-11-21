@@ -1,0 +1,3056 @@
+Name- Himanshu
+Roll No-  MDS202327
+Email- himanshu680.mds2023@cmi.ac.in
+
+A side note- I used DB Browser (SQLite) for this assignment. 10th query uses EXCEPT keyword which seems to be absent in mysql.
+	    Also, I created three views for 10th query.
+
+-- 1
+SELECT ID, name, max(salary) salary FROM instructor ORDER by ID;
+
+ID	name	salary
+19368	Wieland	124651.41
+
+Result: 1 rows returned in 8ms
+
+----------------------------------------------------------------------------------------------------------------------
+
+-- 2
+SELECT ID, name, dept_name, min(salary) salary FROM instructor GROUP by dept_name ORDER by ID;
+
+ID	name	dept_name	salary
+14365	Lembr	Accounting	32241.56
+22591	DAgostino	Psychology	59706.49
+28097	Kean	English	35023.18
+3335	Bourrier	Comp. Sci.	80797.83
+36897	Morris	Marketing	43770.36
+41930	Tung	Athletics	50482.03
+42782	Vicentino	Elec. Eng.	34272.67
+43779	Romero	Astronomy	79070.08
+48570	Sarkar	Pol. Sci.	87549.8
+50330	Shuming	Physics	108011.81
+50885	Konstantinides	Languages	32570.5
+64871	Gutierrez	Statistics	45310.53
+6569	Mingoz	Finance	105311.38
+65931	Pimenta	Cybernetics	79866.95
+77346	Mahmoud	Geology	99382.59
+80759	Queiroz	Biology	45538.32
+97302	Bertolino	Mech. Eng.	51647.57
+
+Result: 17 rows returned in 5ms
+
+----------------------------------------------------------------------------------------------------------------------
+
+--3
+SELECT ID, name, building FROM instructor NATURAL JOIN department WHERE building != "Painter" ORDER by ID;
+
+ID	name	building
+14365	Lembr	Saucon
+15347	Bawa	Bronfman
+16807	Yazdi	Bronfman
+19368	Wieland	Whitman
+22591	DAgostino	Thompson
+25946	Liley	Linderman
+28097	Kean	Palmer
+28400	Atanassov	Taylor
+31955	Moreira	Saucon
+3199	Gustafsson	Main
+3335	Bourrier	Lamberton
+34175	Bondi	Lamberton
+35579	Soisalon-Soininen	Thompson
+36897	Morris	Lambeau
+37687	Arias	Taylor
+4034	Murata	Bronfman
+41930	Tung	Bronfman
+4233	Luo	Palmer
+42782	Vicentino	Main
+43779	Romero	Taylor
+48507	Lent	Rauch
+48570	Sarkar	Whitman
+50330	Shuming	Wrigley
+50885	Konstantinides	Linderman
+52647	Bancilhon	Whitman
+57180	Hau	Saucon
+58558	Dusserre	Lambeau
+59795	Desyl	Linderman
+63287	Jaekel	Bronfman
+63395	McKinnon	Mercer
+64871	Gutierrez	Taylor
+6569	Mingoz	Candlestick
+65931	Pimenta	Mercer
+72553	Yin	Palmer
+73623	Sullivan	Main
+74420	Voronina	Wrigley
+74426	Kenje	Lambeau
+77346	Mahmoud	Palmer
+78699	Pingr	Taylor
+79081	Ullman 	Saucon
+79653	Levine	Main
+80759	Queiroz	Candlestick
+81991	Valtchev	Candlestick
+90376	Bietzk	Mercer
+90643	Choll	Taylor
+95030	Arinb	Taylor
+95709	Sakurai	Palmer
+96895	Mird	Lambeau
+97302	Bertolino	Rauch
+99052	Dale	Mercer
+Result: 50 rows returned in 8ms
+
+----------------------------------------------------------------------------------------------------------------------
+
+--4
+SELECT * FROM
+(SELECT i.ID, i.name, c.course_id, c.title
+FROM instructor i JOIN course c, teaches t
+WHERE t.course_id = c.course_id and i.ID = t.ID)
+GROUP by ID  HAVING count(course_id)=1 ORDER by ID;
+
+ID	name	course_id	title
+15347	Bawa	457	Systems Software
+25946	Liley	192	Drama
+4233	Luo	679	The Beatles
+42782	Vicentino	793	Decison Support Systems
+48507	Lent	626	Multimedia Design
+48570	Sarkar	867	The IBM 360 Architecture
+50330	Shuming	468	Fractal Geometry
+65931	Pimenta	875	Bioinformatics
+73623	Sullivan	694	Optics
+80759	Queiroz	559	Martian History
+90376	Bietzk	158	Elastic Structures
+90643	Choll	461	Physical Chemistry
+
+Result: 12 rows returned in 7ms
+
+----------------------------------------------------------------------------------------------------------------------
+
+--5
+SELECT ID, name, 100-count(course_id) num_courses  FROM
+(SELECT i.ID, i.name, t.course_id
+FROM instructor i, teaches t 
+WHERE i.ID != t.ID)
+GROUP by ID ORDER by ID;
+
+ID	name	num_courses
+14365	Lembr	2
+15347	Bawa	1
+16807	Yazdi	0
+19368	Wieland	3
+22591	DAgostino	13
+25946	Liley	1
+28097	Kean	2
+28400	Atanassov	2
+31955	Moreira	0
+3199	Gustafsson	4
+3335	Bourrier	2
+34175	Bondi	3
+35579	Soisalon-Soininen	0
+36897	Morris	5
+37687	Arias	0
+4034	Murata	0
+41930	Tung	3
+4233	Luo	1
+42782	Vicentino	1
+43779	Romero	4
+48507	Lent	1
+48570	Sarkar	1
+50330	Shuming	1
+50885	Konstantinides	0
+52647	Bancilhon	0
+57180	Hau	0
+58558	Dusserre	0
+59795	Desyl	0
+63287	Jaekel	2
+63395	McKinnon	0
+64871	Gutierrez	0
+6569	Mingoz	10
+65931	Pimenta	1
+72553	Yin	0
+73623	Sullivan	1
+74420	Voronina	6
+74426	Kenje	0
+77346	Mahmoud	6
+78699	Pingr	0
+79081	Ullman 	6
+79653	Levine	0
+80759	Queiroz	1
+81991	Valtchev	2
+90376	Bietzk	1
+90643	Choll	1
+95030	Arinb	0
+95709	Sakurai	4
+96895	Mird	0
+97302	Bertolino	0
+99052	Dale	9
+
+Result: 50 rows returned in 24ms
+
+----------------------------------------------------------------------------------------------------------------------
+
+--6
+SELECT * FROM
+(SELECT course_id, title, count(prereq_id) num_prereq FROM
+(SELECT c.course_id, c.title, p.prereq_id FROM course c, prereq p
+WHERE c.course_id=p.course_id)
+GROUP by course_id)
+WHERE num_prereq>1 ORDER by course_id;
+
+course_id	title	num_prereq
+242	Rock and Roll	2
+324	Ponzi Schemes	2
+338	Graph Theory	2
+353	Operating Systems	2
+359	Game Programming	2
+362	Embedded Systems	2
+403	Immunology	2
+496	Aquatic Chemistry	3
+544	Differential Geometry	2
+545	International Practicum	2
+608	Electron Microscopy	2
+656	Groups and Rings	2
+664	Elastic Structures	2
+692	Cat Herding	3
+747	International Practicum	2
+774	Game Programming	2
+852	World History	2
+958	Fiction Writing	3
+
+Result: 18 rows returned in 6ms
+
+----------------------------------------------------------------------------------------------------------------------
+
+--7
+SELECT * FROM
+(SELECT prereq_id, title, count(course_id) prereq_for FROM
+(SELECT p.prereq_id, c.title, p.course_id FROM prereq p, course c
+WHERE p.prereq_id=c.course_id)
+GROUP by prereq_id)
+WHERE prereq_for >1
+ORDER by prereq_id;
+
+prereq_id	title	prereq_for
+123	Differential Equations	2
+130	Differential Geometry	3
+133	Antidisestablishmentarianism in Modern America	2
+139	Number Theory	2
+254	Security	2
+345	Race Car Driving	2
+352	Compiler Design	2
+371	Milton	2
+403	Immunology	2
+408	Bankruptcy	2
+416	Data Mining	2
+489	Journalism	2
+694	Optics	2
+696	Heat Transfer	2
+735	Greek Tragedy	2
+774	Game Programming	2
+818	Environmental Law	2
+852	World History	3
+864	Heat Transfer	2
+947	Real-Time Database Systems	2
+
+Result: 20 rows returned in 7ms
+
+----------------------------------------------------------------------------------------------------------------------
+
+--8
+SELECT ID, name FROM
+(SELECT ID, name, 30000-count(course_id) not_reg_any FROM
+(SELECT s.ID, s.name, t.course_id FROM student s, takes t
+WHERE s.ID != t.ID)
+GROUP by ID)
+WHERE not_reg_any=0;
+
+Result: 0 rows returned in 70339ms
+
+----------------------------------------------------------------------------------------------------------------------
+-- 9
+SELECT ID, name, 30000-count(course_id) num_courses FROM
+(SELECT s.ID, s.name, t.course_id FROM student s, takes t
+WHERE s.ID != t.ID)
+GROUP by ID;
+
+ID	name	num_courses
+1000	Manber	13
+10033	Zelty	22
+10076	Duan	14
+1018	Colin	22
+10204	Mediratta	12
+10267	Rzecz	11
+10269	Hilberg	10
+10454	Ugarte	18
+10481	Grosch	17
+10527	Kieras	21
+10556	Reed	11
+10663	Okaf	17
+10693	Zabary	14
+107	Shabuno	25
+10705	Terauchi	17
+10727	Allard	16
+10736	Veselovsky	12
+108	Dhav	16
+1080	Xue	13
+10814	Waks	17
+10834	More	22
+10838	Marlet	18
+1087	Roses	17
+10904	Jerns	18
+10917	Morales	17
+11055	Arnoux	16
+11057	Robinson	14
+11076	Prasad	10
+11083	Kerridge	10
+11095	Schultz	20
+1110	Tzeng	19
+11101	Glaho	7
+11126	Englund	14
+11152	Al-Tahat	18
+11194	El-Helw	17
+11195	Shiang	12
+11201	Bianchi	19
+11202	Heckman	13
+11237	Rokhs	16
+11262	Foels	20
+11377	Jr	13
+11419	Geronimo	15
+11422	Saito	16
+11441	Betho	10
+11453	Yamashita	16
+11455	Peyse	11
+11510	Rakoj	15
+11530	Ng	15
+11578	Kwan	20
+11604	Neff	9
+11682	Juol	8
+11855	Mendelzon	18
+11966	Kowe	20
+12069	Skeen	19
+12078	Knutson	27
+12173	Thimm	10
+1220	Hito	12
+12214	Morales	17
+12216	Griffiths	16
+12236	Bricker	13
+123	Wingb	13
+1232	Marcus	18
+12326	Watson	11
+12362	Zhanr	16
+12563	Stone	17
+12615	Tewari	14
+12666	Power	8
+12683	Sin	17
+12711	Malagoli	12
+1285	Szczerban	16
+12941	Ren	19
+12971	Bumbau	15
+12979	Hammond	18
+13023	Serrano	12
+13028	Okano	15
+13081	Alqui	16
+13211	Diab	15
+13217	Liu	12
+13290	Bonatto	20
+13352	Gorsky	7
+13365	Wolter	18
+13403	Latour	17
+13408	Bromley	14
+13495	Srini	9
+13504	Zander	8
+13506	Patrick	11
+13511	Adam	15
+1367	Ignj	21
+13741	Grieng	19
+13749	Alfaro	7
+13753	Hoshi	10
+13757	Bedny	16
+13826	Sommerfeldt	13
+13880	Lazos	10
+13921	Berger	16
+1402	Oswald	13
+14023	Deshpande	17
+14032	Belhadji	18
+14065	Starker	16
+14094	Miao	12
+14182	Moszkowski	19
+14214	Yoneda	13
+14284	Takeshi	18
+14432	Whitley	22
+14484	Langer	13
+14499	Axte	10
+14554	Ramadan	18
+14563	Haigh	17
+14581	Vagn	15
+14596	Vekk	18
+1460	Martinsen	17
+14621	Azevedo	13
+14628	Lehtinen	19
+14639	Sagiv	21
+14668	Malinen	23
+14829	Philippe	18
+14869	Palmer	12
+14874	Singhal	19
+15024	Kawahara	17
+15030	Massour	15
+15070	Enokib	15
+15074	Kirtane	12
+15083	Formisano	16
+15086	Sun	14
+15144	Lapio	15
+15249	Cheah	15
+15283	Williams	17
+15328	Chien	12
+1533	She	17
+15340	Silbert	11
+15430	Sasso	17
+15457	Arinb	14
+15487	Januszewski	20
+15517	Anis	12
+15538	Yeung	15
+15578	Pacie	16
+15613	Umehara	14
+15698	Dink	12
+15726	Neuhold	18
+15883	Marques	20
+15980	Ross	16
+16035	Starker	13
+16057	Wicki	19
+16075	Wolter	17
+16133	Orlet	18
+16250	Uhrig	14
+16297	Sacchi	19
+163	Bandekar	14
+16311	Liao	13
+16347	Morimoto	15
+16405	Rahman	17
+16453	Kanata	13
+16467	Meyl	10
+16480	Noga	15
+16515	Suppan	14
+16523	Redw	15
+16528	Angs	21
+16543	Toffoli	16
+16593	Skuras	14
+16631	Stratulat	15
+16753	Kuwadak	12
+16849	Kantors	17
+16885	Biehl	21
+16907	Keiss	19
+16969	Hakkinen	19
+16993	Akaiw	21
+17057	Swartj	19
+17076	King	16
+17086	Hazemi	12
+17128	Chuon	15
+17133	Kang	13
+17192	Carroll	7
+17207	Holn	17
+1726	Matsunami	12
+1727	Ratcliff	17
+17339	Petzo	11
+1737	Shinagawa	12
+17377	Pisini	13
+17397	Caleff	19
+17424	Zouao	14
+17507	Mathur	13
+17600	Peter	15
+17607	Ould	16
+17665	Tewari	10
+17676	Michel	12
+17769	Pearlman	17
+17831	Srivastava	13
+17911	Audeh	16
+17924	Tavan	15
+17944	Hamarn	13
+17996	Karpist	13
+17997	Ishikawa	11
+18007	Chanon	11
+18108	Brailsford	16
+1812	Chyr	15
+18234	Nirenbu	22
+1826	Dhav	17
+1827	Westbrook	15
+18286	Pang	7
+18338	Kangs	15
+1836	Marinov	14
+18367	Goodwin	19
+18469	Coppens	16
+18499	Peter	11
+18554	Ramaswamy	13
+18583	Ma	13
+18636	Mori	11
+18675	Araya	17
+18709	Agar	12
+18740	Williamson	19
+18752	Schulman	11
+18775	Pampal	16
+18808	Snif	14
+18809	Benson	23
+18821	Linden	18
+1884	Masini	16
+18859	Rubio	22
+18941	Denecker	17
+19048	Leuen	11
+19050	Erdem	12
+19203	Koch	11
+1922	Cavalcanti	17
+19220	Hayashi	14
+19245	Cai	18
+19293	Singhal	15
+19321	Chang	14
+19342	Bouzeghoub	15
+19362	Linden	12
+19450	Asahara	17
+19536	Bhattacharya	17
+1954	Frank	12
+19541	Drews	10
+19582	Canas	14
+19603	Colu	11
+19638	Dawson	13
+1968	Sahm	13
+19735	Bishop	14
+19766	Simon	15
+19791	Vanrell	13
+19824	Savelieva	15
+19848	Tiwari	17
+19861	Fontana	16
+19862	Prasad	15
+19917	Hayrapetyan	20
+20002	Fournier	19
+20084	Adda	20
+20099	Lewis	17
+20180	Reyes	12
+20195	Finney	12
+20244	Abu-B	14
+20378	Lomi	14
+20445	Laak	17
+20489	Shuming	23
+20540	Cunha	15
+20803	Mercurio	13
+20814	Cheed	13
+20974	Hawkins	12
+20985	Wunderli	16
+21008	Pavlovico	13
+21009	Geon	18
+21086	Held	15
+21100	Juchn	13
+21101	Gotchev	9
+21102	He	19
+21126	McCarter	15
+21225	Choll	11
+21246	Rais	10
+2133	Nardi	17
+21337	Goualh	17
+2139	Agarwal	16
+21394	Patel	11
+21395	Leuen	12
+21401	Garze	14
+21552	Bradshaw	17
+21556	Negron	12
+21692	Nagal	18
+21766	Cox	18
+2177	Cheah	14
+21774	Moh	8
+2178	Mingoz	14
+21789	Bates	16
+22003	Ibah	12
+22004	OBrien	13
+2201	Sauer	22
+22050	Alioto	11
+22057	Cal	13
+22086	Ockerb	18
+22142	Gerstend	12
+22170	Sugavanam	10
+22179	Sundho	17
+22198	Read	13
+22226	Kinney	11
+22254	Gordon	19
+22258	Larion	15
+22260	Daat	12
+22268	Dang	11
+22325	Oevers	14
+22345	Wecker	14
+22396	Wodn	11
+22417	McGuinness	18
+22467	Dias	15
+22532	Silverman	13
+22618	Voss	8
+22620	Lykin	19
+2286	Ceze	12
+22912	Sendlm	9
+23110	Sahani	13
+23224	Kempn	20
+23270	Bouras	12
+23311	Brunet	21
+23344	Fierro-	16
+23373	Lang	15
+23392	Curutchet	16
+23439	Cai	11
+23449	Noda	11
+23457	Shakhnovich	22
+23475	Cecchi	16
+23500	Kinney	19
+23506	Åström	12
+23525	DAgostino	19
+23794	Sokolov	15
+23934	Koizumi	16
+23992	Thornton	14
+23994	Kalisz	16
+24002	Russa	9
+24010	Brookh	10
+24116	Fauth	16
+2419	Hirakuri	15
+24197	Andert	19
+24201	Juol	14
+2423	Giralt	14
+24325	Álvarez	12
+24374	Jo	16
+24387	Yap	20
+24442	Greene	20
+24630	Halbert	16
+24746	Schrefl	20
+24784	Jessup	20
+24796	Thimm	20
+24809	Engeldr	13
+24865	Tran-	12
+24932	Segars	20
+2501	Leitner	13
+25046	Cotterill	10
+25068	Dickens	17
+25077	Palomo	14
+25143	Visr	13
+25187	Fenwick	18
+25256	Boulah	14
+25331	Baker	19
+25362	Simmel	15
+25380	Vassileva	18
+25468	Hunter	13
+25525	Moreira	12
+25528	Sivew	17
+25552	Calles	10
+2561	Aschoff	16
+25611	Sve	17
+25718	Seyfert	17
+25725	Steeh	13
+25780	Ashmi	10
+25785	Knezo	15
+259	Bertranp	14
+25940	Rosenkrantz	13
+25942	Leclercq	18
+26028	Birchler	15
+26080	Simmel	15
+26102	Tanaka	19
+26147	Richter	17
+2629	Goldbu	16
+26427	Ende	13
+26473	Neru	22
+26494	Heers	17
+26619	Matsukawa	11
+26695	Hac	12
+26730	Veselovsky	14
+26802	Baber	14
+26881	Markin	12
+27002	Veerar	9
+27017	Trur	11
+27043	Garze	14
+27044	Kota	19
+27094	Gur	17
+27140	Fitzpatrick	11
+27236	Date	11
+27366	Ssu	20
+27430	Gonzalez	17
+27528	Probst	12
+27556	Leitner	11
+27662	Tabarr	17
+27687	Yüksel	15
+27727	Duong	15
+27804	Brunt	13
+27898	Holloway	18
+27919	Hubr	9
+2795	Milner	12
+27950	Yüksel	19
+27952	McQuillan	15
+27956	Watzel	13
+28004	Savelieva	16
+28019	Cayto	11
+28128	Crick	8
+28133	Evano	16
+282	Rougemont	12
+28252	Pfister	15
+28299	Grange	14
+28316	Rajan	14
+28352	Mai	19
+28361	Sorensen	23
+28409	Hirasawa	16
+2848	Carr	20
+28518	Catani	15
+28538	Mathur	15
+28738	Birkett	18
+288	Canellas	16
+28829	Reiss	13
+28952	Kennedy	12
+28977	Chatterton	21
+28989	Albinal	10
+28994	Williamson	20
+29002	Duxbury	20
+29031	Berthold	15
+29091	Ahso	18
+29140	Reuver	15
+29192	Gomez	24
+29239	Simmel	9
+29260	Verhoeven	12
+29390	Aufr	18
+29399	Sutter	14
+29435	Siddiqi	13
+29462	Daues	17
+29514	Michael	15
+29645	Oller	14
+29665	Lykin	17
+2967	Stokic	14
+2970	Montes-y	13
+29705	Stetson	17
+29707	Gaspar	12
+29803	Beavis	16
+29849	Solar	22
+29863	Harmon	15
+29871	Iwasa	14
+29920	Kogure	18
+29959	Narli	15
+30017	Mateo	16
+30021	Youseffi	12
+3005	Ibrahim	17
+30110	Humphrey	12
+30124	Alfaro	17
+30161	Grude	14
+30164	Ende	17
+30177	Vajapeyaz	11
+30182	Porr	17
+30188	Ahmad	12
+30222	Lepp	20
+30252	Folkers	16
+30289	Lanfr	10
+30299	Marsh	5
+30334	Arakawa	15
+30341	Anse	17
+3039	Brookh	11
+30397	Dism	18
+30474	Paniez	14
+30650	Chaudhuri	17
+30723	Mali	10
+30772	Inoue	11
+30845	Fonseca	16
+30858	Shaffer	17
+30896	Rueda	13
+30943	Botha	12
+30957	Beaudry	8
+31035	Arnoux	15
+31079	Canas	16
+31080	Aschoff	20
+31086	Zulueta	17
+31101	Lhomme	13
+31137	Porter	16
+31250	Kawasaki	20
+31266	Kacpr	17
+3127	Resa	17
+31302	Qian	13
+31337	Graziano	20
+31341	Rotter	14
+31364	Rieger	11
+3143	Haddad	8
+31442	Bessou	19
+31476	OConnor	16
+31486	Okubo	12
+31516	Hassine	9
+31554	Fuller	16
+31560	Neld	19
+31624	Keuk	8
+3163	Riera	8
+31690	Bondi	18
+31761	Jame	12
+31820	Riahi	14
+31993	Ueda	13
+32056	Frost	18
+32065	Tapia	15
+32119	Nagashima	16
+32130	Bannac	16
+32217	Argar	16
+32245	Saariluoma	15
+32345	Chormo	14
+32368	Ouaz	18
+32369	Kaleta	14
+32376	Nakajima	17
+32385	Park	18
+32419	Sahani	8
+32464	Kinney	18
+32483	Atre	24
+32490	McCracken	22
+32506	Suzuki	19
+32744	Robins	12
+32772	Leventhal	18
+32881	Bagato	14
+32886	Damas	16
+32954	Curutchet	22
+33094	Fakin	8
+33107	Liley	19
+33201	Macias	15
+33206	McCormack	11
+33338	Stead	15
+33349	Peck	12
+3335	Otterm	19
+33401	Campbell	11
+33460	Leonard	11
+33546	Saguez	14
+336	Constantinescu	16
+33645	Kawakami	13
+33651	Seike	12
+33759	Mowbray	23
+33791	Wood	18
+33817	Vagn	15
+33837	Nicol	13
+33882	Borutz	12
+34018	Asahara	15
+34055	Orono	14
+34126	Schreitm	17
+34158	Mantzo	13
+34170	Chan	11
+34195	Bosnjak	17
+34197	Nestor	20
+34236	Maalej	14
+34322	Baba	14
+34329	Malcher	11
+34331	Kacpr	13
+34386	Hagedorn	14
+34392	Lauciu	18
+34404	Fries	23
+34422	Nakajima	15
+34502	Farr	16
+34542	Basile	21
+34569	Arndt	17
+34770	Porter	13
+34788	Barkov	12
+3487	Deshpande	15
+3493	Riser	12
+34957	Kalogerou	14
+35	Glaho	11
+35042	Nives	13
+35138	Corbac	11
+35175	Quimby	16
+35198	Loc	13
+35220	Shilv	17
+35257	Ebou	17
+35293	Cao	22
+35357	Gradino	12
+35362	ONi	14
+3545	Peskin	7
+35462	Byrd	21
+35498	Lanfr	15
+35523	Yamamoto	9
+35588	John	20
+35685	Usi	15
+35687	Letouzey	15
+35721	Suppan	15
+3576	Nakanishi	23
+35881	Özel	13
+35905	Lima	12
+35935	ODono	15
+36019	Quaranta	19
+36052	Guerra	17
+36102	Szendrei	15
+36126	Fung	15
+36244	Neuhold	19
+36263	Souza	16
+36265	Kaupp	17
+36303	Nair	18
+36379	Triebel	16
+36384	Sandsj	14
+3639	Story	23
+3640	Karniel	12
+36402	Hippu	14
+36494	Baccou	24
+3651	Narayanan	11
+36513	Ugarte	17
+36657	Ching	17
+36685	Fathi	13
+36791	Bomme	14
+36845	Okaf	13
+36881	Dalton	18
+36926	Kamae	15
+3693	Zafar	12
+36995	Sgot	15
+37038	Grieng	18
+37101	Falconer	13
+37103	Walker	13
+37219	Poize	17
+37284	Benabd	18
+37339	Warren	16
+37350	Sohn	18
+3739	Davy	12
+37430	Norman	18
+37449	Ssu	10
+37454	Frasinc	11
+37521	Mes	18
+37581	Arndt	12
+37586	Valtchev	15
+37653	Campbell	19
+37715	Westbrook	18
+37734	Kamata	22
+37759	Signah	14
+37809	Soni	19
+37818	Jiao	19
+37856	Gay	8
+37869	Beeu	16
+37946	Vrato	17
+38013	Frolova	13
+38121	Zuyev	14
+38271	Kosken	14
+38288	Matsuda	10
+3833	Hayat	13
+38336	Sagawe	11
+38371	Harada	10
+38476	Rzecz	14
+38545	Fok	13
+38548	Scibili	11
+38555	Vogt	9
+38602	Torres	11
+38668	Spector	18
+38676	Swien	16
+38691	Theodores	18
+38696	Spadon	18
+38712	Kreutz	17
+38895	Beuthel	19
+38899	Murphy	15
+38902	Xiang	13
+38973	Maglioni	18
+390	Alkio	6
+39046	Narasimhamu	11
+39114	Kerz	11
+39115	Boulah	17
+39157	Loull	15
+39204	Castle	18
+39238	Kyriakopoulos	11
+39241	Solar	17
+39254	Elme	9
+39310	Ploski	12
+39394	Reinhardt	16
+39472	Soper	17
+39514	Yean	14
+39520	Lui	12
+39521	Holloway	15
+39552	Tsukamoto	12
+39580	Macias	16
+39612	Androutsopoulos	16
+39619	Dwyer	19
+39657	Ryder	7
+39704	Frank	12
+39876	Wood	23
+39881	Herman	17
+39892	Urano	15
+39901	Dellwo	10
+39925	Preuss	14
+39927	Bartels	17
+39978	Drig	22
+4004	Tabor	17
+40044	Jode	17
+40059	Montilla	21
+40080	Llam	10
+40116	Joshi	15
+4015	Cole	21
+40178	Greene	13
+40189	Holt	14
+40276	Konstantinides	9
+40303	Rudolf	14
+4034	Xie	14
+40371	Trimble	10
+40457	Bouras	12
+40481	Zettel	21
+40558	Pacie	16
+40677	Ponnambalam	12
+40682	Rowe	9
+40738	Dima	19
+40897	Coppens	13
+40932	Rioult	16
+40937	Petzo	18
+40992	Xing	17
+41091	Maillet	13
+41211	Fok	17
+41261	Hubr	16
+41280	Birtz	14
+41299	Siebers	21
+41345	Tola	16
+41406	Dahmann	17
+41450	McLeod	16
+41491	Beavis	17
+41596	Abeggl	15
+41599	Meneses	15
+41671	Valf	14
+41674	April	17
+41675	Wheeler	12
+41683	Pietkiewicz	16
+4173	Erol	13
+41741	Kato	14
+41751	Kaufman	17
+41774	Tassel	15
+41818	Wari	18
+4182	Powals	15
+41827	Chriso	9
+41832	Curl	21
+41890	Srivastava	12
+41894	Ortmann	17
+41938	Jordan	15
+41965	Boden	9
+41973	Werf	13
+41988	Gall	17
+42019	Koch	15
+42092	Arinb	12
+42096	Freib	10
+42114	Mezzar	17
+42298	Fournier	10
+42388	Nikut	14
+4248	Wright	13
+42556	Tsantis	11
+42560	Amr	13
+42565	Hartsk	12
+42625	Holland	20
+42688	Palma	13
+42843	Lin	19
+42956	Ram	18
+42960	McGinn	11
+42991	Kaiser	18
+43016	Beekw	14
+43032	Tanaka	20
+43123	Shim	17
+43130	Yong	17
+43211	Xylo	19
+43226	Shoji	12
+43348	Venturini	11
+43432	Caporali	15
+4345	Resa	12
+43495	Scher	18
+435	Moskow	19
+43505	Yoon	20
+4355	Cui	23
+43616	Tam	22
+43658	Meneses	11
+4383	Tallis	11
+43854	Gau	15
+43912	Papakir	14
+43981	Quimby	14
+43989	Makarychev	13
+43993	Halbert	15
+44038	Chandra	15
+44206	Gilmour	19
+44258	Steinmetz	16
+44271	Sowerby	15
+44304	Cox	8
+4435	Labroc	22
+44352	Itoh	13
+4438	Yoshioka	15
+4449	Gilliam	11
+44551	Nguyen	27
+44584	Agar	18
+44703	Hsieh	14
+44706	Bland	13
+44816	Burman	17
+44836	Lanfr	15
+44881	Harshman	12
+44985	Prieto	9
+44998	Borrus	17
+45002	Abraham	14
+4508	Cochran	19
+45083	Stasko	19
+45200	Kitagawa	9
+45300	Kambayashi	22
+45359	Zelek	13
+45436	Ahmadian	11
+45494	Matsush	13
+45570	Hoyos	13
+45650	Mateo	11
+45680	Kiltz	20
+45720	Yeoh	19
+45770	Beekw	10
+45817	Herrmann	11
+4582	Zaniolo	10
+45826	Teng	15
+46035	Kamez	11
+46066	Hirasawa	21
+46074	Fong	16
+46106	Pledg	16
+46155	Kruglyak	20
+46260	Bloom	24
+463	Houtsm	13
+46337	Nagaraj	15
+46436	Richardson	11
+46441	Zander	8
+46442	Kagd	13
+4645	Ryoo	12
+46450	Tleu	12
+46451	Chilu	13
+46655	Advani	10
+46694	Masamura	10
+46725	Richi	16
+46762	Bier	15
+46769	Kivv	16
+4682	Betho	11
+46928	Barry	15
+46956	Nallape	12
+46970	Rafiq	11
+46980	Roessler	14
+46981	Yalk	14
+47001	Correia	12
+47025	Jouny	11
+47126	Bakirc	18
+47265	Albinal	12
+47379	Wakamiya	25
+47487	Villa	24
+47627	Warren	16
+47630	Odell	11
+47670	Xue	15
+47677	Tso	16
+47824	Hardt	15
+48009	Lopes	14
+48053	Macias	13
+48165	Asikainen	15
+48247	Gustafsson	13
+48423	Krone	11
+48462	Wolf	13
+48469	Kolodko	16
+48471	Elias	18
+48589	Martyno	10
+4860	Penneb	12
+48611	Suppan	11
+48640	Brown	16
+48660	Emam	21
+48678	Tuomisto	17
+48776	Wall	9
+48778	Pup	17
+48850	Wehen	13
+48861	Ende	17
+48901	Gong	17
+49073	Bonvin	16
+49205	Agraz	13
+49214	Vogel	15
+49244	Chikar	14
+49280	Wilson	15
+49339	Snif	15
+49391	Rammer	15
+4940	Rhyne	15
+49450	Gotoh	18
+49503	Seaz	6
+49611	Karande	21
+49618	Stone	12
+49684	Ceze	9
+49701	Read	13
+49759	Androutsopoulos	13
+49792	Petersen	11
+49813	Al-Hu	22
+49873	Nikut	17
+499	Seike	17
+49982	Haigh	18
+50013	Milanic	21
+50038	Urano	6
+50039	Kurt	23
+5005	Cesaret	16
+5017	Reuter	18
+50206	Cesaret	14
+50267	Spengler	15
+50331	Bullinger	14
+50365	Held	15
+50386	Bersk	11
+50414	Landau	11
+50467	Kabir	13
+50537	Felling	19
+50583	Ng	10
+50598	She	18
+50658	Cayto	19
+50664	Rajnov	17
+507	Recc	11
+50702	Harders	11
+50703	Blanchard	10
+50719	Model	10
+50743	Lindner	10
+50873	Beck	15
+50944	Tao	14
+50966	Concilio	15
+50969	Terauchi	11
+50977	Allen	14
+51008	Kandadai	17
+51084	Pah	16
+51093	Syng	18
+51203	Lahtinen	17
+51238	Kran	14
+51416	Shan	17
+5144	Abdellatif	10
+51538	Ang	13
+51549	Rao	17
+51553	Willis	10
+51579	Holz	15
+51678	Klivansky	12
+51698	Sharpe	8
+51723	Lagendijk	11
+51768	Noga	16
+51817	MacIntyre	21
+51862	Carrillo	10
+51868	Guthk	18
+51923	Peterson	15
+51955	Tompa	14
+51975	Nicol	18
+51997	Nadg	13
+52019	Engen	12
+52057	Garg	16
+52076	Noda	18
+5208	Feyr	16
+52120	Redw	15
+52134	Johnson	16
+52157	Nagle	18
+52187	Fritsch	20
+52203	Suwanno	11
+52291	Wolff	16
+52371	Boons	21
+52385	Higuchi	21
+5243	Bajracharya	19
+52471	Recc	18
+52494	Sznajder	17
+5250	Åström	19
+52523	Hobbs	19
+52656	Phillips	16
+52669	Rayad	16
+52707	Arena	11
+52741	Bernhart	15
+52750	Saito	16
+52856	Grange	8
+52866	Loull	16
+52872	Chaney	13
+52876	Dahmann	25
+52929	Hashim	14
+52945	Adeni	9
+5298	Radici	18
+53047	Geißl	13
+53048	Keps	21
+53077	Brandt	18
+53089	Vedag	14
+53118	Carvey	11
+53152	Sayre	17
+53165	Dowey	15
+53172	Du	11
+53185	Yuanq	18
+53225	Juan	20
+5336	Peltz	17
+53424	Lemoine	17
+53451	Hasan	11
+53469	Fujii	14
+53485	Rowe	10
+53490	Reina-	15
+53496	Cashman	16
+53547	Neubert	13
+53588	Schwet	10
+53699	Cordt	17
+53728	Eck	17
+53788	Byun	18
+53799	Okabe	12
+53803	Okaf	17
+53805	Ludwig	15
+5381	Diana	8
+5393	Clemens	13
+5399	Chun	15
+5414	Aiken	17
+54153	Kammerer	13
+54296	Osinski	18
+544	Uchiyama	18
+54460	Martini	6
+54508	Gregga	12
+54605	Yoshioka	15
+54610	Tam	12
+54612	Zaraté	13
+54620	Hancock	18
+54622	Yu	12
+5463	Reiss	9
+54672	Thie	14
+54728	Seta	16
+54875	Feng	13
+55000	Levitan	16
+55009	Pohlem	17
+55170	Ivanov	21
+55238	Thadani	14
+55286	Kihn	15
+55329	Vyborny	10
+55354	Yang	8
+55531	Apostolov	15
+55698	Choung	10
+557	Bhat	10
+55857	Martin	12
+55859	Eguchi	16
+55915	Mohamed	21
+55940	Subbai	10
+56	Kameda	16
+56003	Someren	17
+56057	Hull	16
+56058	Fettes	14
+56078	Soltys	17
+56080	Zamani	12
+56089	Mezzar	23
+56124	Strieg	14
+56139	Schelten	16
+56143	Yusop	14
+5617	Souza	12
+56212	Rolland	20
+56232	Perozzo	6
+56276	Lansi	14
+56299	Sadry	15
+56486	DeMil	10
+56499	Zarpell	18
+56598	Carey	21
+56755	Paul	16
+56849	Osaka	14
+56882	Browne	17
+56941	Swain	9
+57026	Rotom	15
+5703	Yasuda	17
+57055	Piou	13
+57083	Gray	20
+57107	Janssen	14
+57123	Katsik	12
+57135	Margetts	21
+57156	Haigh	16
+57160	Baer	14
+57185	ShuQ	11
+57190	Theuniss	12
+57213	Andrew	9
+57238	Rehd	16
+57242	Chatfield	14
+57334	Roeder	15
+57377	Soricu	16
+57431	Holloway	17
+57456	Stauf	19
+57474	Coddington	10
+57511	Pulido	14
+57538	Albuquerque	15
+57666	Fries	11
+57780	Trezz	14
+57787	Alexandri	17
+57925	Doeschn	12
+57941	Kleinberg	12
+57962	Aarde	13
+57985	Weller	17
+58081	Pelletier	20
+58085	Bic	11
+58170	Lao	19
+58172	Geißl	12
+5824	Ocel	18
+58300	Lum	13
+58307	Tiamp	14
+58326	Afim	13
+58355	Honeyman	13
+58413	Xiong	15
+5843	Deng	17
+58465	Romeo	14
+58469	Lutes	16
+58594	Ivanov	15
+58595	Cronin	15
+58606	Opitz	11
+58634	Choung	13
+58701	Hampp	20
+5871	Carey	11
+58846	Fengl	16
+58874	Ray	13
+58889	Collet	12
+58919	Schroeder	6
+58935	Kimu	17
+5898	Dahl	17
+59046	Reichl	12
+59117	Belmes	19
+59172	Badran	21
+5920	Godfrey	15
+5925	Maw	12
+59290	Morris	21
+59397	Williams	15
+5943	Rubio	14
+59455	Lowenstein	18
+59517	Harrison	10
+59530	Poulin	23
+59538	Kothari	13
+59539	Madden	11
+59553	Schoenfl	21
+5961	Lavina	12
+59673	Mertens	20
+59848	Barwin	18
+59908	Cox	18
+59920	Dano	10
+60040	Samel	15
+60224	Bensaber	15
+60249	Nishida	23
+60267	Dage	14
+60366	Kostie	15
+60406	Sofer	17
+60688	Zander	12
+60748	Nagal	18
+60762	Bernstein	11
+60867	Poulin	12
+60984	Emms	15
+61003	Pietkiewicz	16
+61065	Jovicic	15
+61081	Bai	11
+61127	Tuki	19
+61166	Kangs	20
+61232	Fukui	16
+61332	Canon	17
+61354	Barranco	18
+61356	Vulp	13
+61364	Bhavs	16
+61402	Maity	20
+61403	Tanno	13
+61414	Ohyama	14
+61444	Vries	17
+61527	Shwartz	14
+61737	Kissel	12
+61783	Guyer	17
+61854	Roytman	16
+61920	Marcol	21
+6195	Hartmann	21
+61998	Sohn	10
+62054	Wood	12
+6209	Baccou	17
+62124	Towsey	13
+62152	Oba	18
+62226	Brookh	9
+62373	Cheed	12
+62429	Dietzsch	17
+62487	Durrant	18
+62520	Im	19
+62549	Komatsu	20
+62636	Soni	13
+62705	Hoffman	15
+62716	Bocchi	20
+62728	Camme	12
+62749	Giroux	13
+62754	Durrant	18
+62784	Stylian	16
+62795	Conradie	13
+62832	Anderson	19
+6287	Makowski	15
+63039	Wagner	5
+6304	Tamura	10
+63040	Hochri	13
+63090	Hoov	14
+63243	Dostal	19
+63288	Stilla	22
+63289	So	14
+63310	Luan	11
+63361	Djurd	16
+63390	Loudn	13
+63449	Sellink	12
+63489	Enokib	17
+63502	Xie	20
+63538	Pulido	14
+63560	Gleit	14
+63582	Fischer	14
+63612	Duxbury	14
+63645	Mandviwall	23
+6367	Doisy	16
+63860	Bayn	21
+63886	Kuo	15
+6400	Kelly	12
+64013	Auriche	14
+64039	Aarde	17
+64067	Mennif	16
+64082	Boyle	17
+64121	Mansint	24
+64138	Doran	13
+64140	Tiroz	15
+64155	Midu	14
+64164	Zander	20
+64169	Lucas	15
+64192	Pradhan	17
+64196	Rioult	15
+64222	Namer	12
+64249	Kalantari	18
+64259	Busch	16
+64297	Desp	15
+64401	Larion	13
+645	Kane	12
+64550	Kubo	21
+64593	Kamez	11
+64642	Murdock	16
+64724	Deupree	17
+64731	Yuanq	8
+6474	Rossettin	16
+64820	Hendrickson	15
+64893	Katzenb	12
+64914	Lembr	7
+64934	Halbert	15
+64938	Kaep	12
+64945	Gall	17
+65038	Papakir	16
+65056	Kean	17
+65101	Spengler	14
+65121	Winter	10
+65144	Butler	14
+65190	Dumas	14
+65205	Sauer	16
+65208	Farahvash	15
+6523	Karlsson	22
+65241	Riser	18
+65258	Tian	12
+65299	Schwarze	15
+65329	Benson	19
+65396	Rossos	14
+65400	Horecz	15
+65433	Stratulat	16
+65438	Saad	22
+65443	Yagit	14
+65563	Bawa	11
+65676	Aufr	14
+65681	Roses	19
+65688	Loudn	16
+65703	Goldman	14
+65714	Hughes	15
+65715	Novak	15
+65753	Planti	17
+65901	Shishkin	15
+65979	Chenu	11
+65987	Morrison	16
+66008	Szczerban	15
+66054	Crick	14
+66090	Brochhause	18
+66106	Malagoli	15
+66212	Kurt	15
+66229	Qvi	17
+66259	Schulman	16
+66269	Hsueh	15
+66279	Reynolds	8
+66281	Schelten	13
+66293	Gibson	20
+66356	Xi	20
+66469	Komori	16
+66484	Amberg	21
+66494	Shevade	14
+66495	Michel	11
+667	Goldman	15
+6673	Bernhart	14
+66753	Mazzat	21
+66763	Wilks	16
+66813	Spengler	14
+66969	Sui	12
+67017	Westervelt	17
+67018	Catona	15
+67021	Chenu	11
+67024	Aufr	12
+67033	Yun	13
+67051	Labroc	16
+6710	Matli	11
+6712	Westphal	19
+67146	Scherze	16
+67222	Andrews	9
+6729	Heilprin	12
+67293	Ueno	15
+67310	Lindner	13
+67340	Dubu	11
+67371	Garcia-Ferr	18
+67407	Yoneda	17
+67425	Cooper	17
+67436	LaCo	11
+67514	Psil	14
+67542	Jones	19
+67560	Sandberg	19
+67583	Senn	10
+67655	Kuch	13
+67657	Beeu	22
+67660	Newitt	16
+67725	Yamamoto	15
+67793	Pigd	20
+67810	Forestiero	16
+68010	Blecken	10
+68070	Cameron	18
+68096	Teo	17
+68150	Kim	18
+68242	Hugo	14
+68248	Tillmann	14
+68263	Roessler	14
+68278	Becker	14
+68280	Shuming	9
+68330	Soisalon-Soininen	19
+68395	Jessup	17
+68396	Klimasauskas	15
+68453	Kjellmer	18
+68516	Kouan	18
+68554	Larsson	15
+68649	Klug	8
+68712	Hill	11
+68720	Gordon	17
+68779	Harmon	17
+6895	Portillo	20
+68999	Greve	20
+69081	Stratulat	15
+69122	Epstein	11
+69132	Sciore	16
+69222	Albuquerque	12
+69225	Mejia	19
+69230	Masum	17
+69241	Kannan	19
+69285	Zaharak	18
+69307	Gierl	12
+69471	Aly	18
+69521	Greenbaum	15
+69581	Prabhakaran	19
+69628	Bouamama	18
+69632	Gibbs	12
+69679	Ramírez	15
+69730	Peip	15
+69732	Barbosa	16
+69747	Beichn	14
+69752	Tan	15
+69758	Baroni	13
+69783	Putru	16
+69850	Alexandri	16
+69853	Boken	13
+6990	Hoshi	12
+69952	Muñoz	13
+69960	Raïev	16
+70021	Aydin	12
+70061	Konno	22
+70098	Prabhakaran	14
+70099	Zhiyong	14
+7020	Thoreson	14
+70235	Zle	16
+70299	Hirvas	11
+70310	Ding	6
+7035	Liots	17
+70359	Lorinczi	13
+70362	Sicard	10
+70384	Shevade	12
+70389	Paulk	13
+70395	Ballew	14
+7043	Gryts	10
+70452	Al-Hu	14
+70522	Holn	10
+70564	Bouguet	13
+70572	Andrews	18
+70688	Ishihara	20
+70807	Kreitman	13
+70828	Kaska	15
+70918	Holland	15
+70924	Rajnov	12
+70965	Dooley	14
+71025	Cadis	13
+71085	Giannoulis	13
+7123	Holn	16
+71287	Damas	22
+71387	Tleu	11
+71389	Vegt	15
+71426	Flecker	16
+7149	Xin	11
+71529	Fredrickso	24
+71543	Mizuno	18
+71628	Amann	21
+71630	Heath	16
+71631	Scheine	22
+71768	Stephenn	14
+71878	Hayat	12
+71904	Boldin	12
+71944	Schinag	22
+72006	Jawad	11
+72014	Kee	14
+7204	Halbert	12
+72055	Schinag	19
+72165	Otsuki	14
+72177	Eller	23
+72186	Pace	15
+72358	Tomason	13
+72485	Wetzel	13
+72501	Mulet	17
+72521	Caleff	20
+72528	Tuki	20
+72622	Kashima	15
+72643	Castle	19
+72657	Hird	14
+72669	Schmitz	26
+72741	Weiss	12
+72768	Queiroz	23
+7287	Tadjo	15
+72959	Audeh	12
+72979	Guix	8
+73072	Akroy	14
+73165	Fox	13
+73186	Schweitzer	17
+73206	Maw	11
+73213	Fall	15
+73268	Yagit	14
+73328	Stokic	13
+73387	Baccou	15
+73394	Blasbe	15
+73411	Schulz	13
+73492	Hwang	15
+73542	Dooley	14
+73602	Richardson	19
+73606	Sachse	16
+73807	Gubar	11
+7390	Stone	12
+73908	Cruz	15
+74016	Moei	21
+74070	Sandberg	17
+74163	Chettao	17
+74460	McWilliams	13
+74464	Sulimova	16
+74473	Ledermann	13
+74509	Tanzi	9
+74530	Ranno	14
+74639	Cerime	16
+74672	Eggers	22
+74796	Vulp	16
+74840	Schill	21
+7490	Giuffrida	13
+74911	Wall	21
+74974	Lao	18
+7498	Charng	16
+75040	Kruglyak	18
+75046	Hamagi	13
+75082	Havill	10
+75116	Samar	17
+75123	Chowdhury	15
+7514	Rical	17
+75173	Basturk	12
+75231	Ravindranath	14
+75241	Hughes	17
+75252	Huo	17
+75273	Jia	18
+75299	Miao	13
+75362	Christodoulakis	10
+75395	Moscarini	15
+75423	Oller	13
+75510	Dumont	18
+75513	Griffin	15
+75522	Yin	10
+75534	Simmel	12
+75547	Varadaran	15
+75560	Tabor	16
+75596	Sayre	15
+75772	Morton	15
+75791	Keuk	14
+75794	Hons	20
+75878	Hahn-	22
+75928	Yoshimoto	12
+75938	Kotsonis	13
+760	Liedm	15
+7602	Ingram	15
+76049	Tavan	16
+76057	Sakanushi	15
+76169	Williamson	7
+76173	Jovicic	23
+7620	Potry	13
+76224	Neilson	18
+76246	Pettersen	16
+76250	Maw	14
+76270	Qian	19
+76291	Dellwo	15
+7656	Maher	6
+76604	Çivi	8
+76672	Miliko	11
+76743	Rani	23
+76759	Masum	16
+76768	Oblak	15
+76798	Clifford	10
+76799	Monger	17
+76895	Olro	19
+76911	Alart	18
+76953	Lemoine	19
+77000	Cherchi	20
+77003	Munro	14
+77021	Bollen	10
+77130	Tyler	19
+77148	Hinik	7
+77172	Klepper	12
+77218	Lohman	12
+77231	Roschew	7
+77234	Hayrapetyan	12
+77244	Benitez	15
+77289	Kok	17
+7732	Osc	9
+77361	Neuhold	8
+77364	Lacruz	14
+77415	Morales	15
+77548	Krohn	15
+77580	Frazin	19
+77588	Aguilar	12
+77664	Apostolov	12
+77729	Lui	10
+77898	Yap	14
+78116	Xiao	20
+78143	Erdem	16
+78314	Visr	17
+78332	Ohki	18
+78434	Ruhe	18
+78454	Michael	18
+78469	Xiong	14
+78481	Clemme	14
+7854	Someren	21
+78552	Douss	19
+78572	Kurt	16
+78581	Hegde	20
+7861	Bollen	10
+78637	Beeu	10
+78756	Dai	12
+78758	Chakraborty	15
+78767	Marlet	13
+78782	Sherman	15
+78787	Rissanen	19
+78792	Ram	15
+78858	Abdul-Rahman	15
+78892	Kei	18
+78911	Shavel	14
+78922	Koltso	22
+79170	Lingamp	26
+792	Hashimoto	19
+79205	Zander	13
+79210	Sanchez	18
+79329	Velikovs	18
+79352	Rumat	20
+79446	Frost	14
+79469	Jacobs	19
+79487	Androutsopoulos	8
+79502	Marongiu	10
+79534	Martel-	14
+7956	Brandsd	13
+79589	Schopp	15
+79697	Marquis	12
+7970	Bartels	19
+7973	Breed	18
+79763	Ikeda	10
+79772	Witty	17
+79892	Chiari	8
+79911	Corr	17
+80047	Clemme	10
+80057	Szczerban	17
+80113	Boudjelo	18
+8022	Heng	12
+80227	Tsuji	12
+80247	Rueda	8
+80248	Satoh	23
+80254	Mittelm	15
+80285	Karv	15
+80420	Bansal	16
+80610	Nakamura	17
+80651	Holz	10
+80698	Eynd	24
+80742	Lucas	12
+80799	Almeida	12
+80821	Morris	14
+80912	Homyk	12
+80941	Sankappanavar	10
+80976	Mozayani	18
+80990	Strzem	14
+81028	Perna	21
+81031	Nanda	20
+81150	Atkins	10
+81175	Zelek	8
+81207	Masri	16
+81245	Mandviwall	13
+81258	Nirenbu	18
+81294	Massey	14
+81396	Cordt	19
+8140	Paddock	13
+81538	Wunderli	13
+81550	Harada	12
+81566	Farr	14
+81610	Ching	17
+81638	Chiu	19
+81785	Crues	9
+81789	Urwin	15
+81876	Arora	19
+81883	Perei	15
+81884	Kereth	18
+81896	Feldman	8
+8192	Verma	13
+81984	Gowi	19
+82039	Hendrickson	11
+82063	Zeng	14
+82066	Varghese	16
+82082	Towsey	13
+82083	Peeri	19
+82126	Koizumi	14
+82301	Conti	19
+82402	Grant	5
+8251	Kite	19
+8252	Breuer	15
+82580	Wyes	13
+82591	Pomy	24
+82646	Nirenbu	16
+82687	Cameron	11
+82688	Rote	18
+82697	Ye	16
+827	Das	19
+82707	Hadzilacos	11
+82868	So	13
+82918	Yemini	14
+82970	Peip	19
+82974	Duncan	20
+83002	Ladu	16
+83003	Nam	14
+83022	Chyr	13
+83039	Harmon	14
+83136	Caporali	14
+83170	Ariav	23
+83204	Tauber	16
+83214	Dasd	11
+83314	Chow	20
+83398	Quinta	15
+8343	Shoji	12
+83444	Vieira	12
+83462	Mehra	10
+8347	Wunderli	18
+83480	Whitten	11
+83511	Godfrey	11
+83557	Khalil	21
+83573	Pavlovico	16
+83592	Benkov	10
+83622	Achilles	14
+83686	Krasser	19
+83691	Katehakis	11
+83696	Denso	12
+83728	Kaminsky	17
+83747	Gregory	13
+8378	Stenv	14
+83836	Gifford	8
+83838	Durrant	14
+83871	Stylian	12
+83953	Jordan	8
+84039	Sveti	13
+84167	Sakanushi	7
+84189	Kuwadak	18
+842	Jode	14
+84239	Jordan	15
+8426	Harass	14
+84410	Bae	14
+84432	Schrefl	15
+84495	Kurata	15
+84515	Levie	11
+8457	Christiansen	17
+84654	Braña	14
+847	Yamaguchi	17
+84702	Lucas	14
+84704	Rammer	16
+84727	Hennig	17
+84792	Angelo	16
+84808	Randers	14
+8483	Luk	14
+84845	Zuo	16
+84865	Fernandez-Gonzalez	11
+85063	Chaney	14
+8517	Tomkins	15
+85211	Sumi	21
+85226	Vicentino	13
+85234	Dubu	19
+85308	Yihn	11
+85356	Kocsis	16
+85366	Erol	17
+85445	Bocchi	14
+85451	Chapman	16
+85505	Wells	14
+85534	Setiawan	16
+85575	Lal	13
+85602	Bogdanova	11
+85614	Champes	18
+85680	Krohn	16
+85746	Wilks	23
+85754	Betho	21
+858	Kashima	17
+85809	Andert	17
+85849	Aufr	15
+85887	Stoltzfus	17
+85904	Harass	10
+85910	Levitan	15
+85981	Kahs	11
+86001	Meise	16
+8603	Piedrah	12
+86075	Juchn	12
+86127	Spikov	15
+86327	Moscarini	12
+86344	Kaar	15
+86375	Loher	17
+86404	Cordt	15
+86529	Leister	6
+86552	Martin	22
+86573	Schauser	9
+86641	Dair	18
+86651	Dave	13
+86661	Shani	12
+86674	Peter	17
+86707	Houtsm	14
+86736	Franchet	13
+86753	Leister	19
+86802	Hameed	12
+86806	Unger	18
+86833	Viani	15
+86934	Berthold	17
+86969	Wicki	14
+86981	Hansch	11
+87015	Pottos	14
+87044	McDonald	11
+87048	Gani	15
+87054	Dietzsch	13
+87193	Pinkus	13
+87222	Allard	17
+87246	Dellwo	16
+87268	Koenig	13
+87280	Kim	13
+87439	Scheffer	15
+87624	Carrera	11
+87651	Liang	20
+87706	Nakao	11
+87784	McCracken	16
+87785	Liepelt	15
+87831	Turunen	12
+87965	Reiss	16
+88045	Jackson	19
+8807	Zacharias	17
+88085	Bouamama	19
+88140	Stanko	16
+88169	Schroeder	15
+8819	Lesaffre	20
+88287	Geser	13
+88302	Yarmush	16
+88308	Reiss	8
+88358	Bongio	11
+88389	Henriksen	19
+88417	Mitsuhashi	19
+88418	Slaw	9
+8843	Papakir	14
+88472	Lynch	12
+88525	Hung	14
+8853	Warner	12
+88553	Levine	14
+88577	Smoro	16
+8860	Aminian	12
+88793	Sakhno	12
+888	Frost	14
+88801	Fonseca	10
+88884	Stasko	18
+88887	Wodn	15
+88993	Palaniswami	17
+89000	Guthk	17
+89051	Dubink	15
+89059	Juan	12
+89104	Mitsuhashi	13
+89106	Dawson	15
+8912	Brenner	22
+89132	Janssen	15
+89140	Fabregas	19
+89188	Anse	14
+89196	Klöpper	16
+89234	Hird	16
+89246	Loyka	15
+89297	Cacciari	14
+89312	Marques	21
+89393	Fischbach	12
+89414	Feldman	15
+89551	Shapiro	20
+8957	Walker	19
+89571	Zubai	16
+89734	Doeschn	16
+89759	Zettel	21
+898	Heilprin	22
+8986	Maesf	17
+90004	Unay	19
+90009	Donofrio	14
+90041	Barberis	11
+90082	Esparza	15
+90089	Mohan	21
+90124	Koppit	13
+90132	Jo	14
+90181	Giannoulis	20
+90194	Busch	12
+90220	Iacovoni	18
+90234	Sram	22
+90353	Bruderm	19
+90372	Rho	18
+90381	Chaudhuri	13
+90448	Godfrey	26
+90567	Tomason	18
+90609	Mohamed	11
+90663	Sram	12
+90779	Lenhart	14
+90814	Finance	21
+9084	Rabu	11
+90914	Grange	10
+91063	Dair	15
+91091	Ockerb	13
+91132	Sud	18
+9114	Swien	17
+91197	Manzoor	13
+91343	Clarkson	18
+91370	Frangeu	18
+914	Schill	19
+91442	Ohno	13
+91569	Pavlovico	13
+91580	Cabr	13
+91616	Hoffman	16
+91788	Streitf	10
+91799	Steinmetz	22
+9183	Sutter	22
+91851	Tchuri	14
+91915	Cacciari	9
+91978	Pourkas	14
+91992	DAtri	19
+92040	Alexandri	14
+92274	Caporali	16
+92332	Nicol	11
+92385	Godfrey	19
+92417	Dubink	18
+92442	Satoh	14
+92464	Enokib	18
+9256	Tran-	13
+92659	Mathias	14
+92693	Mattor	16
+92703	Makinen	17
+92776	Oki	15
+92839	Cirsto	21
+92849	Flossmann	17
+92864	Rogers	19
+92867	Khene	14
+92949	Retzel	16
+92965	Mesne	13
+93004	Gibbs	17
+93039	Hau	14
+93043	McQuillan	15
+93061	Alfaro	14
+931	Tsalidi	17
+93125	Harders	13
+93171	Carey	16
+93354	Varghese	17
+93366	Gault	14
+93491	Rees-	14
+93508	Graham	20
+93571	Kato	16
+9360	Mukai	16
+93631	Sendlm	14
+93653	Mellor	17
+93708	Steines	13
+93814	Smoro	13
+93986	Zahrani	12
+9408	Oberholzer	13
+94142	Simon	18
+94173	Winkler	15
+94178	Bengtss	16
+94257	Unger	15
+94311	Napoletani	13
+94324	Willson	15
+94371	Milner	11
+9440	Gierl	13
+94522	Pampal	12
+94535	Nishida	16
+94569	Yip	13
+9460	Wrzesz	20
+94620	Sarnak	19
+94697	Pettersen	13
+94726	Ailamaki	18
+94730	Neff	13
+94766	Buril	21
+94801	Chakraborty	17
+94814	Kee	19
+94815	Xiang	12
+94836	Fuller	11
+94846	Hossain	15
+94894	Kozlov	17
+9495	Crimm	16
+94990	Lykin	17
+94998	Krishnakumar	12
+95027	Bauer	15
+95029	Oliveira	16
+95046	Mercank	17
+95089	Zarpell	18
+95099	Chien	15
+9514	Dickson	11
+95175	Guiho	21
+95201	Yang	13
+95205	Hammond	15
+95225	Moire	15
+95260	Yannakakis	16
+95284	Hands	19
+95320	Morgan	15
+95366	Isogai	21
+95574	Pampal	15
+95626	Tellez	17
+95631	Mauras	10
+95697	Gruns	16
+95840	Jakobsen	11
+95850	Schrefl	22
+95852	Cabr	13
+95859	Huft	10
+95953	Batano	10
+96003	Nakajima	13
+9605	Beeu	17
+96052	Marcol	17
+96067	Sugavanam	16
+96085	Wood	16
+96117	Nisso	14
+96134	Prince	16
+96153	Sawah	21
+96178	Hay	14
+96193	Yasuda	21
+96203	Olin	11
+96206	Koic	20
+96227	Vulp	19
+96246	Tong	11
+96324	Sudirm	17
+9659	Sakhno	12
+96615	Anty	14
+96710	Katehakis	15
+96722	Liley	10
+96741	Kobayashi	15
+96772	Rieger	21
+96895	Stelzl	16
+96911	Jamro	13
+96968	Mohamed	13
+96988	Bussel	13
+97023	Bulash	20
+97041	Rajnov	9
+97042	Bhargava	17
+97065	Gandhi	15
+97101	Marek	13
+97228	Brzezinski	10
+97355	Ratcliff	16
+97400	Noda	15
+97435	Winzer	13
+97551	Labaye	16
+97573	Yusop	12
+97590	Rammer	19
+97629	Awano	16
+97658	Baier	12
+97679	Sacchi	12
+97694	ODono	11
+978	Salzman	13
+97868	Schinag	16
+97953	Kaneko	12
+98019	Ciepl	13
+98047	Takahashi	15
+98056	Di	12
+98120	Furukawa	9
+98140	Ratcliff	18
+98315	Saill	15
+98359	Patne	17
+98388	Nilsson	15
+98423	Alfaro	14
+98563	Yen	13
+98619	Nagaraj	9
+98690	Neru	18
+987	Kasani	13
+98726	Mathias	11
+98830	Frolova	14
+98843	Julier	15
+98870	Kun	24
+98940	Hawthorne	11
+98984	Seraphin	16
+99073	Bartels	14
+99189	Shelest	9
+99226	Hao	17
+99250	Khaw	8
+99268	Makarychev	19
+99271	Soricu	17
+99289	Morales	11
+993	McGarr	9
+9933	Pircher	13
+99348	Tobin	22
+99369	Klingenb	13
+99399	Duan	18
+99422	Fickl	15
+99451	Bradshaw	15
+99463	Jacobi	12
+9947	Bouzeghoub	17
+9953	Wilks	19
+99553	Strader	13
+99611	Schrefl	13
+99647	Bellman	11
+99660	OMalley	15
+99694	Beckert	18
+99710	Savolainen	14
+99711	Deshpande	10
+99719	Bennett	21
+99730	Courtney	17
+99754	Califieri	16
+99760	Sakamoto	20
+99764	Lv	15
+99775	Epley	8
+99780	Bravo	16
+9993	Won	19
+99949	Samo	12
+99977	Englund	18
+
+Result: 2000 rows returned in 25016ms
+
+----------------------------------------------------------------------------------------------------------------------
+
+--10
+CREATE VIEW temp1 as
+SELECT s.ID, s.name, t.course_id, c.title, t.semester, t.year
+FROM student s, takes t, course c
+WHERE s.ID = t.ID AND t.course_id = c.course_id;
+
+CREATE VIEW temp2 as
+SELECT t1.ID, t1.name, t1.course_id, t1.title, t1.semester, t1.year
+FROM temp1 t1, temp1 t2
+WHERE t1.ID = t2.ID AND t1.course_id = t2.course_id AND NOT(t1.semester = t2.semester AND t1.year=t2.year)
+ORDER by t1.ID;
+ 
+CREATE VIEW maxy as SELECT ID, course_id,max(year) year FROM temp2 GROUP by ID, course_id;
+
+
+SELECT table1.ID, table1.name, table1.course_id, table1.title, table1.recent_sem, table1.recent_year, table2.num_times
+FROM
+(SELECT t1.ID, t1.name, t1.course_id, t1.title, t1.semester recent_sem, t1.year recent_year
+FROM temp2 t1, temp2 t2, maxy m
+WHERE t1.ID = t2.ID AND t1.ID = m.ID AND t2.ID = m.ID AND
+t1.course_id = t2.course_id AND t1.course_id = m.course_id AND t2.course_id = m.course_id
+AND t1.year = m.year AND t1.year = t2.year AND t1.semester <= t2.semester
+EXCEPT
+SELECT t1.ID, t1.name, t1.course_id, t1.title, t1.semester recent_sem, t1.year recent_year
+FROM temp2 t1, temp2 t2, maxy m
+WHERE t1.ID = t2.ID AND t1.ID = m.ID AND t2.ID = m.ID AND
+t1.course_id = t2.course_id AND t1.course_id = m.course_id AND t2.course_id = m.course_id
+AND t1.year = m.year AND t1.year = t2.year AND t1.semester > t2.semester) as table1
+LEFT JOIN
+(SELECT DISTINCT ID, course_id, count(course_id) num_times
+FROM (SELECT DISTINCT * FROM temp2)
+GROUP by ID, course_id
+ORDER by ID) as table2
+ON table1.ID = table2.ID AND table1.course_id = table2.course_id
+ORDER BY table1.ID;
+
+ID	name	course_id	title	recent_sem	recent_year	num_times
+10033	Zelty	338	Graph Theory	Spring	2007	2
+10033	Zelty	408	Bankruptcy	Spring	2007	2
+10454	Ugarte	169	Marine Mammals	Spring	2007	2
+10454	Ugarte	468	Fractal Geometry	Fall	2007	2
+10527	Kieras	105	Image Processing	Fall	2009	2
+10527	Kieras	362	Embedded Systems	Spring	2008	2
+10663	Okaf	362	Embedded Systems	Spring	2008	2
+107	Shabuno	362	Embedded Systems	Fall	2006	2
+107	Shabuno	867	The IBM 360 Architecture	Fall	2010	2
+10834	More	443	Journalism	Spring	2010	2
+10904	Jerns	105	Image Processing	Fall	2009	2
+10904	Jerns	735	Greek Tragedy	Spring	2010	2
+10917	Morales	960	Tort Law	Fall	2009	2
+11057	Robinson	237	Surfing	Fall	2009	2
+11101	Glaho	867	The IBM 360 Architecture	Fall	2010	2
+11194	El-Helw	200	The Music of the Ramones	Spring	2007	2
+11262	Foels	200	The Music of the Ramones	Spring	2007	2
+11262	Foels	237	Surfing	Fall	2009	2
+11262	Foels	408	Bankruptcy	Spring	2007	2
+11422	Saito	362	Embedded Systems	Spring	2008	2
+11455	Peyse	468	Fractal Geometry	Fall	2007	2
+11855	Mendelzon	408	Bankruptcy	Spring	2007	2
+12069	Skeen	105	Image Processing	Fall	2009	2
+12078	Knutson	200	The Music of the Ramones	Spring	2007	2
+12078	Knutson	362	Embedded Systems	Spring	2008	2
+12216	Griffiths	200	The Music of the Ramones	Spring	2007	2
+12326	Watson	735	Greek Tragedy	Spring	2010	2
+12563	Stone	468	Fractal Geometry	Fall	2007	2
+1285	Szczerban	960	Tort Law	Fall	2009	2
+12941	Ren	735	Greek Tragedy	Spring	2010	2
+13081	Alqui	867	The IBM 360 Architecture	Fall	2010	2
+13211	Diab	735	Greek Tragedy	Spring	2010	2
+13217	Liu	362	Embedded Systems	Fall	2006	2
+13352	Gorsky	158	Elastic Structures	Fall	2008	2
+13403	Latour	400	Visual BASIC	Spring	2007	2
+1367	Ignj	362	Embedded Systems	Spring	2008	2
+13826	Sommerfeldt	169	Marine Mammals	Spring	2007	2
+14065	Starker	960	Tort Law	Fall	2009	2
+14182	Moszkowski	158	Elastic Structures	Fall	2008	2
+14182	Moszkowski	408	Bankruptcy	Spring	2007	2
+14432	Whitley	200	The Music of the Ramones	Spring	2007	2
+14484	Langer	362	Embedded Systems	Spring	2008	2
+14554	Ramadan	237	Surfing	Fall	2009	2
+14639	Sagiv	735	Greek Tragedy	Spring	2010	2
+14829	Philippe	867	The IBM 360 Architecture	Fall	2010	2
+14869	Palmer	237	Surfing	Fall	2009	2
+14874	Singhal	362	Embedded Systems	Fall	2006	2
+15024	Kawahara	237	Surfing	Fall	2009	2
+15074	Kirtane	158	Elastic Structures	Fall	2008	2
+15083	Formisano	237	Surfing	Fall	2009	2
+15144	Lapio	362	Embedded Systems	Spring	2008	2
+15328	Chien	158	Elastic Structures	Fall	2008	2
+15487	Januszewski	400	Visual BASIC	Spring	2007	2
+15613	Umehara	237	Surfing	Fall	2009	2
+15613	Umehara	468	Fractal Geometry	Fall	2007	2
+15980	Ross	158	Elastic Structures	Fall	2008	2
+163	Bandekar	169	Marine Mammals	Spring	2007	2
+16405	Rahman	158	Elastic Structures	Fall	2008	2
+16405	Rahman	362	Embedded Systems	Spring	2008	2
+16480	Noga	362	Embedded Systems	Spring	2008	3
+16528	Angs	105	Image Processing	Fall	2009	2
+16528	Angs	338	Graph Theory	Spring	2007	2
+16969	Hakkinen	362	Embedded Systems	Spring	2008	3
+16993	Akaiw	867	The IBM 360 Architecture	Fall	2010	2
+17076	King	169	Marine Mammals	Spring	2007	2
+1737	Shinagawa	867	The IBM 360 Architecture	Fall	2010	2
+17607	Ould	105	Image Processing	Fall	2009	2
+17911	Audeh	362	Embedded Systems	Fall	2006	2
+17996	Karpist	735	Greek Tragedy	Spring	2010	2
+18108	Brailsford	735	Greek Tragedy	Spring	2010	2
+18234	Nirenbu	408	Bankruptcy	Spring	2007	2
+18469	Coppens	400	Visual BASIC	Spring	2007	2
+18583	Ma	400	Visual BASIC	Spring	2007	2
+18709	Agar	408	Bankruptcy	Spring	2007	2
+18740	Williamson	362	Embedded Systems	Spring	2008	2
+1884	Masini	362	Embedded Systems	Fall	2006	2
+19245	Cai	362	Embedded Systems	Fall	2006	2
+19293	Singhal	237	Surfing	Fall	2009	2
+19791	Vanrell	200	The Music of the Ramones	Spring	2007	2
+19824	Savelieva	867	The IBM 360 Architecture	Fall	2010	2
+19861	Fontana	362	Embedded Systems	Spring	2008	2
+20084	Adda	960	Tort Law	Fall	2009	2
+20489	Shuming	408	Bankruptcy	Spring	2007	2
+20489	Shuming	468	Fractal Geometry	Fall	2007	2
+20540	Cunha	237	Surfing	Fall	2009	2
+21009	Geon	735	Greek Tragedy	Spring	2010	2
+21086	Held	408	Bankruptcy	Spring	2007	2
+2133	Nardi	362	Embedded Systems	Spring	2008	2
+2139	Agarwal	158	Elastic Structures	Fall	2008	2
+21395	Leuen	169	Marine Mammals	Spring	2007	2
+21692	Nagal	408	Bankruptcy	Spring	2007	2
+21766	Cox	960	Tort Law	Fall	2009	2
+22003	Ibah	468	Fractal Geometry	Fall	2007	2
+22086	Ockerb	408	Bankruptcy	Spring	2007	2
+22142	Gerstend	105	Image Processing	Fall	2009	2
+22254	Gordon	362	Embedded Systems	Fall	2006	2
+22258	Larion	105	Image Processing	Fall	2009	2
+22396	Wodn	400	Visual BASIC	Spring	2007	2
+22620	Lykin	237	Surfing	Fall	2009	2
+23311	Brunet	169	Marine Mammals	Spring	2007	2
+23994	Kalisz	338	Graph Theory	Spring	2007	2
+23994	Kalisz	362	Embedded Systems	Spring	2008	2
+24010	Brookh	735	Greek Tragedy	Spring	2010	2
+24116	Fauth	105	Image Processing	Fall	2009	2
+24116	Fauth	408	Bankruptcy	Spring	2007	2
+24197	Andert	362	Embedded Systems	Spring	2008	2
+24197	Andert	735	Greek Tragedy	Spring	2010	2
+24201	Juol	468	Fractal Geometry	Fall	2007	2
+24387	Yap	362	Embedded Systems	Fall	2006	2
+24746	Schrefl	237	Surfing	Fall	2009	2
+24809	Engeldr	105	Image Processing	Fall	2009	2
+24865	Tran-	362	Embedded Systems	Fall	2006	2
+24932	Segars	169	Marine Mammals	Spring	2007	2
+25068	Dickens	169	Marine Mammals	Spring	2007	2
+25077	Palomo	400	Visual BASIC	Spring	2007	2
+25077	Palomo	960	Tort Law	Fall	2009	2
+25187	Fenwick	200	The Music of the Ramones	Spring	2007	2
+25256	Boulah	362	Embedded Systems	Fall	2006	2
+25331	Baker	735	Greek Tragedy	Spring	2010	2
+25380	Vassileva	468	Fractal Geometry	Fall	2007	2
+25552	Calles	338	Graph Theory	Spring	2007	2
+26102	Tanaka	468	Fractal Geometry	Fall	2007	2
+26473	Neru	169	Marine Mammals	Spring	2007	2
+27140	Fitzpatrick	158	Elastic Structures	Fall	2008	2
+27236	Date	362	Embedded Systems	Spring	2008	3
+27366	Ssu	443	Journalism	Spring	2010	2
+27430	Gonzalez	237	Surfing	Fall	2009	2
+27687	Yüksel	200	The Music of the Ramones	Spring	2007	2
+27687	Yüksel	443	Journalism	Spring	2010	2
+27727	Duong	735	Greek Tragedy	Spring	2010	2
+27898	Holloway	362	Embedded Systems	Spring	2008	2
+2795	Milner	408	Bankruptcy	Spring	2007	2
+27950	Yüksel	237	Surfing	Fall	2009	2
+28004	Savelieva	468	Fractal Geometry	Fall	2007	2
+28128	Crick	169	Marine Mammals	Spring	2007	2
+28299	Grange	867	The IBM 360 Architecture	Fall	2010	2
+2848	Carr	105	Image Processing	Fall	2009	2
+2848	Carr	735	Greek Tragedy	Spring	2010	2
+28738	Birkett	735	Greek Tragedy	Spring	2010	2
+29002	Duxbury	468	Fractal Geometry	Fall	2007	2
+29239	Simmel	362	Embedded Systems	Fall	2006	2
+29645	Oller	400	Visual BASIC	Spring	2007	2
+29705	Stetson	362	Embedded Systems	Spring	2008	2
+29803	Beavis	408	Bankruptcy	Spring	2007	2
+29849	Solar	867	The IBM 360 Architecture	Fall	2010	2
+29863	Harmon	443	Journalism	Spring	2010	2
+29920	Kogure	443	Journalism	Spring	2010	2
+30124	Alfaro	105	Image Processing	Fall	2009	2
+30182	Porr	200	The Music of the Ramones	Spring	2007	2
+30341	Anse	408	Bankruptcy	Spring	2007	2
+30397	Dism	105	Image Processing	Fall	2009	2
+30397	Dism	468	Fractal Geometry	Fall	2007	2
+31035	Arnoux	338	Graph Theory	Spring	2007	2
+31035	Arnoux	735	Greek Tragedy	Spring	2010	2
+31137	Porter	338	Graph Theory	Spring	2007	2
+31137	Porter	362	Embedded Systems	Fall	2006	2
+31250	Kawasaki	362	Embedded Systems	Spring	2008	2
+31266	Kacpr	158	Elastic Structures	Fall	2008	2
+31266	Kacpr	362	Embedded Systems	Fall	2006	2
+31337	Graziano	408	Bankruptcy	Spring	2007	2
+31364	Rieger	169	Marine Mammals	Spring	2007	2
+32056	Frost	237	Surfing	Fall	2009	2
+32119	Nagashima	237	Surfing	Fall	2009	2
+32130	Bannac	468	Fractal Geometry	Fall	2007	2
+32368	Ouaz	960	Tort Law	Fall	2009	2
+32490	McCracken	362	Embedded Systems	Fall	2006	2
+32490	McCracken	443	Journalism	Spring	2010	2
+32744	Robins	735	Greek Tragedy	Spring	2010	2
+32772	Leventhal	468	Fractal Geometry	Fall	2007	2
+32886	Damas	362	Embedded Systems	Spring	2008	2
+32954	Curutchet	105	Image Processing	Fall	2009	2
+32954	Curutchet	169	Marine Mammals	Spring	2007	2
+33107	Liley	408	Bankruptcy	Spring	2007	2
+33460	Leonard	867	The IBM 360 Architecture	Fall	2010	2
+33546	Saguez	169	Marine Mammals	Spring	2007	2
+33651	Seike	169	Marine Mammals	Spring	2007	2
+33759	Mowbray	362	Embedded Systems	Spring	2008	2
+33791	Wood	362	Embedded Systems	Fall	2006	2
+33791	Wood	735	Greek Tragedy	Spring	2010	2
+34126	Schreitm	400	Visual BASIC	Spring	2007	2
+34197	Nestor	237	Surfing	Fall	2009	2
+34322	Baba	237	Surfing	Fall	2009	2
+34392	Lauciu	735	Greek Tragedy	Spring	2010	2
+34422	Nakajima	960	Tort Law	Fall	2009	2
+34542	Basile	200	The Music of the Ramones	Spring	2007	2
+34569	Arndt	408	Bankruptcy	Spring	2007	2
+3487	Deshpande	200	The Music of the Ramones	Spring	2007	2
+35138	Corbac	200	The Music of the Ramones	Spring	2007	2
+35198	Loc	400	Visual BASIC	Spring	2007	2
+35293	Cao	169	Marine Mammals	Spring	2007	2
+35293	Cao	362	Embedded Systems	Spring	2008	2
+35293	Cao	408	Bankruptcy	Spring	2007	2
+35362	ONi	362	Embedded Systems	Fall	2006	2
+35462	Byrd	105	Image Processing	Fall	2009	2
+35462	Byrd	400	Visual BASIC	Spring	2007	2
+35721	Suppan	468	Fractal Geometry	Fall	2007	2
+35935	ODono	400	Visual BASIC	Spring	2007	2
+36019	Quaranta	200	The Music of the Ramones	Spring	2007	2
+36102	Szendrei	158	Elastic Structures	Fall	2008	2
+36126	Fung	362	Embedded Systems	Spring	2008	2
+36244	Neuhold	867	The IBM 360 Architecture	Fall	2010	2
+36265	Kaupp	169	Marine Mammals	Spring	2007	2
+36303	Nair	338	Graph Theory	Spring	2007	2
+36384	Sandsj	735	Greek Tragedy	Spring	2010	2
+3639	Story	867	The IBM 360 Architecture	Fall	2010	2
+3639	Story	960	Tort Law	Fall	2009	2
+36513	Ugarte	158	Elastic Structures	Fall	2008	2
+3693	Zafar	105	Image Processing	Fall	2009	2
+37103	Walker	960	Tort Law	Fall	2009	2
+37284	Benabd	237	Surfing	Fall	2009	2
+37339	Warren	362	Embedded Systems	Fall	2006	2
+37350	Sohn	400	Visual BASIC	Spring	2007	2
+37350	Sohn	960	Tort Law	Fall	2009	2
+37586	Valtchev	468	Fractal Geometry	Fall	2007	2
+37653	Campbell	105	Image Processing	Fall	2009	2
+37715	Westbrook	105	Image Processing	Fall	2009	2
+37715	Westbrook	408	Bankruptcy	Spring	2007	2
+37734	Kamata	169	Marine Mammals	Spring	2007	2
+37734	Kamata	362	Embedded Systems	Fall	2006	2
+37809	Soni	158	Elastic Structures	Fall	2008	2
+37818	Jiao	105	Image Processing	Fall	2009	2
+37869	Beeu	200	The Music of the Ramones	Spring	2007	2
+37869	Beeu	400	Visual BASIC	Spring	2007	2
+37946	Vrato	338	Graph Theory	Spring	2007	2
+37946	Vrato	400	Visual BASIC	Spring	2007	2
+38548	Scibili	105	Image Processing	Fall	2009	2
+38602	Torres	338	Graph Theory	Spring	2007	2
+38676	Swien	362	Embedded Systems	Fall	2006	2
+38899	Murphy	362	Embedded Systems	Fall	2006	2
+38899	Murphy	400	Visual BASIC	Spring	2007	2
+39157	Loull	237	Surfing	Fall	2009	2
+39520	Lui	443	Journalism	Spring	2010	2
+39520	Lui	468	Fractal Geometry	Fall	2007	2
+39580	Macias	408	Bankruptcy	Spring	2007	2
+39619	Dwyer	400	Visual BASIC	Spring	2007	2
+39704	Frank	158	Elastic Structures	Fall	2008	2
+39901	Dellwo	960	Tort Law	Fall	2009	2
+39925	Preuss	362	Embedded Systems	Spring	2008	3
+39927	Bartels	237	Surfing	Fall	2009	2
+39978	Drig	362	Embedded Systems	Spring	2008	3
+39978	Drig	735	Greek Tragedy	Spring	2010	2
+40897	Coppens	169	Marine Mammals	Spring	2007	2
+40897	Coppens	400	Visual BASIC	Spring	2007	2
+41211	Fok	867	The IBM 360 Architecture	Fall	2010	2
+41261	Hubr	362	Embedded Systems	Fall	2006	2
+41261	Hubr	408	Bankruptcy	Spring	2007	2
+41299	Siebers	200	The Music of the Ramones	Spring	2007	2
+41345	Tola	105	Image Processing	Fall	2009	2
+41491	Beavis	362	Embedded Systems	Spring	2008	2
+41674	April	200	The Music of the Ramones	Spring	2007	2
+41832	Curl	338	Graph Theory	Spring	2007	2
+41890	Srivastava	362	Embedded Systems	Spring	2008	2
+41894	Ortmann	960	Tort Law	Fall	2009	2
+41938	Jordan	408	Bankruptcy	Spring	2007	2
+41965	Boden	468	Fractal Geometry	Fall	2007	2
+41988	Gall	105	Image Processing	Fall	2009	2
+42560	Amr	362	Embedded Systems	Spring	2008	2
+42625	Holland	362	Embedded Systems	Spring	2008	2
+42843	Lin	338	Graph Theory	Spring	2007	2
+42991	Kaiser	200	The Music of the Ramones	Spring	2007	2
+43495	Scher	338	Graph Theory	Spring	2007	2
+43616	Tam	237	Surfing	Fall	2009	2
+43912	Papakir	867	The IBM 360 Architecture	Fall	2010	2
+43993	Halbert	960	Tort Law	Fall	2009	2
+44038	Chandra	200	The Music of the Ramones	Spring	2007	2
+44258	Steinmetz	237	Surfing	Fall	2009	2
+44352	Itoh	735	Greek Tragedy	Spring	2010	2
+4438	Yoshioka	362	Embedded Systems	Fall	2006	2
+4438	Yoshioka	867	The IBM 360 Architecture	Fall	2010	2
+4449	Gilliam	468	Fractal Geometry	Fall	2007	2
+44551	Nguyen	362	Embedded Systems	Spring	2008	2
+44551	Nguyen	468	Fractal Geometry	Fall	2007	2
+44584	Agar	158	Elastic Structures	Fall	2008	2
+44703	Hsieh	960	Tort Law	Fall	2009	2
+44816	Burman	362	Embedded Systems	Fall	2006	2
+44881	Harshman	362	Embedded Systems	Spring	2008	3
+44998	Borrus	338	Graph Theory	Spring	2007	2
+45083	Stasko	200	The Music of the Ramones	Spring	2007	2
+45083	Stasko	443	Journalism	Spring	2010	2
+45300	Kambayashi	468	Fractal Geometry	Fall	2007	2
+45359	Zelek	362	Embedded Systems	Spring	2008	2
+45494	Matsush	338	Graph Theory	Spring	2007	2
+45680	Kiltz	867	The IBM 360 Architecture	Fall	2010	2
+45817	Herrmann	362	Embedded Systems	Spring	2008	2
+4582	Zaniolo	400	Visual BASIC	Spring	2007	2
+45826	Teng	158	Elastic Structures	Fall	2008	2
+46035	Kamez	362	Embedded Systems	Spring	2008	2
+46106	Pledg	960	Tort Law	Fall	2009	2
+46260	Bloom	105	Image Processing	Fall	2009	2
+46337	Nagaraj	362	Embedded Systems	Spring	2008	2
+46436	Richardson	158	Elastic Structures	Fall	2008	2
+46436	Richardson	735	Greek Tragedy	Spring	2010	2
+46762	Bier	169	Marine Mammals	Spring	2007	2
+46762	Bier	338	Graph Theory	Spring	2007	2
+46762	Bier	867	The IBM 360 Architecture	Fall	2010	2
+46956	Nallape	408	Bankruptcy	Spring	2007	2
+46980	Roessler	338	Graph Theory	Spring	2007	2
+46981	Yalk	237	Surfing	Fall	2009	2
+46981	Yalk	338	Graph Theory	Spring	2007	2
+47025	Jouny	169	Marine Mammals	Spring	2007	2
+47126	Bakirc	362	Embedded Systems	Fall	2006	2
+47379	Wakamiya	960	Tort Law	Fall	2009	2
+47487	Villa	169	Marine Mammals	Spring	2007	2
+47670	Xue	105	Image Processing	Fall	2009	2
+48009	Lopes	362	Embedded Systems	Spring	2008	2
+48462	Wolf	362	Embedded Systems	Spring	2008	2
+48471	Elias	362	Embedded Systems	Fall	2006	2
+48778	Pup	338	Graph Theory	Spring	2007	2
+48778	Pup	362	Embedded Systems	Spring	2008	2
+48850	Wehen	200	The Music of the Ramones	Spring	2007	2
+48861	Ende	867	The IBM 360 Architecture	Fall	2010	2
+49073	Bonvin	443	Journalism	Spring	2010	2
+49280	Wilson	735	Greek Tragedy	Spring	2010	2
+4940	Rhyne	362	Embedded Systems	Fall	2006	2
+49611	Karande	362	Embedded Systems	Spring	2008	3
+49618	Stone	408	Bankruptcy	Spring	2007	2
+49701	Read	200	The Music of the Ramones	Spring	2007	2
+49701	Read	362	Embedded Systems	Spring	2008	2
+49813	Al-Hu	362	Embedded Systems	Fall	2006	2
+49873	Nikut	960	Tort Law	Fall	2009	2
+499	Seike	735	Greek Tragedy	Spring	2010	2
+50013	Milanic	169	Marine Mammals	Spring	2007	2
+50013	Milanic	735	Greek Tragedy	Spring	2010	2
+50013	Milanic	960	Tort Law	Fall	2009	2
+50039	Kurt	362	Embedded Systems	Fall	2006	2
+50267	Spengler	237	Surfing	Fall	2009	2
+50365	Held	362	Embedded Systems	Spring	2008	2
+50537	Felling	960	Tort Law	Fall	2009	2
+50583	Ng	169	Marine Mammals	Spring	2007	2
+50598	She	867	The IBM 360 Architecture	Fall	2010	2
+507	Recc	443	Journalism	Spring	2010	2
+50966	Concilio	468	Fractal Geometry	Fall	2007	2
+51008	Kandadai	362	Embedded Systems	Spring	2008	2
+51093	Syng	867	The IBM 360 Architecture	Fall	2010	2
+51203	Lahtinen	735	Greek Tragedy	Spring	2010	2
+51416	Shan	362	Embedded Systems	Fall	2006	2
+51549	Rao	338	Graph Theory	Spring	2007	2
+51768	Noga	200	The Music of the Ramones	Spring	2007	2
+51817	MacIntyre	338	Graph Theory	Spring	2007	2
+51817	MacIntyre	468	Fractal Geometry	Fall	2007	2
+51975	Nicol	867	The IBM 360 Architecture	Fall	2010	2
+5208	Feyr	237	Surfing	Fall	2009	2
+52157	Nagle	338	Graph Theory	Spring	2007	2
+52157	Nagle	362	Embedded Systems	Spring	2008	2
+52187	Fritsch	237	Surfing	Fall	2009	2
+52371	Boons	169	Marine Mammals	Spring	2007	2
+52371	Boons	200	The Music of the Ramones	Spring	2007	2
+52385	Higuchi	105	Image Processing	Fall	2009	2
+5243	Bajracharya	362	Embedded Systems	Fall	2006	2
+53047	Geißl	867	The IBM 360 Architecture	Fall	2010	2
+53048	Keps	169	Marine Mammals	Spring	2007	2
+53077	Brandt	408	Bankruptcy	Spring	2007	2
+53077	Brandt	960	Tort Law	Fall	2009	2
+53165	Dowey	468	Fractal Geometry	Fall	2007	2
+53225	Juan	443	Journalism	Spring	2010	2
+53490	Reina-	960	Tort Law	Fall	2009	2
+53799	Okabe	362	Embedded Systems	Fall	2006	2
+53805	Ludwig	237	Surfing	Fall	2009	2
+53805	Ludwig	362	Embedded Systems	Spring	2008	2
+5414	Aiken	362	Embedded Systems	Spring	2008	3
+54508	Gregga	200	The Music of the Ramones	Spring	2007	2
+54605	Yoshioka	169	Marine Mammals	Spring	2007	2
+54620	Hancock	105	Image Processing	Fall	2009	2
+54622	Yu	338	Graph Theory	Spring	2007	2
+55170	Ivanov	200	The Music of the Ramones	Spring	2007	2
+55170	Ivanov	400	Visual BASIC	Spring	2007	2
+55915	Mohamed	158	Elastic Structures	Fall	2008	2
+55940	Subbai	105	Image Processing	Fall	2009	2
+56	Kameda	400	Visual BASIC	Spring	2007	2
+56003	Someren	338	Graph Theory	Spring	2007	2
+56089	Mezzar	105	Image Processing	Fall	2009	2
+56212	Rolland	867	The IBM 360 Architecture	Fall	2010	2
+56276	Lansi	169	Marine Mammals	Spring	2007	2
+56499	Zarpell	362	Embedded Systems	Spring	2008	2
+56755	Paul	158	Elastic Structures	Fall	2008	2
+56849	Osaka	960	Tort Law	Fall	2009	2
+57026	Rotom	400	Visual BASIC	Spring	2007	2
+57123	Katsik	735	Greek Tragedy	Spring	2010	2
+57135	Margetts	169	Marine Mammals	Spring	2007	2
+57334	Roeder	105	Image Processing	Fall	2009	2
+57377	Soricu	400	Visual BASIC	Spring	2007	2
+57780	Trezz	408	Bankruptcy	Spring	2007	2
+57787	Alexandri	200	The Music of the Ramones	Spring	2007	2
+57925	Doeschn	200	The Music of the Ramones	Spring	2007	2
+58081	Pelletier	408	Bankruptcy	Spring	2007	2
+58413	Xiong	400	Visual BASIC	Spring	2007	2
+58465	Romeo	443	Journalism	Spring	2010	2
+58595	Cronin	105	Image Processing	Fall	2009	2
+58846	Fengl	362	Embedded Systems	Spring	2008	2
+58874	Ray	468	Fractal Geometry	Fall	2007	2
+58889	Collet	158	Elastic Structures	Fall	2008	2
+59117	Belmes	960	Tort Law	Fall	2009	2
+5920	Godfrey	468	Fractal Geometry	Fall	2007	2
+59290	Morris	362	Embedded Systems	Fall	2006	2
+59397	Williams	200	The Music of the Ramones	Spring	2007	2
+59455	Lowenstein	169	Marine Mammals	Spring	2007	2
+59455	Lowenstein	468	Fractal Geometry	Fall	2007	2
+59455	Lowenstein	960	Tort Law	Fall	2009	2
+59530	Poulin	408	Bankruptcy	Spring	2007	2
+5961	Lavina	867	The IBM 360 Architecture	Fall	2010	2
+59673	Mertens	468	Fractal Geometry	Fall	2007	2
+59848	Barwin	105	Image Processing	Fall	2009	2
+59848	Barwin	443	Journalism	Spring	2010	2
+59908	Cox	735	Greek Tragedy	Spring	2010	2
+60224	Bensaber	338	Graph Theory	Spring	2007	2
+60249	Nishida	169	Marine Mammals	Spring	2007	2
+60406	Sofer	362	Embedded Systems	Fall	2006	2
+60406	Sofer	468	Fractal Geometry	Fall	2007	2
+61166	Kangs	400	Visual BASIC	Spring	2007	2
+61354	Barranco	960	Tort Law	Fall	2009	2
+61364	Bhavs	158	Elastic Structures	Fall	2008	2
+61402	Maity	362	Embedded Systems	Fall	2006	2
+61403	Tanno	200	The Music of the Ramones	Spring	2007	2
+61783	Guyer	362	Embedded Systems	Spring	2008	2
+6195	Hartmann	408	Bankruptcy	Spring	2007	2
+61998	Sohn	362	Embedded Systems	Spring	2008	2
+62429	Dietzsch	735	Greek Tragedy	Spring	2010	2
+62487	Durrant	443	Journalism	Spring	2010	2
+62549	Komatsu	158	Elastic Structures	Fall	2008	2
+62549	Komatsu	237	Surfing	Fall	2009	2
+62549	Komatsu	408	Bankruptcy	Spring	2007	2
+62716	Bocchi	105	Image Processing	Fall	2009	2
+63040	Hochri	362	Embedded Systems	Spring	2008	2
+63288	Stilla	158	Elastic Structures	Fall	2008	2
+63288	Stilla	468	Fractal Geometry	Fall	2007	2
+6367	Doisy	362	Embedded Systems	Fall	2006	2
+6367	Doisy	468	Fractal Geometry	Fall	2007	2
+6400	Kelly	735	Greek Tragedy	Spring	2010	2
+64013	Auriche	237	Surfing	Fall	2009	2
+64121	Mansint	735	Greek Tragedy	Spring	2010	2
+64140	Tiroz	867	The IBM 360 Architecture	Fall	2010	2
+64155	Midu	338	Graph Theory	Spring	2007	2
+64249	Kalantari	169	Marine Mammals	Spring	2007	2
+64249	Kalantari	237	Surfing	Fall	2009	2
+64297	Desp	105	Image Processing	Fall	2009	2
+645	Kane	400	Visual BASIC	Spring	2007	2
+64550	Kubo	338	Graph Theory	Spring	2007	2
+64934	Halbert	169	Marine Mammals	Spring	2007	2
+64934	Halbert	735	Greek Tragedy	Spring	2010	2
+65101	Spengler	400	Visual BASIC	Spring	2007	2
+65208	Farahvash	105	Image Processing	Fall	2009	2
+6523	Karlsson	443	Journalism	Spring	2010	2
+65241	Riser	200	The Music of the Ramones	Spring	2007	2
+65433	Stratulat	960	Tort Law	Fall	2009	2
+65438	Saad	158	Elastic Structures	Fall	2008	2
+65443	Yagit	158	Elastic Structures	Fall	2008	2
+65676	Aufr	443	Journalism	Spring	2010	2
+65688	Loudn	960	Tort Law	Fall	2009	2
+65703	Goldman	400	Visual BASIC	Spring	2007	2
+65715	Novak	158	Elastic Structures	Fall	2008	2
+65753	Planti	408	Bankruptcy	Spring	2007	2
+66054	Crick	400	Visual BASIC	Spring	2007	2
+66229	Qvi	105	Image Processing	Fall	2009	2
+66269	Hsueh	735	Greek Tragedy	Spring	2010	2
+66281	Schelten	338	Graph Theory	Spring	2007	2
+66356	Xi	158	Elastic Structures	Fall	2008	2
+66469	Komori	105	Image Processing	Fall	2009	2
+6673	Bernhart	200	The Music of the Ramones	Spring	2007	2
+66753	Mazzat	362	Embedded Systems	Spring	2008	2
+66753	Mazzat	443	Journalism	Spring	2010	2
+66763	Wilks	362	Embedded Systems	Spring	2008	2
+6712	Westphal	362	Embedded Systems	Spring	2008	2
+67146	Scherze	400	Visual BASIC	Spring	2007	2
+67310	Lindner	960	Tort Law	Fall	2009	2
+67371	Garcia-Ferr	338	Graph Theory	Spring	2007	2
+67542	Jones	362	Embedded Systems	Fall	2006	2
+67810	Forestiero	443	Journalism	Spring	2010	2
+68242	Hugo	735	Greek Tragedy	Spring	2010	2
+68280	Shuming	362	Embedded Systems	Spring	2008	2
+68330	Soisalon-Soininen	867	The IBM 360 Architecture	Fall	2010	2
+68712	Hill	400	Visual BASIC	Spring	2007	2
+68720	Gordon	362	Embedded Systems	Spring	2008	2
+6895	Portillo	408	Bankruptcy	Spring	2007	2
+6895	Portillo	735	Greek Tragedy	Spring	2010	2
+69081	Stratulat	338	Graph Theory	Spring	2007	2
+69222	Albuquerque	408	Bankruptcy	Spring	2007	2
+69230	Masum	362	Embedded Systems	Spring	2008	2
+69241	Kannan	158	Elastic Structures	Fall	2008	2
+69241	Kannan	735	Greek Tragedy	Spring	2010	2
+69581	Prabhakaran	362	Embedded Systems	Spring	2008	3
+69632	Gibbs	408	Bankruptcy	Spring	2007	2
+69679	Ramírez	169	Marine Mammals	Spring	2007	2
+69752	Tan	443	Journalism	Spring	2010	2
+69783	Putru	408	Bankruptcy	Spring	2007	2
+69850	Alexandri	443	Journalism	Spring	2010	2
+69960	Raïev	362	Embedded Systems	Spring	2008	2
+7020	Thoreson	105	Image Processing	Fall	2009	2
+70389	Paulk	960	Tort Law	Fall	2009	2
+7043	Gryts	237	Surfing	Fall	2009	2
+70522	Holn	960	Tort Law	Fall	2009	2
+70572	Andrews	468	Fractal Geometry	Fall	2007	2
+70688	Ishihara	105	Image Processing	Fall	2009	2
+70688	Ishihara	338	Graph Theory	Spring	2007	2
+70828	Kaska	867	The IBM 360 Architecture	Fall	2010	2
+70918	Holland	960	Tort Law	Fall	2009	2
+70965	Dooley	443	Journalism	Spring	2010	2
+71287	Damas	169	Marine Mammals	Spring	2007	2
+71387	Tleu	362	Embedded Systems	Spring	2008	2
+71426	Flecker	362	Embedded Systems	Fall	2006	2
+71529	Fredrickso	468	Fractal Geometry	Fall	2007	2
+71628	Amann	158	Elastic Structures	Fall	2008	2
+71628	Amann	362	Embedded Systems	Spring	2008	2
+71631	Scheine	362	Embedded Systems	Spring	2008	2
+71904	Boldin	408	Bankruptcy	Spring	2007	2
+71944	Schinag	200	The Music of the Ramones	Spring	2007	2
+71944	Schinag	867	The IBM 360 Architecture	Fall	2010	2
+72528	Tuki	105	Image Processing	Fall	2009	2
+72643	Castle	158	Elastic Structures	Fall	2008	2
+72669	Schmitz	362	Embedded Systems	Spring	2008	2
+72768	Queiroz	468	Fractal Geometry	Fall	2007	2
+73213	Fall	362	Embedded Systems	Spring	2008	2
+73394	Blasbe	362	Embedded Systems	Spring	2008	2
+73411	Schulz	408	Bankruptcy	Spring	2007	2
+7390	Stone	735	Greek Tragedy	Spring	2010	2
+74530	Ranno	960	Tort Law	Fall	2009	2
+74672	Eggers	468	Fractal Geometry	Fall	2007	2
+74840	Schill	237	Surfing	Fall	2009	2
+74840	Schill	408	Bankruptcy	Spring	2007	2
+75082	Havill	960	Tort Law	Fall	2009	2
+75116	Samar	735	Greek Tragedy	Spring	2010	2
+75273	Jia	867	The IBM 360 Architecture	Fall	2010	2
+75299	Miao	158	Elastic Structures	Fall	2008	2
+75395	Moscarini	867	The IBM 360 Architecture	Fall	2010	2
+75513	Griffin	200	The Music of the Ramones	Spring	2007	2
+75560	Tabor	400	Visual BASIC	Spring	2007	2
+75878	Hahn-	362	Embedded Systems	Spring	2008	2
+76173	Jovicic	867	The IBM 360 Architecture	Fall	2010	2
+7620	Potry	169	Marine Mammals	Spring	2007	2
+76270	Qian	200	The Music of the Ramones	Spring	2007	2
+76270	Qian	362	Embedded Systems	Spring	2008	2
+76291	Dellwo	158	Elastic Structures	Fall	2008	2
+76768	Oblak	362	Embedded Systems	Spring	2008	2
+76895	Olro	200	The Music of the Ramones	Spring	2007	2
+76911	Alart	362	Embedded Systems	Spring	2008	2
+77130	Tyler	105	Image Processing	Fall	2009	2
+77218	Lohman	105	Image Processing	Fall	2009	2
+77244	Benitez	867	The IBM 360 Architecture	Fall	2010	2
+77289	Kok	338	Graph Theory	Spring	2007	2
+77289	Kok	443	Journalism	Spring	2010	2
+77364	Lacruz	362	Embedded Systems	Fall	2006	2
+77548	Krohn	158	Elastic Structures	Fall	2008	2
+78116	Xiao	362	Embedded Systems	Fall	2006	2
+78143	Erdem	400	Visual BASIC	Spring	2007	2
+78314	Visr	158	Elastic Structures	Fall	2008	2
+78454	Michael	362	Embedded Systems	Spring	2008	2
+78469	Xiong	362	Embedded Systems	Fall	2006	2
+78481	Clemme	338	Graph Theory	Spring	2007	2
+7854	Someren	338	Graph Theory	Spring	2007	2
+78552	Douss	105	Image Processing	Fall	2009	2
+78552	Douss	362	Embedded Systems	Spring	2008	2
+78572	Kurt	237	Surfing	Fall	2009	2
+78782	Sherman	362	Embedded Systems	Spring	2008	2
+78787	Rissanen	362	Embedded Systems	Spring	2008	2
+78911	Shavel	400	Visual BASIC	Spring	2007	2
+79170	Lingamp	169	Marine Mammals	Spring	2007	2
+79170	Lingamp	237	Surfing	Fall	2009	2
+79170	Lingamp	362	Embedded Systems	Fall	2006	2
+79170	Lingamp	408	Bankruptcy	Spring	2007	2
+792	Hashimoto	362	Embedded Systems	Spring	2008	2
+79469	Jacobs	105	Image Processing	Fall	2009	2
+79469	Jacobs	200	The Music of the Ramones	Spring	2007	2
+79487	Androutsopoulos	362	Embedded Systems	Fall	2006	2
+7970	Bartels	169	Marine Mammals	Spring	2007	2
+7970	Bartels	408	Bankruptcy	Spring	2007	2
+79911	Corr	237	Surfing	Fall	2009	2
+80047	Clemme	468	Fractal Geometry	Fall	2007	2
+80247	Rueda	468	Fractal Geometry	Fall	2007	2
+80248	Satoh	362	Embedded Systems	Fall	2006	2
+80248	Satoh	443	Journalism	Spring	2010	2
+80698	Eynd	158	Elastic Structures	Fall	2008	2
+80698	Eynd	200	The Music of the Ramones	Spring	2007	2
+80742	Lucas	338	Graph Theory	Spring	2007	2
+80742	Lucas	362	Embedded Systems	Spring	2008	2
+80912	Homyk	362	Embedded Systems	Spring	2008	2
+81031	Nanda	237	Surfing	Fall	2009	2
+81031	Nanda	362	Embedded Systems	Fall	2006	2
+81031	Nanda	960	Tort Law	Fall	2009	2
+81258	Nirenbu	400	Visual BASIC	Spring	2007	2
+81396	Cordt	867	The IBM 360 Architecture	Fall	2010	2
+81610	Ching	105	Image Processing	Fall	2009	2
+81785	Crues	169	Marine Mammals	Spring	2007	2
+81785	Crues	960	Tort Law	Fall	2009	2
+81789	Urwin	158	Elastic Structures	Fall	2008	2
+81896	Feldman	362	Embedded Systems	Fall	2006	2
+82301	Conti	400	Visual BASIC	Spring	2007	2
+82301	Conti	735	Greek Tragedy	Spring	2010	2
+82402	Grant	158	Elastic Structures	Fall	2008	2
+82591	Pomy	362	Embedded Systems	Spring	2008	2
+82687	Cameron	158	Elastic Structures	Fall	2008	2
+82697	Ye	362	Embedded Systems	Spring	2008	2
+827	Das	960	Tort Law	Fall	2009	2
+82868	So	169	Marine Mammals	Spring	2007	2
+83170	Ariav	400	Visual BASIC	Spring	2007	2
+83314	Chow	960	Tort Law	Fall	2009	2
+83462	Mehra	468	Fractal Geometry	Fall	2007	2
+8347	Wunderli	338	Graph Theory	Spring	2007	2
+83557	Khalil	443	Journalism	Spring	2010	2
+83557	Khalil	735	Greek Tragedy	Spring	2010	2
+83573	Pavlovico	338	Graph Theory	Spring	2007	2
+83573	Pavlovico	408	Bankruptcy	Spring	2007	2
+83622	Achilles	338	Graph Theory	Spring	2007	2
+83686	Krasser	237	Surfing	Fall	2009	2
+83728	Kaminsky	237	Surfing	Fall	2009	2
+83747	Gregory	735	Greek Tragedy	Spring	2010	2
+83838	Durrant	362	Embedded Systems	Fall	2006	2
+83953	Jordan	468	Fractal Geometry	Fall	2007	2
+84189	Kuwadak	105	Image Processing	Fall	2009	2
+84239	Jordan	735	Greek Tragedy	Spring	2010	2
+8426	Harass	443	Journalism	Spring	2010	2
+84410	Bae	158	Elastic Structures	Fall	2008	2
+8457	Christiansen	237	Surfing	Fall	2009	2
+84865	Fernandez-Gonzalez	735	Greek Tragedy	Spring	2010	2
+85211	Sumi	200	The Music of the Ramones	Spring	2007	2
+85308	Yihn	158	Elastic Structures	Fall	2008	2
+85356	Kocsis	338	Graph Theory	Spring	2007	2
+85366	Erol	338	Graph Theory	Spring	2007	2
+85366	Erol	960	Tort Law	Fall	2009	2
+85445	Bocchi	362	Embedded Systems	Spring	2008	2
+85534	Setiawan	735	Greek Tragedy	Spring	2010	2
+85575	Lal	338	Graph Theory	Spring	2007	2
+85614	Champes	400	Visual BASIC	Spring	2007	2
+85680	Krohn	362	Embedded Systems	Spring	2008	2
+85746	Wilks	468	Fractal Geometry	Fall	2007	2
+85809	Andert	105	Image Processing	Fall	2009	2
+85809	Andert	960	Tort Law	Fall	2009	2
+85887	Stoltzfus	362	Embedded Systems	Fall	2006	2
+86344	Kaar	200	The Music of the Ramones	Spring	2007	2
+86375	Loher	960	Tort Law	Fall	2009	2
+86661	Shani	867	The IBM 360 Architecture	Fall	2010	2
+86674	Peter	169	Marine Mammals	Spring	2007	2
+86736	Franchet	105	Image Processing	Fall	2009	2
+86833	Viani	237	Surfing	Fall	2009	2
+87015	Pottos	169	Marine Mammals	Spring	2007	2
+87015	Pottos	200	The Music of the Ramones	Spring	2007	2
+87015	Pottos	362	Embedded Systems	Spring	2008	2
+87044	McDonald	960	Tort Law	Fall	2009	2
+87048	Gani	400	Visual BASIC	Spring	2007	2
+87268	Koenig	735	Greek Tragedy	Spring	2010	2
+87280	Kim	735	Greek Tragedy	Spring	2010	2
+87624	Carrera	408	Bankruptcy	Spring	2007	2
+87784	McCracken	105	Image Processing	Fall	2009	2
+88140	Stanko	105	Image Processing	Fall	2009	2
+88169	Schroeder	362	Embedded Systems	Fall	2006	2
+88169	Schroeder	468	Fractal Geometry	Fall	2007	2
+88302	Yarmush	400	Visual BASIC	Spring	2007	2
+88417	Mitsuhashi	362	Embedded Systems	Spring	2008	2
+8843	Papakir	362	Embedded Systems	Fall	2006	2
+88472	Lynch	443	Journalism	Spring	2010	2
+88884	Stasko	200	The Music of the Ramones	Spring	2007	2
+8912	Brenner	237	Surfing	Fall	2009	2
+89393	Fischbach	237	Surfing	Fall	2009	2
+8957	Walker	735	Greek Tragedy	Spring	2010	2
+89734	Doeschn	158	Elastic Structures	Fall	2008	2
+89734	Doeschn	200	The Music of the Ramones	Spring	2007	2
+89734	Doeschn	362	Embedded Systems	Spring	2008	2
+89759	Zettel	158	Elastic Structures	Fall	2008	2
+89759	Zettel	867	The IBM 360 Architecture	Fall	2010	2
+89759	Zettel	960	Tort Law	Fall	2009	2
+898	Heilprin	400	Visual BASIC	Spring	2007	2
+8986	Maesf	867	The IBM 360 Architecture	Fall	2010	2
+90004	Unay	735	Greek Tragedy	Spring	2010	2
+90041	Barberis	867	The IBM 360 Architecture	Fall	2010	2
+90220	Iacovoni	200	The Music of the Ramones	Spring	2007	2
+90220	Iacovoni	362	Embedded Systems	Fall	2006	2
+90234	Sram	158	Elastic Structures	Fall	2008	2
+90234	Sram	443	Journalism	Spring	2010	2
+90353	Bruderm	200	The Music of the Ramones	Spring	2007	2
+90353	Bruderm	735	Greek Tragedy	Spring	2010	2
+90448	Godfrey	408	Bankruptcy	Spring	2007	2
+90567	Tomason	960	Tort Law	Fall	2009	2
+90779	Lenhart	867	The IBM 360 Architecture	Fall	2010	2
+91091	Ockerb	400	Visual BASIC	Spring	2007	2
+914	Schill	400	Visual BASIC	Spring	2007	2
+91851	Tchuri	237	Surfing	Fall	2009	2
+91992	DAtri	468	Fractal Geometry	Fall	2007	2
+92274	Caporali	362	Embedded Systems	Spring	2008	2
+92274	Caporali	960	Tort Law	Fall	2009	2
+92385	Godfrey	443	Journalism	Spring	2010	2
+92385	Godfrey	960	Tort Law	Fall	2009	2
+92417	Dubink	169	Marine Mammals	Spring	2007	2
+92703	Makinen	237	Surfing	Fall	2009	2
+92849	Flossmann	408	Bankruptcy	Spring	2007	2
+92949	Retzel	960	Tort Law	Fall	2009	2
+92965	Mesne	468	Fractal Geometry	Fall	2007	2
+93039	Hau	735	Greek Tragedy	Spring	2010	2
+93043	McQuillan	867	The IBM 360 Architecture	Fall	2010	2
+93061	Alfaro	362	Embedded Systems	Spring	2008	2
+93491	Rees-	960	Tort Law	Fall	2009	2
+93508	Graham	443	Journalism	Spring	2010	2
+93814	Smoro	468	Fractal Geometry	Fall	2007	2
+94142	Simon	408	Bankruptcy	Spring	2007	2
+94178	Bengtss	443	Journalism	Spring	2010	2
+94324	Willson	338	Graph Theory	Spring	2007	2
+94324	Willson	362	Embedded Systems	Spring	2008	2
+9440	Gierl	362	Embedded Systems	Fall	2006	2
+94569	Yip	960	Tort Law	Fall	2009	2
+94697	Pettersen	158	Elastic Structures	Fall	2008	2
+94726	Ailamaki	158	Elastic Structures	Fall	2008	2
+94766	Buril	158	Elastic Structures	Fall	2008	2
+94894	Kozlov	237	Surfing	Fall	2009	2
+95029	Oliveira	338	Graph Theory	Spring	2007	2
+95099	Chien	105	Image Processing	Fall	2009	2
+95175	Guiho	362	Embedded Systems	Spring	2008	2
+95205	Hammond	867	The IBM 360 Architecture	Fall	2010	2
+95260	Yannakakis	338	Graph Theory	Spring	2007	2
+95366	Isogai	105	Image Processing	Fall	2009	2
+95574	Pampal	362	Embedded Systems	Spring	2008	2
+95626	Tellez	338	Graph Theory	Spring	2007	2
+95631	Mauras	362	Embedded Systems	Spring	2008	2
+95852	Cabr	338	Graph Theory	Spring	2007	2
+95953	Batano	200	The Music of the Ramones	Spring	2007	2
+9605	Beeu	362	Embedded Systems	Fall	2006	2
+96153	Sawah	468	Fractal Geometry	Fall	2007	2
+96178	Hay	443	Journalism	Spring	2010	2
+96206	Koic	362	Embedded Systems	Fall	2006	2
+97042	Bhargava	105	Image Processing	Fall	2009	2
+97042	Bhargava	735	Greek Tragedy	Spring	2010	2
+97551	Labaye	400	Visual BASIC	Spring	2007	2
+97590	Rammer	200	The Music of the Ramones	Spring	2007	2
+97590	Rammer	867	The IBM 360 Architecture	Fall	2010	2
+97629	Awano	362	Embedded Systems	Spring	2008	2
+97953	Kaneko	468	Fractal Geometry	Fall	2007	2
+98019	Ciepl	169	Marine Mammals	Spring	2007	2
+98047	Takahashi	338	Graph Theory	Spring	2007	2
+98359	Patne	338	Graph Theory	Spring	2007	2
+98870	Kun	867	The IBM 360 Architecture	Fall	2010	2
+99348	Tobin	158	Elastic Structures	Fall	2008	2
+99399	Duan	169	Marine Mammals	Spring	2007	2
+99422	Fickl	362	Embedded Systems	Spring	2008	2
+9947	Bouzeghoub	735	Greek Tragedy	Spring	2010	2
+99611	Schrefl	362	Embedded Systems	Fall	2006	2
+99660	OMalley	362	Embedded Systems	Spring	2008	2
+99694	Beckert	468	Fractal Geometry	Fall	2007	2
+99760	Sakamoto	362	Embedded Systems	Spring	2008	2
+99780	Bravo	867	The IBM 360 Architecture	Fall	2010	2
+9993	Won	362	Embedded Systems	Spring	2008	3
+
+Result: 736 rows returned in 1480ms
+
+----------------------------------------------------------------------------------------------------------------------
