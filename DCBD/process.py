@@ -1,5 +1,6 @@
-# Spazer tool for processing web pages
+# Shoutout to Shouvik Ghosh(shouvikg) and Utpalraj Kemprai(utpalraj.mds2023) for their valuable time and effort!
 
+# Spazer tool for processing web pages
 from bs4 import BeautifulSoup
 import pathlib
 import re
