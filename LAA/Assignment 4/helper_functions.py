@@ -1,4 +1,4 @@
-# Shoutout to Siddhesh Maheshwari (siddheshm.mds2023) for hi 'immense help' in writing the code.
+# Shoutout to Siddhesh Maheshwari (siddheshm.mds2023) for his 'immense help' in writing the code.
 
 import numpy as np
 from scipy.linalg import lu_factor, lu_solve, cholesky
