@@ -1,0 +1,343 @@
+---
+title: "HW1 - Econometrics"
+author: "Himanshu, MDS202327"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```
+
+```{r, results='hide'}
+# Import necessary libraries
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+library(knitr)
+library(pastecs)
+library(AER)
+```
+
+## Question 1
+
+### (a) Find the probability of success Pr($y_{i}$ = 1)?
+
+```{=tex}
+\begin{align*}
+\text{Pr}(y_{i} = 1) & = \text{Pr}(z_{i} > 0) \\
+                     & = \text{Pr}(x_{i}^{\prime}\beta + \epsilon_{i} > 0) \\
+                     & = \text{Pr}(\epsilon_{i} > -x_{i}^{\prime}\beta) \\
+                     & = 1 - \text{Pr}(\epsilon_{i} \leq -x_{i}^{\prime}\beta) \\
+                     & = 1 - (1 - \text{Pr}(\epsilon_{i} \leq x_{i}^{\prime}\beta)) \\
+                     & = \text{Pr}(\epsilon_{i} \leq x_{i}^{\prime}\beta) \\
+                     & = \Lambda(x_{i}^{\prime}\beta) \\
+                     & = \frac{\exp(x_{i}^{\prime}\beta)}{1+ \exp(x_{i}^{\prime}\beta)}
+\end{align*}
+```
+
+### (b) Derive the likelihood function of the logit model.
+
+```{=tex}
+\begin{align*}
+\text{Pr}(y_{i} = 0) & = \text{Pr}(z_{i} \leq 0) \\
+                     & = \text{Pr}(x_{i}^{\prime}\beta + \epsilon_{i} \leq 0) \\
+                     & = \text{Pr}(\epsilon_{i} \leq -x_{i}^{\prime}\beta) \\
+                     & = \Lambda(-x_{i}^{\prime}\beta) \\
+                     & = \frac{\exp(-x_{i}^{\prime}\beta)}{1+ \exp(-x_{i}^{\prime}\beta)}
+\end{align*}
+
+\begin{align*}
+l(\beta,y) & = \prod_{i=1}^{n}[\text{Pr}(y_{i} = 0) \text{I}(y_{i}=0) +
+                      \text{Pr}(y_{i} = 1)\text{I}(y_{i}=1)] \\
+                  & = \prod_{i=1}^{n}[\Lambda(-x_{i}^{\prime}\beta) \text{I}(y_{i}=0) +
+                      \Lambda(x_{i}^{\prime}\beta) \text{I}(y_{i}=1)]
+\end{align*}
+```
+
+\newpage
+
+### (c) Consider a study in which the dependent variable is the probability that the subject dies before age 65, and the primary explanatory variable of interest is whether the person smoked (at all) in the years prior to age 65. Let $\text{Smoke}_{i2}$ be an indicator for smoking status, and $\boldsymbol{\beta_{smoke}}$ be the corresponding coecient. Then the latent regression in equation becomes:
+
+$$z_{i} = \beta_{1} + \text{Smoke}_{i2}\beta_{smoke} + x_{i3} \beta_{3} + \cdots + x_{ik} \beta_{k} $$
+
+### Find the odds of mortality by age 65 if individual \textit{i} was a smoker ($\text{Smoke}_{i2}$ = 1) and the odds if individual \textit{i} was a nonsmoker ($\text{Smoke}_{i2}$ = 0). What is the log-odds ratio of mortality for a smoker vs nonsmoker?
+
+```{=tex}
+$p = \text{Pr}(y_{i} = 1) =  \frac{\exp(z_{i})}{1+ \exp(z_{i})}$ \\ \\
+$\frac{p}{1-p} = \exp(z_{i})$ \\ \\
+$\frac{p}{1-p} = \exp(\beta_{1} + \text{Smoke}_{i2}\beta_{smoke} + x_{i3} \beta_{3} + \cdots + x_{ik} \beta_{k})$ \\
+
+
+Odds for smoker is given by, $$\exp(\beta_{1} + \beta_{smoke} + x_{i3} \beta_{3} + \cdots + x_{ik} \beta_{k})$$\\
+Odds for non-smoker is given by, $$\exp(\beta_{1} + x_{i3} \beta_{3} + \cdots + x_{ik} \beta_{k})$$\\
+Log-odds ratio is given by, $$\log\left(\frac{\exp(\beta_{1} + \beta_{smoke} + x_{i3} \beta_{3} + \cdots + x_{ik} \beta_{k})}{\exp(\beta_{1} + x_{i3} \beta_{3} + \cdots + x_{ik} \beta_{k})}\right) = \beta_{smoke}$$
+```
+
+\newpage
+
+## Question 2
+
+### (a) Present the descriptive summary of the variables (i.e., mean and standard deviation for continuous variables and count and percentage for discrete variables) in a table.
+
+```{r, results='hide'}
+data_transport = read.csv("transport.csv", header = TRUE)
+summary_transport = stat.desc(data_transport)
+summary_transport[c(9,8,13),]
+```
+```{=tex}
+\begin{table}[h!]
+\centering
+%\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{|c|c|c|c|c|}
+  \hline
+  \textbf{Statistics}&\textbf{dcost}&\textbf{cars}&\textbf{dovtt}&\textbf{divtt}\\ \hline
+  Mean&-12.941&1.502&12.854&17.052\\[1.05ex] \hline
+  Median&-6.50&1.00&11.00&13.00\\[1.05ex] \hline
+  Std. Dev&37.974&0.871&10.064&17.964\\[1.05ex] \hline
+\end{tabular}
+\label{table2.1.1}
+\end{table}
+```
+
+```{=tex}
+\begin{table}[h!]
+\centering
+%\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{|c|c|c|}
+  \hline
+  \textbf{Statistics}&\textbf{intcpt}&\textbf{depend}\\ \hline
+  Count&842&707\\[1.05ex] \hline
+  Percentage&100\%&83.96\%\\[1.05ex] \hline
+\end{tabular}
+\caption{Descriptive summary of the variables.}
+\label{table2.1.2}
+\end{table}
+```
+
+### (b) Estimate Probit and Logit models by regressing the dependent variable depend on intercept, dcost, cars, dovtt and divtt. Present the regression coecients and the standard errors in a table. Numbers should be reported to 3 digits after the decimal. Interpret the coefficient for cars.
+
+```{r, results='hide'}
+probit_model = glm(depend ~ dcost + cars + dovtt + divtt, 
+                  family = binomial(link = "probit"), 
+                  data = data_transport)
+
+summary(probit_model)
+```
+
+```{=tex}
+\begin{table}[h!]
+\centering
+%\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{|c|c|c|}
+  \hline
+  \textbf{Coefficients}&\textbf{Estimate}&\textbf{Std. Error}\\ \hline
+  (Intercept) & -0.601& 0.165\\[1.05ex] \hline
+  dcost       & 0.009 & 0.002\\[1.05ex] \hline
+  cars        & \textbf{1.225} & 0.114\\[1.05ex] \hline
+  dovtt       & 0.032 & 0.009\\[1.05ex] \hline
+  divtt       & 0.005 & 0.004\\[1.05ex] \hline
+\end{tabular}
+\caption{Results of the probit model.}
+\label{table2.2.1}
+\end{table}
+
+The coefficient estimate of 1.225 can be interpreted as a unit increase in the number of cars owned by the traveler's household will result in 1.225 increase in log-odds.\\
+That is $(\exp(1.225)-1)*100\% =$ \textbf{240\%} increase in the odds assuming other variables remain fixed.
+```
+
+```{r, results='hide'}
+logit_model = glm(depend ~ dcost + cars + dovtt + divtt, 
+                  family = binomial(link = "logit"), 
+                  data = data_transport)
+
+summary(logit_model)
+```
+
+```{=tex}
+\begin{table}[h!]
+\centering
+%\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{|c|c|c|}
+  \hline
+  \textbf{Coefficients}&\textbf{Estimate}&\textbf{Std. Error}\\ \hline
+  (Intercept) & -1.221& 0.303\\[1.05ex] \hline
+  dcost       & 0.016 & 0.003\\[1.05ex] \hline
+  cars        & \textbf{2.308} & 0.226\\[1.05ex] \hline
+  dovtt       & 0.062 & 0.018\\[1.05ex] \hline
+  divtt       & 0.009 & 0.009\\[1.05ex] \hline
+\end{tabular}
+\caption{Results of the logit model.}
+\label{table2.2.2}
+\end{table}
+
+The coefficient estimate of 2.308 can be interpreted as a unit increase in the number of cars owned by the traveler's household will result in 2.308 increase in log-odds.\\
+That is $(\exp(2.308)-1)*100\% =$ \textbf{905\%} increase in the odds assuming other variables remain fixed.
+```
+
+### (c) Calculate the sum of the log-likelihood, Akaike Information Criterion, Bayesian Information Criterion and Hit-rate for the Probit and Logit models
+
+```{r, results='hide'}
+# Log-likelihood
+logLik(probit_model)
+logLik(logit_model)
+
+# AIC
+AIC(probit_model)
+AIC(logit_model)
+
+# BIC
+BIC(probit_model)
+BIC(logit_model)
+
+# Hit Rate
+mean((logit_model$fitted.values > 0.5) == data_transport$depend)
+mean((probit_model$fitted.values > 0.5) == data_transport$depend)
+```
+
+```{=tex}
+\begin{table}[h!]
+\centering
+%\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{|c|c|c|}
+  \hline
+  \textbf{Measures}&\textbf{Probit Model}&\textbf{Logit Model}\\ \hline
+  Log-Likelihood & -230.16& -227.86\\[1.05ex] \hline
+  AIC            & 470.33 & 465.74\\[1.05ex] \hline
+  BIC            & 494.00  & 489.41\\[1.05ex] \hline
+  Hit Rate       & 90.38\%  & 90.38\%\\[1.05ex] \hline
+\end{tabular}
+\caption{Log-likelihood, AIC, BIC, HR for the probit and logit model.}
+\label{table2.3}
+\end{table}
+```
+
+\newpage
+
+## Question 3
+
+### (a) Present a descriptive summary (mean and standard deviation) of the variables of interest. Report all results to two digits after the decimal.
+
+```{r, results='hide'}
+data_mroz = read.csv("mroz.csv", header = TRUE)
+summary_mroz = stat.desc(data_mroz)
+summary_mroz[c(9,8,13),]
+```
+
+```{=tex}
+\begin{table}[h!]
+\centering
+%\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{|c|c|c|c|c|c|}
+  \hline
+  \textbf{Statistics}&\textbf{WomenEduc}&\textbf{WomenExp}&\textbf{WomenAge}&\textbf{childl6}&\textbf{WHRS} \\ \hline
+  Mean&-12.28&10.63&42.53&0.23&740.57\\[1.05ex] \hline
+  Median&12.00&9.00&43.00&0.00&288.00\\[1.05ex] \hline
+  Std. Dev&2.28&8.06&8.07&0.52&871.31\\[1.05ex] \hline
+\end{tabular}
+\caption{Table 1: Descriptive summary of the variables.}
+\label{table3.1}
+\end{table}
+```
+
+### (b) Estimate a linear regression model only on positive values of WHRS and report the coefficient estimates, standard errors, and t-values in a table. Are there reasons to believe that a linear regression framework will not be appropriate for this data? Please explain.
+
+```{r, results='hide'}
+pos_idx = data_mroz$WHRS>0
+data_mroz_pos = data_mroz[pos_idx,]
+lin_reg_pos = lm(WHRS ~ WomenEduc+WomenExp+WomenAge+childl6,
+                  data = data_mroz_pos)
+summary(lin_reg_pos)
+```
+
+```{=tex}
+\begin{table}[h!]
+\centering
+%\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{|c|c|c|c|}
+  \hline
+  \textbf{Coefficients}&\textbf{Estimate}&\textbf{Std. Error}&\textbf{t-value}\\ \hline
+  (Intercept) & 1829.746 & 292.536 & 6.255\\[1.05ex] \hline
+  WomenEduc   & -16.462  & 15.581  & -1.057\\[1.05ex] \hline
+  WomenExp    & 33.936   & 5.009   & 6.775\\[1.05ex] \hline
+  WomenAge    & -17.108  & 5.458   & -3.135\\[1.05ex] \hline
+  childl6     & -305.309 & 96.449  & -3.165\\[1.05ex] \hline
+\end{tabular}
+\caption{Results of the linear regression model on postive values of WHRS.}
+\label{table3.2}
+\end{table}
+```
+
+Yes, due to the following reasons, believe linear regression will not be appropriate model for this data.
+
+- The R-squared value is 0.1251 which indicates that the model is not able to explain the variance in the data.
+
+\newpage
+
+### (c) Write down a Tobit model and the corresponding likelihood.
+
+```{=tex}
+The tobit model is given by,
+$$
+\begin{array}{cl}
+    z_{i} = x_{i}^{\prime}\beta + \epsilon_{i} & \epsilon_{i} \stackrel{}{\sim} N(0,\sigma^{2})
+\end{array}
+$$
+
+$$
+y_{i}= \left\{
+\begin{array}{ll}
+      z_{i} & if z_{i} > 0 \\
+      0 & \text{otherwise}\\
+\end{array} 
+\right. 
+$$
+
+The corresponding likelihood function is given by,
+
+$$
+L(\beta, \sigma^{2}) = \prod_{i=1}^{n}\left[ \Phi\left(\frac{-x_{i}^{\prime} \beta}{\sigma}\right) I(y_{i}=0) + \frac{1}{\sigma} \phi\left(\frac{y_{i}-x_{i}^{\prime} \beta}{\sigma}\right) I(y_{i}>0) \right]
+$$
+```
+
+### (d) Fit a Tobit model and report coefficient estimates, standard errors, and t-values in a table. Comment on the effect of each variable on the response variable.
+
+```{r, results='hide'}
+tobit_model = AER::tobit(WHRS ~ WomenEduc+WomenExp+WomenAge+childl6,
+                         left=0, data = data_mroz)
+summary(tobit_model)
+```
+
+```{=tex}
+\begin{table}[h!]
+\centering
+%\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{|c|c|c|c|}
+  \hline
+  \textbf{Coefficients}&\textbf{Estimate}&\textbf{Std. Error}&\textbf{t-value}\\ \hline
+  (Intercept) & 1349.876 & 386.299 & 3.494\\[1.05ex] \hline
+  WomenEduc   & 73.291   & 20.474  & 3.580\\[1.05ex] \hline
+  WomenExp    & 80.535   & 6.287   & 12.808\\[1.05ex] \hline
+  WomenAge    & -60.767  & 6.888   & -8.822\\[1.05ex] \hline
+  childl6     & -918.918 & 111.660 & -8.230\\[1.05ex] \hline
+\end{tabular}
+\caption{Results of the tobit regression model on WHRS.}
+\label{table3.4}
+\end{table}
+
+A unit increase in \texttt{WomenEduc} and \texttt{WomenExp} corresponds to an increase in the \texttt{WHRS} while a unit increase in \texttt{WomenAge} and \texttt{childl6} corresponds to a decrease in the \texttt{WHRS}.
+```
+
+### (e) What is the marginal effect of on observed hours of work for another year of education? Assume \texttt{WomenEduc}, \texttt{WomenExp}, and \texttt{WomenAge} are set at the corresponding mean values and \texttt{childl6} = 1
+
+```{r, results='hide'}
+mean_vals_df = data.frame(WomenEduc = mean(data_mroz$WomenEduc),
+                          WomenExp = mean(data_mroz$WomenExp),
+                          WomenAge = mean(data_mroz$WomenAge),
+                          childl6=1)
+
+# Marginal effect
+pnorm(predict(tobit_model, mean_vals_df)/tobit_model$scale) * tobit_model$coefficients[2]
+```
+
+Marginal effect on \texttt{WHRS} for another year of education is \textbf{26.605}.
