@@ -1,0 +1,5 @@
+outs:
+- md5: 5e6eebc89aaecdeb3748af3424e7d447
+  size: 43958
+  hash: md5
+  path: validate.csv
