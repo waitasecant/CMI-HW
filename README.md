@@ -8,4 +8,4 @@
 
 The solutions provided in this repository are the fruit of diligent academic endeavors, yet they come with no guarantee of absolute correctness. They are akin to stars in the vast cosmos of knowledge - they may guide you, but the path you tread is ultimately your own. While every effort has been made to ensure accuracy, the complexities of academia mean that errors may exist, just as a ship at sea may occasionally veer off course. Therefore, these solutions should be used as a reference, not as an infallible source of truth. Your understanding and discretion are your compass in this journey. Navigate wisely.
 
-&copy; Himanshu 2024
+&copy; Himanshu 2025
