@@ -1,0 +1,16 @@
+aliases: []
+creation_timestamp: 1739781519530
+current_stage: None
+description: null
+last_updated_timestamp: 1739781519530
+name: Gradient Boosting Classifier
+run_id: 473489c4b32247d3885e78270e5048f4
+run_link: null
+source: file:///d:/CMI/CMI_Git/AppliedML/Assignment 2/mlflow/798228184358758638/473489c4b32247d3885e78270e5048f4/artifacts/Gradient
+  Boosting Classifier
+status: READY
+status_message: null
+storage_location: file:///d:/CMI/CMI_Git/AppliedML/Assignment 2/mlflow/798228184358758638/473489c4b32247d3885e78270e5048f4/artifacts/Gradient
+  Boosting Classifier
+user_id: null
+version: 1
