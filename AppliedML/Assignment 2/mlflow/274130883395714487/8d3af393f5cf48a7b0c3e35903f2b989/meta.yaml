@@ -1,0 +1,15 @@
+artifact_uri: file:///d:/CMI/CMI_Git/AppliedML/Assignment 2/mlflow/274130883395714487/8d3af393f5cf48a7b0c3e35903f2b989/artifacts
+end_time: 1739783863412
+entry_point_name: ''
+experiment_id: '274130883395714487'
+lifecycle_stage: active
+run_id: 8d3af393f5cf48a7b0c3e35903f2b989
+run_name: Naive Bayes Classifier
+run_uuid: 8d3af393f5cf48a7b0c3e35903f2b989
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1739783844672
+status: 3
+tags: []
+user_id: Himanshu

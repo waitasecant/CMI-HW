@@ -1,16 +1,16 @@
 aliases: []
-creation_timestamp: 1739781468509
+creation_timestamp: 1739783863392
 current_stage: None
 description: null
-last_updated_timestamp: 1739781468509
+last_updated_timestamp: 1739783863392
 name: Naive Bayes Classifier
-run_id: 59de8de412c048cf900bde711011f8cb
+run_id: 8d3af393f5cf48a7b0c3e35903f2b989
 run_link: null
-source: file:///d:/CMI/CMI_Git/AppliedML/Assignment 2/mlflow/798228184358758638/59de8de412c048cf900bde711011f8cb/artifacts/Naive
+source: file:///d:/CMI/CMI_Git/AppliedML/Assignment 2/mlflow/274130883395714487/8d3af393f5cf48a7b0c3e35903f2b989/artifacts/Naive
   Bayes Classifier
 status: READY
 status_message: null
-storage_location: file:///d:/CMI/CMI_Git/AppliedML/Assignment 2/mlflow/798228184358758638/59de8de412c048cf900bde711011f8cb/artifacts/Naive
+storage_location: file:///d:/CMI/CMI_Git/AppliedML/Assignment 2/mlflow/274130883395714487/8d3af393f5cf48a7b0c3e35903f2b989/artifacts/Naive
   Bayes Classifier
 user_id: null
 version: 1

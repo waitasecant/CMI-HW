@@ -1,0 +1,15 @@
+artifact_uri: file:///d:/CMI/CMI_Git/AppliedML/Assignment 2/mlflow/274130883395714487/00d9a08f488e416488d86abff950afbe/artifacts
+end_time: 1739783923571
+entry_point_name: ''
+experiment_id: '274130883395714487'
+lifecycle_stage: active
+run_id: 00d9a08f488e416488d86abff950afbe
+run_name: Gradient Boosting Classifier
+run_uuid: 00d9a08f488e416488d86abff950afbe
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1739783863421
+status: 3
+tags: []
+user_id: Himanshu
