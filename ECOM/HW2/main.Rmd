@@ -1,0 +1,670 @@
+---
+title: "HW2 - Econometrics"
+author: "Himanshu, MDS202327"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```
+
+## Question 1
+
+### (a) Assuming the error follows a standard normal distribution (i.e. $\boldsymbol{\epsilon_{i} \stackrel{}{\sim} N(0,1)}$ for i = 1, 2,$\hdots$, n), find the probability of success $\boldsymbol{\text{Pr}(y_{i} = 1)}$? Derive the likelihood function for the ordinal probit model.
+
+```{=tex}
+Consider the ordinal regression model,
+$$
+\begin{array}{cl}
+    z_{i} = x_{i}^{\prime}\beta + \epsilon_{i} & \forall i = 1, \hdots , n
+\end{array}
+$$
+$$
+\begin{array}{cl}
+    \gamma_{j-1} < z_{i} \leq \gamma_{j} \Rightarrow y_{i} = j & \forall i, j = 1, \hdots , J
+\end{array}
+$$
+The probability of success is given by,
+\begin{align*}
+\text{Pr}(y_{i} = j) & = \text{Pr}(\gamma_{j-1} < z_{i} \leq \gamma_{j}) \\
+                     & = \text{Pr}(z_{i} \leq \gamma_{j}) - \text{Pr}(z_{i} \leq \gamma_{j-1}) \\
+                     & = \text{Pr}(x_{i}^{\prime}\beta + \epsilon_{i} \leq \gamma_{j}) - \text{Pr}(x_{i}^{\prime}\beta + \epsilon_{i} \leq \gamma_{j-1}) \\
+                     & = \text{Pr}(\epsilon_{i} \leq \gamma_{j} - x_{i}^{\prime}\beta) - \text{Pr}(\epsilon_{i} \leq \gamma_{j-1} - x_{i}^{\prime}\beta) \\
+                     & = \Phi(\gamma_{j} - x_{i}^{\prime}\beta) - \Phi(\gamma_{j-1} - x_{i}^{\prime}\beta)\\
+\end{align*}
+
+The likelihood function is given by,
+\begin{align*}
+l(\beta,y) & = \prod_{i=1}^{n}\prod_{j=1}^{J}[\text{Pr}(y_{i} = j|\beta, \gamma)^{\text{I}(y_{i}=j)}] \\
+           & = \prod_{i=1}^{n}\prod_{j=1}^{J}[\Phi(\gamma_{j} - x_{i}^{\prime}\beta) - \Phi(\gamma_{j-1} - x_{i}^{\prime}\beta)]^{\text{I}(y_{i}=j)} \\
+\end{align*}
+```
+
+
+### (b) Assuming the error follows a standard logistic distribution (i.e. $\boldsymbol{\epsilon_{i} \stackrel{}{\sim} \mathcal{L}(0,1)}$ for i = 1, 2,$\hdots$, n), find the probability of success $\boldsymbol{\text{Pr}(y_{i} = 1)}$? Derive the likelihood function for the ordinal logit model.
+
+```{=tex}
+The probability of success is given by,
+\begin{align*}
+\text{Pr}(y_{i} = j) & = \text{Pr}(\gamma_{j-1} < z_{i} \leq \gamma_{j}) \\
+                     & = \text{Pr}(z_{i} \leq \gamma_{j}) - \text{Pr}(z_{i} \leq \gamma_{j-1}) \\
+                     & = \text{Pr}(x_{i}^{\prime}\beta + \epsilon_{i} \leq \gamma_{j}) - \text{Pr}(x_{i}^{\prime}\beta + \epsilon_{i} \leq \gamma_{j-1}) \\
+                     & = \text{Pr}(\epsilon_{i} \leq \gamma_{j} - x_{i}^{\prime}\beta) - \text{Pr}(\epsilon_{i} \leq \gamma_{j-1} - x_{i}^{\prime}\beta) \\
+                     & = \Lambda(\gamma_{j} - x_{i}^{\prime}\beta) - \Lambda(\gamma_{j-1} - x_{i}^{\prime}\beta)\\
+\end{align*}
+
+The likelihood function is given by,
+\begin{align*}
+l(\beta,y) & = \prod_{i=1}^{n}\prod_{j=1}^{J}[\text{Pr}(y_{i} = j|\beta, \gamma)^{\text{I}(y_{i}=j)}] \\
+           & = \prod_{i=1}^{n}\prod_{j=1}^{J}[\Lambda(\gamma_{j} - x_{i}^{\prime}\beta) - \Lambda(\gamma_{j-1} - x_{i}^{\prime}\beta)]^{\text{I}(y_{i}=j)} \\
+\end{align*}
+```
+
+### (c) Consider the ordinal probit model. Show that adding a constant \textit{c} to the cut-point $\boldsymbol{\gamma_{j}}$ and the mean $\boldsymbol{x_{i}^{\prime}\beta}$, does not change the outcome probability. How do we solve this first identification problem?
+
+```{=tex}
+Replace $\gamma_{j}^*$ by $\gamma_{j} + c$, $\gamma_{j-1}^*$ by $\gamma_{j-1} + c$ and $(x_{i}^{\prime}\beta)^*$ by $x_{i}^{\prime}\beta + c$
+
+The probability of success is given by,
+\begin{align*}
+\text{Pr}(y_{i} = j) & = \text{Pr}(\gamma_{j-1}^* < z_{i} \leq \gamma_{j}^*) \\
+                     & = \text{Pr}(z_{i} \leq \gamma_{j}^*) - \text{Pr}(z_{i} \leq \gamma_{j-1}^*) \\
+                     & = \text{Pr}((x_{i}^{\prime}\beta)^* + \epsilon_{i} \leq \gamma_{j}^*) - \text{Pr}((x_{i}^{\prime}\beta)^* + \epsilon_{i} \leq \gamma_{j-1}^*) \\
+                     & = \text{Pr}(x_{i}^{\prime}\beta + c + \epsilon_{i} \leq \gamma_{j} + c) - \text{Pr}(x_{i}^{\prime}\beta + c + \epsilon_{i} \leq \gamma_{j-1} + c) \\
+                     & = \text{Pr}(x_{i}^{\prime}\beta + \epsilon_{i} \leq \gamma_{j}) - \text{Pr}(x_{i}^{\prime}\beta + \epsilon_{i} \leq \gamma_{j-1}) \\
+                     & = \text{Pr}(\epsilon_{i} \leq \gamma_{j} - x_{i}^{\prime}\beta) - \text{Pr}(\epsilon_{i} \leq \gamma_{j-1} - x_{i}^{\prime}\beta) \\
+                     & = \Phi(\gamma_{j} - x_{i}^{\prime}\beta) - \Phi(\gamma_{j-1} - x_{i}^{\prime}\beta)\\
+\end{align*}
+
+Different combinations of $(\beta, \gamma)$ can produce the same outcome probabilities giving rise to parameter identification problem. We need to anchor the location of the distribution to identify the model parameters by setting $\gamma_{1}= 0$.
+```
+
+### (d) Once again, consider the ordinal probit model. Show that rescaling the parameters $\boldsymbol{(\gamma_{j} , \beta)}$ and the scale of the distribution by some arbitrary constant \textit{d} lead to same outcome probabilities. How do we solve the second identification problem?
+
+```{=tex}
+Replace $\gamma_{j}^*$ by $\gamma_{j}*d$, $\gamma_{j-1}^*$ by $\gamma_{j-1}*d$ and $(x_{i}^{\prime}\beta)^*$ by $x_{i}^{\prime}\beta*d$
+
+Note that scaling $\epsilon_{i}$ results in $\epsilon_{i}^* \stackrel{}{\sim} N(0,d^{2})$. Also $\frac{\epsilon_{i}^*}{d} \stackrel{}{\sim} N(0,1)$
+
+The probability of success is given by,
+\begin{align*}
+\text{Pr}(y_{i} = j) & = \text{Pr}(\gamma_{j-1}^* < z_{i} \leq \gamma_{j}^*) \\
+                     & = \text{Pr}(z_{i} \leq \gamma_{j}^*) - \text{Pr}(z_{i} \leq \gamma_{j-1}^*) \\
+                     & = \text{Pr}((x_{i}^{\prime}\beta)^* + \epsilon_{i}^* \leq \gamma_{j}^*) - \text{Pr}((x_{i}^{\prime}\beta)^* + \epsilon_{i}^* \leq \gamma_{j-1}^*) \\
+                     & = \text{Pr}((x_{i}^{\prime}\beta)d + \epsilon_{i}^* \leq (\gamma_{j})d) - \text{Pr}((x_{i}^{\prime}\beta)d + \epsilon_{i}^* \leq (\gamma_{j-1})d) \\
+                     & = \text{Pr}(\epsilon_{i}^* \leq (\gamma_{j} - x_{i}^{\prime}\beta)d) - \text{Pr}(\epsilon_{i}^* \leq (\gamma_{j-1} - x_{i}^{\prime}\beta)d) \\
+                     & = \text{Pr}(\frac{\epsilon_{i}^*}{d} \leq \gamma_{j} - x_{i}^{\prime}\beta) - \text{Pr}(\frac{\epsilon_{i}^*}{d} \leq \gamma_{j-1} - x_{i}^{\prime}\beta) \\
+                     & = \Phi(\gamma_{j} - x_{i}^{\prime}\beta) - \Phi(\gamma_{j-1} - x_{i}^{\prime}\beta)\\
+\end{align*}
+
+Different combinations of $(\beta, \gamma)$ can produce the same outcome probabilities giving rise to parameter identification problem. We need to anchor the scale of the distribution to identify the model parameters by assuming var($\epsilon_{i}$) = 1.
+```
+
+### (e) Consider the data present in the file \texttt{Feb14Data.xlsx}. This file contains 1,492 observations from the February 2014 Political Survey conducted during February 14 - 23, 2014, by the Princeton Survey Research Associates and sponsored by the Pew Research Center for the People and the Press. Based on this data, do the following.
+
+\textbf{(i) Present a descriptive summary of the data as in Table 1 of the lecture slides.}
+
+```{r, results='hide'}
+# Import necessary libraries
+library(dplyr)
+library(knitr)
+library(MASS)
+library(plm)
+
+# Read the data
+feb14data = read.csv("Feb14Data.csv", header = TRUE)
+
+
+# List of tolerant states
+tolerant = c('Alaska', 'Arizona', 'California', 'Colorado', 'Connecticut',
+             'Delaware', 'Hawaii', 'Illinois', 'Maine', 'Maryland',
+             'Massachusetts', 'Michigan', 'Montana', 'Nevada',
+             'New Hampshire', 'New Jersey', 'New Mexico', 'Oregon',
+             'Rhode Island', 'Vermont', 'Washington', 'Washington DC',
+             'District of Columbia')
+
+
+# Mappings to group categories
+public_opinion_map = c("medicinal"="Legal only for medicinal use",
+                    "notlegal"="Oppose Legalization",
+                    "personal"="Legal for personal use")
+
+
+religion_keys = c(paste0("Protestant (Baptist, Methodist, Non-denominational, ",
+                "Lutheran, Presbyterian, Pentecostal, Episcopalian, ",
+                "Reformed, etc.)"),
+                "Nothing in particular",
+                "Roman Catholic (Catholic)",
+                "Agnostic (not sure if there is a God)",	
+                "Christian (VOL.)",
+                paste0("Mormon (Church of Jesus Christ of Latter-day ",
+                "Saints/LDS)"),
+                "Jewish (Judaism)",
+                "Hindu",
+                "Buddhist",
+                "Atheist (do not believe in God)",
+                paste0("Orthodox (Greek, Russian, or some other ",
+                "orthodox church)"),
+                "Unitarian (Universalist) (VOL.)",
+                "Muslim (Islam)")
+```
+
+\newpage
+
+```{r, results='hide'}
+# Mappings to group categories
+religion_values = c("Protestant", "Liberal", "Roman Catholic",
+                    "Liberal", "Christian", "Conservative",
+                    "Conservative", "Conservative", "Conservative",
+                    "Liberal", "Conservative", "Liberal", "Conservative")
+
+
+religion_map = setNames(religion_values, religion_keys)
+
+
+education_map = c("HS"="High School & Below",
+                  "Some College"="Below Bachelors",
+                  "Postgraduate Degree"="Bachelors & Above",
+                  "Associate Degree"="Below Bachelors",
+                  "HS Incomplete"="High School & Below",
+                  "Less than HS"="High School & Below",
+                  "Four year college"="Bachelors & Above",
+                  "Some Postgraduate"="Bachelors & Above")
+
+
+race_map = c("White"="White",
+             "Black or African-American"="African American",
+             "Hispanic or Latino"="Other Races",
+             "Asian or Asian-American"="Other Races",
+             "Native American"="Other Races")
+
+
+income_map = c("Less than $10,000"=log(5000),
+               "10 to under $20,000"=log(15000),
+               "20 to under $30,000"=log(25000),
+               "30 to under $40,000"=log(35000),
+               "40 to under $50,000"=log(45000),
+               "50 to under $75,000"=log(62500),
+               "75 to under $100,000"=log(87500),
+               "100 to under $150,000"=log(125000),
+               "$150,000 or more"=log(150000))
+
+
+party_map = c("No preference (VOL.)"="Independent & Others",
+              "Independent"="Independent & Others",
+              "Democrat"="Democrat",
+              "Republican"="Republican",
+              "Other party (VOL.)"="Independent & Others")
+
+
+map = list("Public.Opinion"=public_opinion_map,
+        "Religion"=religion_map,
+        "Education"=education_map,
+        "Race"=race_map,
+        "Income"=income_map,
+        "Party.Affiliation"=party_map)
+```
+
+\newpage
+
+```{r, results='hide'}
+# Transform state
+state_list = c()
+for (state in feb14data$State){
+    if (state %in% tolerant){
+        state_list = append(state_list, 'Tolerant')
+    }
+    else{
+        state_list = append(state_list, 'Not Tolerant')
+    }
+}
+
+
+feb14data$State = state_list
+
+
+# Log to the age
+feb14data$Age = log(feb14data$Age)
+
+
+# Transform Public Opinion, Religion, Education, Race, Income, Party Affiliation
+for (col in names(map)) {
+  feb14data[[col]] <- map[[col]][as.character(feb14data[[col]]) ]
+}
+
+
+# Return data frame with descriptive statistics accordingly
+for (col in colnames(feb14data)){
+    df = data.frame()
+    vec = feb14data[,col]
+    
+    if (typeof(vec) == "character"){
+        for (i in unique(vec)){
+            out = c(i, sum(vec==i), round(sum(vec==i)*100/length(vec),2))
+            df = rbind(df, out)
+        }
+    colnames(df) = c(col, 'Counts', 'Percentage')
+    print(df)
+    }
+    
+    if (typeof(vec)=="integer" | typeof(vec) == "double"){
+        out = c(col, round(mean(vec),2), round(sd(vec),2))
+        df = rbind(df, out)
+    colnames(df) = c('Column', 'Mean', 'Std. Deviation')
+    print(df)
+    }
+}
+```
+
+\newpage
+
+```{=tex}
+\begin{table}[h!]
+\centering
+%\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{|c|c|c|c|}
+  \hline
+  \textbf{Variable}&\textbf{Category}&\textbf{Counts}&\textbf{Percentage}\\ \hline
+  & Legal only for medicinal use & 640 & 42.9 \\
+  Public Opinion & Oppose Legalization	& 218 & 14.61 \\
+  & Legal for personal use & 634 & 42.49\\ \hline
+
+  Past Use & Yes & 719 & 48.19 \\ \hline
+
+  & Protestant & 550 & 36.86 \\
+  & Liberal & 348 & 23.32 \\
+  Religion & Roman Catholic	& 290 & 19.44 \\
+  & Christian & 182 & 12.20\\
+  & Conservative & 122 & 8.18 \\ \hline
+  
+  Sex & Male & 791 & 53.02\\ \hline
+  
+  & High School \& Below & 507 & 33.98 \\
+  Education & Below Bachelors & 434 & 29.09 \\
+  & Bachelors \& Above & 551 & 36.93\\ \hline
+
+  & White & 1149 & 77.01 \\
+  Race & African American & 202 & 13.54 \\
+  & Other Races & 141 & 9.45\\ \hline
+
+  & Independent \& Others & 648 & 43.43 \\
+  Party Affiliation & Democrat	& 511 & 34.25 \\
+  & Republican & 333 & 22.32\\ \hline
+  
+  State & Tolerant & 556 & 37.27\\ \hline
+  
+  Eventually Legalized & Yes, it will & 1154 & 77.35\\ \hline
+\end{tabular}
+\caption{Descriptive summary of ordinal variables.}
+\label{table1.1}
+\end{table}
+```
+
+```{=tex}
+\begin{table}[h!]
+\centering
+%\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{|ccc|ccc|ccc|}
+  \hline
+  &\textbf{Variable}&&&\textbf{Mean}&&&\textbf{Std. Dev}&\\ \hline
+  &log(Age)&&&3.72&&&0.44&\\[1.05ex] \hline
+  &log(Income)&&&10.63&&&0.98&\\[1.05ex] \hline
+  &Household Size&&&2.74&&&1.42&\\[1.05ex] \hline
+\end{tabular}
+\caption{Descriptive summary of continuous variables.}
+\label{table1.2}
+\end{table}
+```
+
+\textbf{(ii) Please use the data to analyze public opinion on extent marijuana legalization in the US i.e., estimate Model 8 and replicate the results presented in Table 2 in lecture slides.}
+
+```{r, results='hide'}
+# Order the vectors accordingly
+feb14data$Public.Opinion = factor(feb14data$Public.Opinion,
+      levels = c('Oppose Legalization',
+              'Legal only for medicinal use',
+              'Legal for personal use'),
+      ordered = TRUE)
+
+
+feb14data$Education = factor(feb14data$Education, 
+                      levels = c('High School & Below',
+                                 'Below Bachelors',
+                                 'Bachelors & Above'))
+edu_contr = contr.treatment(n = 3, base = 1)
+colnames(edu_contr) = c(".Below Bachelors",
+                            ".Bachelors & Above")
+contrasts(feb14data$Education) = edu_contr
+```
+
+\newpage
+
+```{r, results='hide'}
+# Order the vectors accordingly
+feb14data$Race = factor(feb14data$Race, 
+                      levels = c('White', 'African American',
+                                 'Other Races'))
+
+race_contr = contr.treatment(n = 3, base = 1)
+colnames(race_contr) = c('.African American', '.Other Races')
+contrasts(feb14data$Race) = race_contr
+
+feb14data$Party.Affiliation = factor(feb14data$Party.Affiliation, 
+                      levels = c('Republican', 'Democrat',
+                                 'Independent & Others'))
+
+party_contr = contr.treatment(n = 3, base = 1)
+colnames(party_contr) = c('.Democrat', '.Independent & Others')
+contrasts(feb14data$Party.Affiliation) = party_contr
+
+feb14data$Religion = factor(feb14data$Religion, 
+                      levels = c('Protestant', 'Roman Catholic',
+                                 'Christian', 'Conservative', 'Liberal'))
+
+rel_contr = contr.treatment(n = 5, base = 1)
+colnames(rel_contr) = c('.Roman Catholic', '.Christian',
+                         '.Conservative', '.Liberal')
+contrasts(feb14data$Religion) = rel_contr
+
+# Ordinal Probit Model
+model8 = polr(Public.Opinion ~ Age + Income + Past.Use + Sex + Education +
+              Household.Size + State + Eventually.Legalized + Race +
+              Party.Affiliation + Religion, data = feb14data,
+              method = 'probit', Hess=TRUE)
+
+# Estimates from summary
+ctable = coef(summary(model8))
+p = pnorm(abs(ctable[, "t value"]), lower.tail = FALSE) * 2
+ctable = cbind(ctable, "p value" = p)
+
+# Intercept Estimate
+int = -model8$zeta[1]
+names(int) = 'Intercept'
+
+# Cut point estimate
+cp = model8$zeta[2] - model8$zeta[1]
+names(cp) = 'Cut-point'
+
+# Intercept Std. Error
+se_int = ctable[,'Std. Error'][18]
+
+# Cut point Std. Error
+cov12 = vcov(model8)[18,19]
+se1 = ctable[,'Std. Error'][18]
+se2 = ctable[,'Std. Error'][19]
+se_cp = sqrt(se1^2 + se2^2 - 2 * cov12)
+```
+
+\newpage 
+
+```{r, results='hide'}
+# Intercept t-value and p-value
+t_int = int / se_int
+p_int = 2 * pnorm(abs(t_int), lower.tail = FALSE)
+
+# Cut point t-value and p-value
+t_cp = cp / se_cp
+p_cp = 2 * pnorm(abs(t_cp), lower.tail = FALSE)
+
+# LR Statistic
+model_red = polr(factor(Public.Opinion)~1, data = feb14data,
+                     Hess = TRUE, method = 'probit')
+lr = -2*(logLik(model_red) - logLik(model8))
+
+# McFadden R^2 
+Rm = 1 - logLik(model8)/logLik(model_red)
+
+# Hit Rate
+pred = predict(model8,type = "class")
+unique_vals = unique(pred)
+num_map = seq_along(unique_vals)
+hit_rate = 100*mean(match(pred, unique_vals) ==
+            match(feb14data$Public.Opinion, unique_vals))
+
+summ2df = function(coefs) {
+    est = coefs[, "Value"]
+    est = append(int, est)
+    est = append(est, cp)
+    
+    se = coefs[, "Std. Error"]
+    se = append(se_int, se)
+    se = append(se, se_cp)
+    
+    t = coefs[, "t value"]
+    t = append(t_int, t)
+    t = append(t, t_cp)
+    
+    p = coefs[,"p value"]
+    p = append(p_int, p)
+    p = append(p, p_cp)
+    
+    df = data.frame(est = est, se = se, t = t, p = p)
+    colnames(df) = c('Estimate', 'Std. Error', 't-value', 'p-value')
+    return(df)
+}
+
+df = summ2df(ctable)
+df = df %>% mutate_if(is.numeric, round, digits=2)
+df
+```
+
+\newpage
+
+```{=tex}
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|l|c|c|c|}
+    \hline
+    \textbf{Variable}&\textbf{Estimate}&\textbf{Std. Dev}&\textbf{t-value}&\textbf{p-value}\\ [0.5ex] \hline
+    (Intercept)           & 0.34    & 0.48  & 0.72   & 0.472  \\ [0.5ex] \hline
+    Log(Age)              & -0.35**	& 0.08	& -4.51  & 0.000  \\ [0.5ex] \hline
+    Log(Income)           & 0.09**	& 0.04	& 2.47   & 0.014  \\ [0.5ex] \hline	
+    Past Use              & 0.69**	& 0.06	& 10.67  & 0.000  \\ [0.5ex] \hline	
+    Male                  & 0.06	& 0.06	& 1.00   & 0.319  \\ [0.5ex] \hline	
+    Below Bachelors       & 0.05	& 0.08	& 0.62   & 0.538  \\ [0.5ex] \hline	
+    Bachelors \& Above    & 0.24**	& 0.08	& 3.01   & 0.003  \\ [0.5ex] \hline
+    Household Size        & -0.02	& 0.02	& -0.87  & 0.382  \\ [0.5ex] \hline	
+    Tolerant States       & 0.07	& 0.07	& 1.04   & 0.298  \\ [0.5ex] \hline	
+    Eventually Legal      & 0.57**	& 0.07	& 7.76   & 0.000  \\ [0.5ex] \hline	
+    African American      & 0.03	& 0.10	& 0.26   & 0.795  \\ [0.5ex] \hline
+    Other Races           & -0.28**	& 0.11	& -2.56  & 0.010  \\ [0.5ex] \hline	
+    Democrat              & 0.44**	& 0.09	& 5.03   & 0.000  \\ [0.5ex] \hline	
+    Independent \& Others & 0.36**	& 0.08	& 4.56   & 0.000  \\ [0.5ex] \hline	
+    Roman Catholic        & 0.10	& 0.09	& 1.19   & 0.234  \\ [0.5ex] \hline
+    Christian             & 0.16	& 0.10	& 1.60   & 0.110  \\ [0.5ex] \hline	
+    Conservative          & 0.09	& 0.12	& 0.76   & 0.447  \\ [0.5ex] \hline	
+    Liberal               & 0.39**	& 0.09	& 4.39   & 0.000  \\ [0.5ex] \hline
+    Oppose|Medicinal      & -0.35	& 0.48	& -0.72  & 0.472  \\ [0.5ex] \hline	
+    Medicinal|Personal    & 1.12**	& 0.48	& 2.33   & 0.020  \\ [0.5ex] \hline
+    Cut Point             & 1.46**  & 0.05  & 29.58  & 0.000  \\ [0.5ex] \hline	
+\end{tabular}
+\label{table1.3}
+\end{table}
+```
+
+```{=tex}
+\begin{table}[h!]
+\centering
+%\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{|ccccc|ccccc|}
+    \hline
+    &&\textbf{Measure}&&&&&\textbf{Value}&& \\ [0.5ex] \hline
+    &&LR $\chi^{2}$ Statistics  &&&&& 377.001 (df=2)&& \\ [0.5ex] \hline
+    &&McFadden's $R^{2}$        &&&&& 0.125 (df=19) && \\ [0.5ex] \hline
+    &&Hit Rate                  &&&&& 58.914        && \\ [0.5ex] \hline
+\end{tabular}
+\caption{Result summary of model 8.}
+\label{table1.4}
+\end{table}
+```
+
+\textbf{(iii) Compute the covariate effects for variables presented in Table 3.}
+
+```{r, results='hide'}
+compute_ce = function(cov, num = FALSE, delta=1){
+    X = model.matrix(model8, temp)
+    X = X[,2:dim(X)[2]]
+    X0 = X
+    X1 = X
+    if (num == FALSE){
+        X1[,cov] = 1
+        X0[,cov] = 0
+    }
+    else {
+        X1[,cov] = log(exp(X[,cov]) + delta)
+    }
+    pred_x1 = X1 %*% beta_hat
+    pred_x0 = X0 %*% beta_hat
+    
+    prob_x1 = pnorm(outer(gamma_hat, pred_x1, "-"))
+    prob_x0 = pnorm(outer(gamma_hat, pred_x0, "-"))
+    
+    prob_x1 = t(apply(prob_x1, 2, function(p) c(p[1], diff(p))))
+    prob_x0 = t(apply(prob_x0, 2, function(p) c(p[1], diff(p))))
+    
+    ce = prob_x1 - prob_x0
+    avg_ce = colMeans(ce)
+    return(round(avg_ce,3))
+}
+
+# Convert categorical variables to factors
+temp = feb14data %>% mutate(across(c(Public.Opinion, Past.Use,Religion, Sex,
+        Education, Race, Party.Affiliation, Eventually.Legalized), as.factor))
+
+beta_hat = coef(model8)
+gamma_hat = c(model8$zeta[1],model8$zeta[2], Inf)
+
+df = data.frame()
+out = compute_ce('Age', num = TRUE, delta = 10)
+df = rbind(df, append('Age', out))
+out = compute_ce('Income', num = TRUE, delta = 10000)
+df = rbind(df, append('Income', out))
+
+cov_list = c('Past.UseYes','Education.Bachelors & Above',
+             'Eventually.LegalizedYes, it will', 'Race.Other Races',
+             'Party.Affiliation.Democrat',
+             'Party.Affiliation.Independent & Others', 'Religion.Liberal')
+
+for (cov in cov_list){
+    out = compute_ce(cov)
+    df = rbind(df, append(cov, out))
+}
+
+colnames(df) = c('Covariate', 'P(not legal)', 'P(medicinal use)', 'P(personal use')
+print(df)
+```
+
+```{=tex}
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c|c|c|c|}
+    \hline
+    \textbf{Covariate}&\textbf{$\Delta$P(not legal)}&\textbf{$\Delta$P(medicinal use)}&\textbf{$\Delta$P(personal use)}\\ [0.5ex] \hline
+    Log(Age)              &  0.015	&  0.012  & -0.028  \\ [0.5ex] \hline
+    Log(Income)           & -0.005	& -0.003  &  0.008  \\ [0.5ex] \hline	
+    Past Use              & -0.129	& -0.113  &  0.243  \\ [0.5ex] \hline	
+    Bachelors \& Above    & -0.045	& -0.035  &  0.08   \\ [0.5ex] \hline
+    Eventually Legal      & -0.126	& -0.06	  &  0.186  \\ [0.5ex] \hline	
+    Other Races           &  0.059	&  0.031  & -0.089  \\ [0.5ex] \hline	
+    Democrat              & -0.08	& -0.066  &  0.147  \\ [0.5ex] \hline	
+    Independent \& Others & -0.07	& -0.051  &  0.121  \\ [0.5ex] \hline	
+    Liberal               & -0.068	& -0.066  &  0.134  \\ [0.5ex] \hline
+\end{tabular}
+\caption{Average covariate effects from Model 8.}
+\label{table1.5}
+\end{table}
+```
+
+\newpage
+
+## Question 2
+
+```{r, results='hide'}
+firm = read.csv('Grunfeld220obs.csv')
+
+# Remove American Steel
+pos_idx = firm$firm!="American Steel"
+firm = firm[pos_idx,]
+
+# Checking the data is balanced or unbalanced
+firm %>%is.pbalanced() 
+```
+
+### (a) Estimate a pooled effects model on the covariates: \texttt{value} and \texttt{capital}. Summarize the results and interpret the coefficients.
+
+```{r}
+# Pooled Effects Model
+pe_model = plm(inv ~ value + capital, data = firm, index = c("firm", "year"),
+                effect = "individual", model = "pooling")
+summary(pe_model)
+```
+**Summary of Results**
+
+The pooled effects model assumes that all firms are homogeneous and does not account for individual firm-specific effects and hence coefficient estimates can be interpreted the same way as OLS estimates.
+
+**$\boldsymbol{{\text{R}^{2}}}$ (`0.812`)** indicates **81.2%** of the variation in investment is explained by the model.
+
+**F-statistic (`426.576`)** with significant **p-value**, confirms that the model as whole is statistically significant.
+
+\newpage
+
+**Intercept (`-42.71`)**: This suggests that when `value` and `capital` are both zero, the predicted level of investment is -42.71. While this has no practical interpretation (since investment cannot be negative), it serves as the baseline for the regression model.
+
+**Value (`0.1156`)**: For every one-unit increase in `value`, investment (`inv`) is expected to increase by 0.1156 units, holding `capital` constant. The coefficient is _highly significant_, suggesting that higher `value` levels are strongly associated with higher investment.
+
+**Capital (`0.2307`)**: For every one-unit increase in `capital`, investment increases by 0.2307 units, holding `value` constant. This coefficient is also _highly significant_, suggesting that higher `capital` levels are strongly associated with higher investment.
+
+### (b) Now, consider the panel structure of the data. Estimate a fixed-effects model, using the \texttt{plm} function, by regressing \texttt{inv} on \texttt{value} and \texttt{capital}. Do not ignore the indexing of data by \texttt{firm} and \texttt{year}. Summarize the results and interpret the coefficients.
+
+```{r}
+# Fixed Effects Model
+fe_model = plm(inv ~ value + capital, data = firm, index = c("firm", "year"),
+                effect = "individual", model = "within")
+summary(fe_model)
+```
+
+**Summary of Results**
+
+The fixed effects model estimates the relationship between the dependent variable (**`inv`**) and the independent variables (**`value` and `capital`**) accounting for firm-specific unobserved heterogeneity and hence the interpretation changes as the coefficients capture the within-group effect.
+
+**$\boldsymbol{{\text{R}^{2}}}$ (`0.7667`)** indicates **76.67%** of the variation in investment is explained by the model after accounting for firm-specific effects.
+
+**F-statistic (`309.014`)** with significant **p-value**, confirms that the model as whole is statistically significant.
+
+\newpage
+
+**Value (`0.1101`)**: For every one-unit increase in `value`, investment (`inv`) is expected to increase by 0.1101 units, holding `capital` constant and accounting for time-invariant firm-specific factors. The coefficient is _highly significant_, suggesting that higher `value` levels are strongly associated with higher investment.
+
+**Capital (`0.3101`)**: For every one-unit increase in `capital`, investment increases by 0.3101 units, holding `value` constant and accounting for time-invariant firm-specific factors. This coefficient is also _highly significant_, suggesting that higher `capital` levels are strongly associated with higher investment.
+
+The FE model removes time-invariant firm-specific characteristics, even though `value` and `capital` are not time-invariant, FE only exploits within-firm variations over time, ignoring between-firm variation. This means that the interpretation is still within a firm rather than across firms. The results suggest that investment is positively influenced by both firm value and capital stock.
+
+### (c) Once again, consider the panel structure of the data. Estimate a random-effects model, using the \texttt{plm} function, by regressing \texttt{inv} on \texttt{value} and \texttt{capital}. Do not ignore the indexing of data by \texttt{firm} and \texttt{year}. Summarize the results and interpret the coefficients.
+
+```{r}
+# Random Effects Model
+re_model = plm(inv ~ value + capital -1, data = firm, index = c("firm", "year"),
+                effect = "individual", model = "random")
+summary(re_model)
+```
+
+\newpage
+
+**Summary of Results**
+
+The random effects model assumes that firm-specific effects are uncorrelated with `value` and `capital`, which is not necessarily true in real-world data. Unlike fixed effects model, random effects model uses both within-firm and between-firm variation to estimate coefficients. Since the independent variables `value` and `capital` are not time-invariant, random effects model's estimates will be similar to fixed effects model only if the assumption of no correlation between firm effects and explanatory variables holds (which can be tested using the Hausman test).
+
+The **theta coefficient (`0.8615`)** suggests that a substantial portion of the variation is due to individual (firm-level) effects rather than purely time-specific fluctuations.
+
+The **idiosyncratic error variance** (within-firm variation) is **`2784.46`** with a standard deviation of **`52.77`**.  
+
+The **individual (firm-specific) variance** is **`7123.06`** with a standard deviation of **`84.40`**.  
+   
+**$\boldsymbol{{\text{R}^{2}}}$ (`0.769`)** indicates **76.9%** of the variation in investment is explained by the model.
+
+**$\boldsymbol{\chi^{2}}$ statistic (`672.801`)** with significant **p-value**, confirms that the model as whole is statistically significant.
+
+**Value (`0.1028`)**: For every one-unit increase in `value`, investment (`inv`) is expected to increase by 0.1028 units, holding `capital` constant, while accounting for both within-firm and between-firm variations. The coefficient is _highly significant_, suggesting that higher `value` levels are strongly associated with higher investment.
+
+**Capital (`0.3074`)**: For every one-unit increase in `capital`, investment increases by 0.3074 units, holding `value` constant, while accounting for both within-firm and between-firm variations. This coefficient is also _highly significant_, suggesting that higher `capital` levels are strongly associated with higher investment.
