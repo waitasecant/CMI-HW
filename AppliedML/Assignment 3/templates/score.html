@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spam or Ham</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap">
+    <link rel="icon" href="https://img.icons8.com/?size=100&id=7gn1JUOaj7KZ&format=png&color=000000" type="image/png">
+    
+</head>
+<body id="background" data-prediction="{{ pred }}">
+
+    <div class="container-score">
+        <h1 id="scoreh1">You entered a {{ pred }}!</h1>
+        <p id="scorep"><strong>Score:</strong> {{ prob }}</p>
+        <textarea readonly id="result" style="outline-color: transparent !important;">{{ text }}</textarea>
+
+    <footer>
+        <a href="/">Go Back</a>
+    </footer>
+    </div>
+
+    <script src="static/js/script.js"></script>
+
+
+
+    
+</body>
+</html>
