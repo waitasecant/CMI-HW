@@ -1,0 +1,121 @@
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Roboto Mono", sans-serif;
+    background: #ffffff;
+}
+
+#background{
+    background-size: cover;
+    background-repeat: repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.container-score {
+    text-align: center;
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.2);
+    width: 80%;
+    min-height: 300px;
+    margin: 20px 20px 20px 20px;
+    min-height: 400px;
+}
+
+h1 {
+    margin: 100px 0px 80px 0px;
+    font-size: 40px;
+}
+
+#scoreh1 {
+    margin: 30px 0px 30px 0px;
+    font-size: 40px;
+}
+
+#scorep {
+    margin: 0px 0px 20px 0px;
+    font-size: 24px;
+}
+
+#predictButton {
+    display: inline-block;
+    padding: 10px 10px;
+    margin: 20px 0px 0px 0px;
+    text-decoration:none;
+    font-family: "Roboto Mono", sans-serif;
+    width: 120px;
+    height: 60px;
+    font-size: 20px;
+    border: none;
+    cursor: not-allowed;
+}
+
+#text{
+    font-family: "Roboto Mono", sans-serif;
+    width: 80%;
+    font-size: 24px;
+    height: 250px;
+    text-decoration: none;
+    text-align: left;
+    border:none;
+    background-color: #f6f6f6;
+    white-space: normal;
+    word-wrap: break-word;
+    resize: none;
+    padding: 10px 10px;
+}
+
+#text::placeholder {
+    text-align: center;
+    color: #999;
+}
+
+#text:not(:placeholder-shown) {
+    text-align: left;
+}
+
+#result {
+    width: 80%;
+    min-height: 50px;
+    max-height: 250px;
+    font-size: 22px;
+    text-decoration: none;
+    text-align: center;
+    padding-top: 10px;
+    font-family: "Roboto Mono", sans-serif;
+    background-color: #f6f6f6;
+    white-space: normal;
+    word-wrap: break-word;
+    border: none;
+    resize: none;
+}
+
+a {
+    text-decoration: none;
+    color: #8e8e8e;
+}
+
+footer {
+    font-size: 20px;
+    text-align: center;
+    margin: 20px 0px 20px 0px;
+  }
+
+#charCount {
+    font-size: 18px;
+    color: gray;
+    margin-top: 10px;
+}
