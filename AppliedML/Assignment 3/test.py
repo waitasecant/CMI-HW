@@ -77,7 +77,7 @@ def test_obvious_non_spam_gives_prediction_0():
 
 def test_flask():
     # Start Flask app
-    process = subprocess.Popen(["python", "app.py"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    process = subprocess.Popen(["python", "app.py"], stdout=subprocess.PIPE)
     time.sleep(5)
 
     payload = {"Text": "Hello, congratulations! You have won a prize."}
