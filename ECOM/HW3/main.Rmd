@@ -1,0 +1,289 @@
+---
+title: "HW3 - Econometrics"
+author: "Himanshu, MDS202327"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```
+
+## Question 1
+
+### (a) Write down the \textit{p.m.f.} for $\boldsymbol{Y_{1}}$ and $\boldsymbol{Y_{2}}$.
+
+```{=tex}
+Let $\theta$ be an unknown parameter satisying $0 \leq \theta \leq 1$. Consider the following two experiments involving $\theta$.
+
+$\varepsilon_{1} = \{Y_{1}, \theta, f(y_{1} \mid \theta)\}$, a binomial experiment in which a coin is flipped $T_{1}$ times, where $T_{1}$ is predetermined and $Y_{1}$ is number of `heads' observed in $T_{1}$ flips.
+
+$\varepsilon_{2} = \{Y_{2}, \theta, f(y_{2} \mid \theta)\}$, a negative binomial experiment in which a coin is flipped until \textit{m} `tails' are observed, where $m>0$ is predetermined and $Y_{2}$ is number of `heads' observed in the process flips.
+
+Now, the \textit{p.m.f.} for $Y_{1}$ is given by
+$$f_1(y_{1} \mid \theta) = \binom{T_{1}}{Y_{1}} \theta^{Y_{1}} (1-\theta)^{T_{1}-Y_{1}}$$
+
+and, the \textit{p.m.f.} for $Y_{2}$ is given by
+$$f_1(y_{2} \mid \theta) = \binom{m+Y_{2}-1}{Y_{2}} \theta^{m} (1-\theta)^{Y_{2}}$$
+
+```
+
+### (b) Suppose $\boldsymbol{T_{1}}$ = 12 and \textit{m} = 3, and that the two experiments yield the following results. $\boldsymbol{y_{1}}$ = $\boldsymbol{y_{2}}$ = 9. Based on this information, write down the likelihood for the two experiments. What can you say based on the Likelihood Principle?
+
+```{=tex}
+Considering the results of the experiment,
+
+$f_{1}(y_{1} \mid \theta_{1}) = \binom{12}{9} \theta_{1}^{9} (1-\theta_{1})^{3} \propto \theta_{1}^{9} (1-\theta_{1})^{3}$  and,
+
+$f_{2}(y_{2} \mid \theta_{2}) = \binom{11}{9} \theta_{2}^{3} (1-\theta_{2})^{9} \propto \theta_{2}^{3} (1-\theta_{2})^{9} \propto (1-\theta_{1})^{3} \theta_{1}^{9} \propto f_{1}(y_{1} \mid \theta_{1})$
+
+where $\theta_{1}$ and $\theta_{2}$ are probability of `heads' and `tails' respectively as for experiments $\varepsilon_{1}$ and $\varepsilon_{2}$, `heads' and `tails' are notion of `success' respectively.
+
+Since, both likelihoods $f_{1}(y_{1} \mid \theta_{1})$ and $f_{2}(y_{2} \mid \theta_{2})$ are proportional, according to the Likelihood Principle, similar inferences can be made about $\theta$ ($\theta_{1}$ or $\theta_{2}$) through either experiments.
+
+```
+
+\newpage
+
+## Question 2
+
+### (a) Show that the Pareto distribution is a conjugate prior for the uniform distribution, $$ \boldsymbol{\pi(\theta)= \left\{ \begin{array}{ll} a k^{a} \theta^{-(a+1)} & \theta >= k, a>0 \\ 0 & \text{otherwise}\\ \end{array} \right.} $$ 
+
+```{=tex}
+The uniform distribution is given by,
+$$ f(y_{i} \mid \theta) = \left\{
+\begin{array}{ll}
+      \frac{1}{\theta} & 0 \leq y_{i} \leq \theta \\
+      0 & \text{otherwise}\\
+\end{array} = \frac{1}{\theta} I(y_{i} \leq \theta)
+\right. $$
+
+Hence, the likelihood is given by
+$$ f(y \mid \theta) = \prod_{i=1}^{n}f(y_{i} \mid \theta) = \frac{1}{\theta^{n}} I(\text{max}_{i}(y_{i}) \leq \theta)$$
+
+The prior distribution can be written as,
+$$ \pi(\theta) = a k^{a} \theta^{-(a+1)} \cdot I(k \leq \theta) I(a>0) \propto \frac{1}{\theta^{a+1}} I(k \leq \theta)$$
+
+The posterior distribution is given by,
+\begin{align*}
+\pi(\theta \mid y) & \propto f(y \mid \theta) \cdot \pi(\theta) \\
+              & \propto \frac{1}{\theta^{n}} I(\text{max}(y_{i}) \leq \theta) \cdot \frac{1}{\theta^{a+1}} I(k \leq \theta)\\
+              & \propto \frac{1}{\theta^{a+n+1}} I(\text{max}(k, \text{max}_{i}(y_{i})) \leq \theta) \\
+              & \propto \text{Pareto} (a+n, \text{max}(k, \text{max}_{i}(y_{i})))
+\end{align*}
+```
+
+### (b) Show that $\boldsymbol{\hat{\theta} = \text{max}(y_{1},\cdots ,y_{n})}$ is the MLE of $\boldsymbol{\theta}$, where $\boldsymbol{y_{i}}$ are random samples from $\boldsymbol{f(y_{i} \mid \theta)}$.
+
+```{=tex}
+The likelihood is given by,
+$$ l(y \mid \theta) = \prod_{i=1}^{n}f(y_{i} \mid \theta) = \frac{1}{\theta^{n}} I(\text{max}_{i}(y_{i}) \leq \theta)$$
+
+MLE of $\theta$ is given by $\hat{\theta}$ which maximize the likelihood $l(y \mid \theta)$ and since $\frac{1}{\theta^{n}}$ is a decreasing function for $\theta > 0$. $l(y \mid \theta)$ gets maximized at the least value attained by $\theta$ i.e. $\text{max}_{i}(y_{i})$. Hence, MLE($\theta$), $\hat{\theta} = \text{max}(y_{1},\cdots ,y_{n})$.
+```
+
+\newpage
+
+### (c) Find the posterior distribution of $\boldsymbol{\theta}$ and its expected value.
+
+```{=tex}
+As shown in part a) the posterior distribution $\sim \text{Pareto} (a+n, \text{max}(k, \text{max}_{i}(y_{i})))$
+$$\pi(\theta \mid y) = \frac{a+n}{\theta^{a+n+1}} \cdot \text{max}(k, \text{max}_{i}(y_{i}))^{a+n} \cdot I(\theta \geq \text{max}(k, \text{max}_{i}(y_{i})))$$
+
+For simplicity, let $k_{1} = \text{max}(k, \text{max}_{i}(y_{i}))$
+
+The posterior distribution can be written as,
+$$\pi(\theta \mid y) = \frac{a+n}{\theta^{a+n+1}} \cdot k_{1}^{a+n} \cdot I(\theta \geq k_{1})$$
+
+Now, to calculate the expected value of the posterior,
+\begin{align*}
+\mathbb{E}(\theta \mid y) = \mathbb{E}(\pi(\theta \mid y)) &= \int_{k_{1}}^{\infty} \theta \cdot \frac{a+n}{\theta^{a+n+1}} \cdot k_{1}^{a+n} \cdot d\theta \\
+&= \frac{k_{1} (a+n)}{(a+n-1)} \int_{k_{1}}^{\infty} \frac{(a+n-1)}{\theta^{(a+n-1)+1}} \cdot k_{1}^{(a+n-1)} \cdot d\theta \\
+&= \frac{k_{1} (a+n)}{(a+n-1)} \\
+&= \frac{(a+n)}{(a+n-1)} \cdot \text{max}(k, \text{max}_{i}(y_{i}))
+\end{align*}
+```
+
+\newpage
+
+## Question 3
+
+**Consider the following sets of data obtained after tossing a die 100 and 1000 times  respectively,**
+
+```{=tex}
+\begin{table}[h!]
+\centering
+%\renewcommand{\arraystretch}{1.75}
+\begin{tabular}{ccccccc}
+  \hline 
+  \textbf{n}&\textbf{1}&\textbf{2}&\textbf{3}&\textbf{4}&\textbf{5}&\textbf{6}\\ \hline
+  100&19&12&17&18&20&14\\
+  1000&190&120&170&180&200&140\\ \hline
+\end{tabular}
+\label{table3}
+\end{table}
+```
+
+**Suppose you are interested in $\boldsymbol{\theta_{1}}$, the probability of obtaining a one spot. Assume your prior for all the probabilities is a Dirichlet distribution, where each $\boldsymbol{\alpha_{i} = 2}$. Compute the posterior distribution for $\boldsymbol{\theta_{1}}$ for each of the sample sizes in the table. Plot the resulting distribution and compare the results. Comment on the effect of having a larger sample.**
+
+```{=tex}
+The prior distribution is given by, 
+$$\pi(\theta) = \text{Dirichlet}(\alpha_{1}=2,\hdots, \alpha_{6}=2) = \frac{\Gamma(\sum_{i=1}^{6}2)}{\prod_{i=1}^{6}\Gamma(2)} \cdot \theta_{1} \hdots \theta_{6} = \Gamma(12) \cdot \theta_{1} \hdots \theta_{6}$$
+
+The likelihood is given by, $f(y \mid \theta) = \theta_{1}^{y_{1}} \hdots \theta_{6}^{y_{6}} \quad \text{where} \quad \sum_{i=1}^{6}y_{i}= n$
+
+The posterior distribution is given by,
+$$\pi(\theta \mid y) = \Gamma(12) \cdot \theta_{1} \hdots \theta_{6} \cdot \theta_{1}^{y_{1}} \hdots \theta_{6}^{y_{6}}  \propto \theta_{1}^{y_{1}+1} \hdots \theta_{6}^{y_{6}+1} \propto \text{Dirichlet}(y_{1}+1,\hdots, y_{6}+1)$$
+
+The marginal posterior distribution for $\theta_{1}$ is given by,
+$$\pi(\theta_{1} \mid y) \sim \text{Beta}(y_{1}+\alpha_{1}, \sum_{i=2}^{6} (y_{i}+\alpha_{i})) \sim \text{Beta}(y_{1}+2, \sum_{i=2}^{6} (y_{i}+2)) \sim \text{Beta}(y_{1}+2, 10 + (y_{2} + \hdots + y_{6}))$$
+
+For $n=100, \pi(\theta_{1} \mid y) \sim \text{Beta}(21, 91)$ and for $n=1000, \pi(\theta_{1} \mid y) \sim \text{Beta}(192, 820)$
+```
+
+```{r fig.width=8, fig.height=4, echo=FALSE}
+x = seq(0.05, 0.35, length = 1000)
+y1 = dbeta(x, 19 + 2, 10 + (100 - 19))
+y2 = dbeta(x, 190 + 2, 10 + (1000 - 190))
+
+x1_peak = x[which.max(y1)]
+x1_peak = floor(x1_peak*1000)/1000
+
+x2_peak = x[which.max(y2)]
+x2_peak = floor(x2_peak*1000)/1000
+
+y1_peak = max(y1)
+y2_peak = max(y2)
+
+par(mgp = c(2, 0.5, 0)) 
+
+plot(x, y2, type = "l", col = "blue", lwd = 1.8, xlab = expression(theta[1]),
+     ylab = expression(pi(theta[1] ~ "|" ~ y)), cex.lab=0.9, cex.axis = 0.7, 
+     ylim = c(0, max(c(y1, y2)) * 1.1), xaxt = "n")
+
+title(main = expression(paste("Posterior Distribution for ", theta[1])),
+      line = 1, cex.main = 0.9)
+
+lines(x, y1, col = "red", lwd = 1.8)
+
+segments(x1_peak, 0, x1_peak, y1_peak, lty = 2)
+segments(x2_peak, 0, x2_peak, y2_peak, lty = 2)
+
+ticks = sort(unique(c(0.1, 0.3, x1_peak, x2_peak)))
+
+axis(1, at = ticks, labels = FALSE)
+par(xpd = TRUE)
+text(x = ticks, y = par("usr")[3] - 2, labels = ticks, srt = 90, adj = 1.2, cex = 0.7)
+legend("topright", legend = c("n = 100", "n = 1000"), col = c("red", "blue"),
+       lty = c(1, 1), lwd=1.8, cex = 0.7)
+```
+
+```{=tex}
+As sample size grows, the posterior gets more concenterated around $\hat{\theta}=0.19$, since the likelihood get more dominant over the prior with increased sample size.
+```
+
+\newpage
+
+## Question 4
+
+### (a) Derive Jefferey's prior for $\theta$.
+
+```{=tex}
+Jeffrey’s prior is defined as the square root of the determinant of the information matrix.
+$$\text{Jefferey's Prior}, \mathbb{J}(\theta) = \sqrt{\mathbb{I}(\theta)} \quad where \quad \mathbb{I}(\theta) = -\mathbb{E} \left[\frac{\partial^{2}}{\partial \theta^{2}} \text{log} f(y_{i} \mid \theta)\right] \quad \text{and} \quad f(y_{i} \mid \theta) \sim \text{exp}(\theta) = \frac{1}{\theta} \text{exp}\left(- \frac{y_{i}}{\theta} \right) \quad$$
+\begin{align*}
+\mathbb{I}(\theta) &= -\mathbb{E} \left[\frac{\partial^{2}}{\partial \theta^{2}} \text{log} \left(\frac{1}{\theta} \text{exp}\left(- \frac{y_{i}}{\theta} \right)\right)\right] \\
+&= -\mathbb{E} \left[\frac{\partial^{2}}{\partial \theta^{2}} \left( -\text{log}(\theta) - \frac{y_{i}}{\theta}\right) \right]\\
+&= \mathbb{E} \left[\frac{\partial^{2}}{\partial \theta^{2}} \left(\text{log}(\theta) + \frac{y_{i}}{\theta}\right) \right]\\
+&= \mathbb{E} \left[\frac{\partial}{\partial \theta} \left(\frac{1}{\theta} - \frac{y_{i}}{\theta^{2}}\right) \right]\\
+&= \mathbb{E} \left[\frac{2y_{i}}{\theta^{3}}-\frac{1}{\theta^{2}} \right]\\
+&= \frac{2 \mathbb{E}[y_{i}]}{\theta^{3}} -\frac{1}{\theta^{2}}\\
+&= \frac{2 \theta}{\theta^{3}} -\frac{1}{\theta^{2}}\\
+&= \frac{1}{\theta^{2}}
+\end{align*}
+Hence, Jefferey's prior, $\mathbb{J}(\theta) = \sqrt{\mathbb{I}(\theta)} = \frac{1}{\theta}$
+```
+
+### (b) Derive Jeffrey’s prior for $\boldsymbol{\alpha = \theta^{-1}}$. What do you observe?
+
+```{=tex}
+Jefferey's prior for $\alpha$ is given by,
+$$\mathbb{J}(\alpha) = \mathbb{J}(\theta) \left|  \frac{d\theta}{d\alpha}\right| = \frac{1}{\theta} \cdot \left|  \frac{d}{d\alpha}(\alpha^{-1})\right| = \alpha \cdot \left|  -\alpha^{-2}\right| = \alpha^{-1}$$
+
+The Jefferey's prior is invariant under reparameterization i.e. $\mathbb{J}(\theta)\propto \theta^{-1} \Leftrightarrow \mathbb{J}(\alpha)\propto \alpha^{-1}$.
+```
+
+### (c) Find the posterior density of $\theta$ corresponding to the prior density in (a). Be specific in noting the family to which it belongs.
+
+```{=tex}
+The prior distribution for $\theta$ is given by $\pi(\theta) = \theta^{-1}$
+
+The likelihood is given by,
+$$f(y \mid \theta) = \prod_{i=1}^{n}f(y_{i} \mid \theta) = \theta^{-n} \exp\left[-\theta^{-1}\sum_{i=1}^{n} y_{i}\right]$$
+
+The posterior distribution is given by,
+$$\pi(\theta \mid y) \propto \pi(\theta) \cdot f(y \mid \theta) \propto \theta^{-1} \cdot \theta^{-n} \exp\left[-\theta^{-1}\sum_{i=1}^{n} y_{i}\right] \propto \theta^{-(n+1)} \exp\left[-\theta^{-1}\sum_{i=1}^{n} y_{i}\right] \propto IG \left(n, \sum_{i=1}^{n} y_{i}\right) \quad \quad \quad \quad \quad$$
+
+```
+
+\newpage
+
+## Question 5
+
+### (a) Derive the conditional posterior distribution of $\boldsymbol{\beta}$ and show that $\boldsymbol{\pi(\beta \mid \sigma^{2}, y) \sim N(\bar{\beta}, B_{1})}$, where $\boldsymbol{B_{1} = [\sigma^{-2}X^{\prime}X + B_{0}^{-1}]^{-1} \enspace \text{and} \enspace \bar{\beta} = B_{1}[\sigma^{-2}X^{\prime}y + B_{0}^{-1}\beta_{0}]}$
+
+```{=tex}
+The likelihood is given by,
+$$f(y \mid \beta, \sigma^2) \propto \exp\left[ -\frac{1}{2\sigma^2}(y - X\beta)^{\prime}(y - X\beta) \right] \left(\frac{1}{\sigma^2}\right)^{\frac{n}{2}}$$
+
+The prior distribution of $\sigma^{2}$ is given by,
+$$\pi(\beta) \propto \exp\left[ -\frac{1}{2}(\beta - \beta_{0})^{\prime} B_{0}^{-1} (\beta - \beta_{0}) \right]$$
+
+The conditional posterior distribution of $\sigma^{2}$ is given by,
+\begin{align*}
+\pi(\beta \mid \sigma^2, y) &\propto f(y \mid \beta, \sigma^2) \cdot \pi(\sigma^{2})\\
+&\propto \exp\left[ -\frac{1}{2\sigma^2}(y - X\beta)^{\prime}(y - X\beta) \right]  \left(\frac{1}{\sigma^2}\right)^{\frac{n}{2}} \cdot \exp\left[ -\frac{1}{2}(\beta - \beta_{0})^{\prime} B_{0}^{-1} (\beta - \beta_{0}) \right]\\
+&\propto \exp\left[ -\frac{1}{2}\Bigl\{\sigma^{-2}(y - X\beta)^{\prime}(y - X\beta) + (\beta - \beta_{0})^{\prime} B_{0}^{-1} (\beta - \beta_{0})\Bigr\} \right]
+\end{align*}
+
+Expanding the terms inside the curly bracket,
+\begin{align*}
+(y - X\beta)^\prime(y - X\beta) &= y^\prime y - 2\beta^\prime X^\prime y + \beta^\prime X^\prime X \beta \\
+(\beta - \beta_0)^\prime B_0^{-1}(\beta - \beta_0) &= \beta^\prime B_0^{-1} \beta - 2\beta^\prime B_0^{-1} \beta_0 + \beta_0^\prime B_0^{-1} \beta_0
+\end{align*}
+
+Substituting back and grouping together,
+\begin{align*}
+\pi(\beta \mid \sigma^2, y) &\propto \exp\left[ -\frac{1}{2} \Bigl\{ \beta^\prime(\sigma^{-2} X^\prime X + B_0^{-1})\beta - 2\beta^\prime(\sigma^{-2} X^\prime y + B_0^{-1}\beta_0) + \beta_0^\prime B_0^{-1} \beta_0 + \sigma^{-2} y^\prime y \Bigr\} \right]\\
+&\propto \exp\left[ -\frac{1}{2} \Bigl\{ \beta^\prime(\sigma^{-2}X^\prime X + B_0^{-1})\beta - 2\beta^\prime(\sigma^{-2}X^\prime y + B_0^{-1}\beta_0) \Bigr\} \right]
+\end{align*}
+
+Let $A = \sigma^{-2}X^\prime X + B_0^{-1}$, $b = \sigma^{-2}X^\prime y + B_0^{-1}\beta_0$ and $\bar{\beta} = A^{-1}b$
+\begin{align*}
+\pi(\beta \mid \sigma^2, y) &\propto \exp\left[ -\frac{1}{2} \Bigl\{ \beta^{\prime}A\beta - 2\beta^{\prime}b \Bigr\} \right] \\
+&\propto \exp\left[ -\frac{1}{2} \Bigl\{ \beta^{\prime}A\beta - 2\beta^{\prime}b + \bar{\beta^{\prime}}A\bar{\beta} - \bar{\beta^{\prime}}A\bar{\beta} \Bigr\} \right] \\
+&\propto \exp\left[ -\frac{1}{2} \Bigl\{\left( \beta^{\prime}A\beta - 2\beta^{\prime}(A\bar{\beta}) + \bar{\beta^{\prime}}A\bar{\beta}\right) - \bar{\beta^{\prime}}A\bar{\beta} \Bigr\} \right] \\
+&\propto \exp\left[ -\frac{1}{2} \Bigl\{\left( \beta - \bar{\beta}\right)^{\prime}A\left( \beta - \bar{\beta}\right) - \bar{\beta^{\prime}}A\bar{\beta} \Bigr\} \right] \\
+&\propto \exp\left[ -\frac{1}{2} \Bigl\{\left( \beta - \bar{\beta}\right)^{\prime}A\left( \beta - \bar{\beta}\right) \Bigr\} \right] \\
+&\propto N(\bar{\beta}, B_{1}) \quad \quad \text{where} \enspace B_{1} = A^{-1} = [\sigma^{-2}X^\prime X + B_0^{-1}]^{-1}  \enspace \text{and} \enspace \bar{\beta} = B_{1}[\sigma^{-2}X^\prime y + B_0^{-1}\beta_0]
+\end{align*}
+```
+
+### (b) Derive the conditional posterior distribution of $\boldsymbol{\sigma^{2}}$ and show that $\boldsymbol{\pi(\sigma^{2} \mid ,\beta, y) \sim IG(\frac{\alpha_{1}}{2}, \frac{\delta_{1}}{2})}$, where $\boldsymbol{\alpha_{1} = \alpha_{0} + n \enspace \text{and} \enspace \delta_{1} = \delta_{0} + (y-X\beta)^{\prime}(y-X\beta)}$
+
+```{=tex}
+The likelihood is given by,
+$$f(y \mid \beta, \sigma^2) \propto \exp\left[ -\frac{1}{2\sigma^2}(y - X\beta)^{\prime}(y - X\beta) \right] \left(\frac{1}{\sigma^2}\right)^{\frac{n}{2}}$$
+
+The prior distribution of $\sigma^{2}$ is given by,
+$$\pi(\sigma^{2}) \propto \exp\left[ -\frac{\delta_{0}}{2\sigma^2} \right] \left(\frac{1}{\sigma^2}\right)^{\left(\frac{\alpha_{0}}{2} + 1\right)}$$
+
+The conditional posterior distribution of $\sigma^{2}$ is given by,
+\begin{align*}
+\pi(\beta \mid \sigma^2, y) &\propto f(y \mid \beta, \sigma^2) \cdot \pi(\sigma^{2})\\
+&\propto \exp\left[ -\frac{1}{2\sigma^2}(y - X\beta)^{\prime}(y - X\beta) \right]  \left(\frac{1}{\sigma^2}\right)^{\frac{n}{2}} \cdot \exp\left[ -\frac{\delta_{0}}{2\sigma^2} \right] \left(\frac{1}{\sigma^2}\right)^{\left(\frac{\alpha_{0}}{2} + 1\right)}\\
+&\propto \exp\left[ -\frac{1}{2\sigma^2}\Bigl(\delta_{0} + (y - X\beta)^{\prime}(y - X\beta)\Bigr) \right] \cdot \left(\frac{1}{\sigma^2}\right)^{\left(\frac{\alpha_{0}+n}{2} + 1\right)}\\
+&\propto \exp\left[ -\frac{\delta_{1}}{2\sigma^2} \right] \cdot \left(\frac{1}{\sigma^2}\right)^{\left(\frac{\alpha_{1}}{2} + 1\right)}\\
+&\propto IG\left(\frac{\alpha_{1}}{2},\frac{\delta_{1}}{2}\right) \quad \quad \text{where} \enspace  \alpha_{1} = \alpha_{0} + n \enspace  \text{and} \enspace  \delta_{1} = \delta_{0} + (y-X\beta)^{\prime}(y-X\beta)
+\end{align*}
+```
