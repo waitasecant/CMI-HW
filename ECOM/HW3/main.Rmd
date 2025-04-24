@@ -236,12 +236,12 @@ $$\pi(\theta \mid y) \propto \pi(\theta) \cdot f(y \mid \theta) \propto \theta^{
 The likelihood is given by,
 $$f(y \mid \beta, \sigma^2) \propto \exp\left[ -\frac{1}{2\sigma^2}(y - X\beta)^{\prime}(y - X\beta) \right] \left(\frac{1}{\sigma^2}\right)^{\frac{n}{2}}$$
 
-The prior distribution of $\sigma^{2}$ is given by,
+The prior distribution of $\beta$ is given by,
 $$\pi(\beta) \propto \exp\left[ -\frac{1}{2}(\beta - \beta_{0})^{\prime} B_{0}^{-1} (\beta - \beta_{0}) \right]$$
 
-The conditional posterior distribution of $\sigma^{2}$ is given by,
+The conditional posterior distribution of $\beta$ is given by,
 \begin{align*}
-\pi(\beta \mid \sigma^2, y) &\propto f(y \mid \beta, \sigma^2) \cdot \pi(\sigma^{2})\\
+\pi(\beta \mid \sigma^2, y) &\propto f(y \mid \beta, \sigma^2) \cdot \pi(\beta)\\
 &\propto \exp\left[ -\frac{1}{2\sigma^2}(y - X\beta)^{\prime}(y - X\beta) \right]  \left(\frac{1}{\sigma^2}\right)^{\frac{n}{2}} \cdot \exp\left[ -\frac{1}{2}(\beta - \beta_{0})^{\prime} B_{0}^{-1} (\beta - \beta_{0}) \right]\\
 &\propto \exp\left[ -\frac{1}{2}\Bigl\{\sigma^{-2}(y - X\beta)^{\prime}(y - X\beta) + (\beta - \beta_{0})^{\prime} B_{0}^{-1} (\beta - \beta_{0})\Bigr\} \right]
 \end{align*}
