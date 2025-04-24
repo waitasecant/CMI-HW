@@ -1,0 +1,719 @@
+---
+title: "HW4 - Econometrics"
+author: "Himanshu, MDS202327"
+date: "`r Sys.Date()`"
+output:
+  pdf_document:
+    fig_caption: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```
+
+## Question 1
+
+### (a) Find the posterior distribution of $\theta$.
+
+```{=tex}
+Consider a single observation $y = (y_{1}, y_{2})$ from the distribution,
+
+$$
+\begin{pmatrix} y_1 \\ y_2 \end{pmatrix} \sim N\left( \begin{pmatrix} \theta_1 \\ \theta_2 \end{pmatrix}, \begin{pmatrix} 1 \enspace \enspace \rho \\ \rho \enspace \enspace1 \end{pmatrix} \right)
+$$
+
+The likelihood is given by,
+$$f(y \mid \theta) \propto \exp\left[ -\frac{1}{2}(y - \theta)^{\prime}\Sigma^{-1}(y - \theta) \right]$$
+
+The prior distribution of $\theta = (\theta_{1}, \theta_{2}) \sim U(0,1)$ is given by, $\enspace \pi(\theta) = 1$
+
+The posterior distribution is given by,
+\begin{align*}
+\pi(\theta \mid y) & \propto f(y \mid \theta) \cdot \pi(\theta) \\
+              & \propto \exp\left[ -\frac{1}{2}(y - \theta)^{\prime}\Sigma^{-1}(y - \theta) \right] \cdot 1\\
+              & \propto \exp\left[ -\frac{1}{2}(\theta-y)^{\prime}\Sigma^{-1}(\theta-y) \right] \\
+              & \propto N\left( \begin{pmatrix} y_1 \\ y_2 \end{pmatrix}, \begin{pmatrix} 1 \enspace \enspace \rho \\ \rho \enspace \enspace1 \end{pmatrix} \right)
+\end{align*}
+```
+
+**(b) Show that the posterior conditional distributions are**
+$$\boldsymbol{\theta_1 | \theta_2, y \sim N(y_1 + \rho (\theta_2 - y_2), 1 - \rho^2)}$$ $$\boldsymbol{\theta_2 | \theta_1, y \sim N(y_2 + \rho (\theta_1 - y_1), 1 - \rho^2)}$$
+
+```{=tex}
+The likelihood is given by,
+$$f(y \mid \theta_{1}, \theta_{2}) \propto \exp\left[ -\frac{1}{2}(y - \theta)^{\prime}\Sigma^{-1}(y - \theta) \right] \propto \exp \left[ -\frac{1}{2 (1-\rho^{2})} \Bigl\{ (y_{1}-\theta_{1})^{2} -2\rho(y_{1}-\theta_{1})(y_{2}-\theta_{2}) + (y_{2}-\theta_{2})^{2}\Bigr\} \right]$$
+
+The prior distribution of $\theta_{1} \sim U(0,1)$ is given by, $\enspace \pi(\theta_{1}) = 1$
+```
+\newpage
+
+```{=tex}
+The conditional posterior distribution is given by,
+\begin{align*}
+\pi(\theta_{1} \mid \theta_{2}, y) & \propto f(y \mid \theta_{1}, \theta_{2}) \cdot \pi(\theta_{1}) \\
+              & \propto \exp \left[ -\frac{1}{2 (1-\rho^{2})} \Bigl\{ (y_{1}-\theta_{1})^{2} -2\rho(y_{1}-\theta_{1})(y_{2}-\theta_{2}) + (y_{2}-\theta_{2})^{2}\Bigr\} \right] \cdot 1\\
+              & \propto \exp \left[ -\frac{1}{2 (1-\rho^{2})} \Bigl\{ (\theta_{1}-y_{1})^{2} -2\rho(\theta_{1}-y_{1})(\theta_{2}-y_{2}) + (\theta_{2}-y_{2})^{2}\Bigr\} \right]\\
+              & \propto \exp \left[ -\frac{1}{2 (1-\rho^{2})} \Bigl\{ \theta_{1}^{2} -2\theta_{1} \left[y_{1} + \rho(\theta_{2}-y_{2})\right] + [y_{1}^{2} + y_{2}^{2} + \theta_{2}^{2} - 2\theta_{2}y_{2} + 2\rho\theta_{2}y_{1} - 2\rho y_{1}y_{2}] \Bigr\} \right]\\
+              & \propto \exp \left[ -\frac{1}{2 (1-\rho^{2})} \Bigl\{ \theta_{1}^{2} -2\theta_{1} \left[y_{1} + \rho(\theta_{2}-y_{2})\right] + \left[y_{1} + \rho(\theta_{2}-y_{2})\right]^{2} - \left[y_{1} + \rho(\theta_{2}-y_{2})\right]^{2} \Bigr\} \right]\\
+              & \propto \exp \left[ -\frac{1}{2 (1-\rho^{2})} \Bigl\{ (\theta_{1}^{2} - \left[y_{1} + \rho(\theta_{2}-y_{2})\right])^{2} - \left[y_{1} + \rho(\theta_{2}-y_{2})\right]^{2} \Bigr\} \right]\\
+              & \propto \exp \left[ -\frac{1}{2 (1-\rho^{2})} \left(\theta_{1} - \left[y_{1} + \rho(\theta_{2}-y_{2})\right]\right)^{2} \right]\\
+              & \propto N(y_1 + \rho (\theta_2 - y_2), 1 - \rho^2)
+\end{align*}
+
+Following the similar argument for $\theta_2$ we can get, $\pi(\theta_{2} \mid \theta_{1}, y) \propto N(y_2 + \rho (\theta_1 - y_1), 1 - \rho^2)$
+\begin{align*}
+\pi(\theta_{2} \mid \theta_{1}, y) & \propto f(y \mid \theta_{1}, \theta_{2}) \cdot \pi(\theta_{2}) \\
+              & \propto \exp \left[ -\frac{1}{2 (1-\rho^{2})} \Bigl\{ (y_{2}-\theta_{2})^{2} -2\rho(y_{2}-\theta_{2})(y_{1}-\theta_{1}) + (y_{1}-\theta_{1})^{2}\Bigr\} \right] \cdot 1\\
+              & \propto \exp \left[ -\frac{1}{2 (1-\rho^{2})} \Bigl\{ (\theta_{2}-y_{2})^{2} -2\rho(\theta_{2}-y_{2})(\theta_{1}-y_{1}) + (\theta_{1}-y_{1})^{2}\Bigr\} \right]\\
+              & \propto \exp \left[ -\frac{1}{2 (1-\rho^{2})} \Bigl\{ \theta_{2}^{2} -2\theta_{2} \left[y_{2} + \rho(\theta_{1}-y_{1})\right] + [y_{2}^{2} + y_{1}^{2} + \theta_{1}^{2} - 2\theta_{1}y_{1} + 2\rho\theta_{1}y_{2} - 2\rho y_{2}y_{1}] \Bigr\} \right]\\
+              & \propto \exp \left[ -\frac{1}{2 (1-\rho^{2})} \Bigl\{ \theta_{2}^{2} -2\theta_{2} \left[y_{2} + \rho(\theta_{1}-y_{1})\right] + \left[y_{2} + \rho(\theta_{1}-y_{1})\right]^{2} - \left[y_{2} + \rho(\theta_{1}-y_{1})\right]^{2} \Bigr\} \right]\\
+              & \propto \exp \left[ -\frac{1}{2 (1-\rho^{2})} \Bigl\{ (\theta_{2}^{2} - \left[y_{2} + \rho(\theta_{1}-y_{1})\right])^{2} - \left[y_{2} + \rho(\theta_{1}-y_{1})\right]^{2} \Bigr\} \right]\\
+              & \propto \exp \left[ -\frac{1}{2 (1-\rho^{2})} \left(\theta_{2} - \left[y_{2} + \rho(\theta_{1}-y_{1})\right]\right)^{2} \right]\\
+              & \propto N(y_2 + \rho (\theta_1 - y_1), 1 - \rho^2)
+\end{align*}
+```
+
+### (c) Assume $\boldsymbol{y = (1, 0.5)}$ and $\boldsymbol{\rho = 0.8}$. Draw 10,000 observations from the conditional posterior distributions using Gibbs sampling. Plot the distribution of $\boldsymbol{\theta_{1}}$ and $\boldsymbol{\theta_{2}}$ after a burn-in of 1000.
+
+```{r, fig.width=12, fig.height=4, fig.cap="Distribution of $\\theta_{1}$ and $\\theta_{2}$"}
+set.seed(123)
+n_iter = 11000
+burn_in = 1000
+rho = 0.8
+y1 = 1
+y2 = 0.5
+sigma2 = 1- rho^2
+theta1 = numeric(n_iter)
+theta2 = numeric(n_iter)
+eta1 = numeric(n_iter)
+eta2 = numeric(n_iter)
+theta1[1] = y1
+theta2[1] = y2
+
+for (i in 2:n_iter) {
+  theta1[i] = rnorm(1, mean = y1 + rho * (theta2[i-1] - y2), sd = sqrt(sigma2))
+  eta1[i] = (theta1[i] - (y1 + rho * (theta2[i-1] - y2)))/sqrt(sigma2)
+  theta2[i] = rnorm(1, mean = y2 + rho * (theta1[i] - y1), sd = sqrt(sigma2))
+  eta2[i] = (theta2[i] - (y2 + rho * (theta1[i] - y1)))/sqrt(sigma2)
+}
+
+theta1_post = theta1[(burn_in+1):n_iter]
+theta2_post = theta2[(burn_in+1):n_iter]
+
+eta1_post = eta1[(burn_in+1):n_iter]
+eta2_post = eta2[(burn_in+1):n_iter]
+
+breaks = seq(
+  min(c(theta1_post, theta2_post)),
+  max(c(theta1_post, theta2_post)),
+  length.out = 31
+)
+
+par(mfrow=c(1,3))
+hist(theta1_post, breaks=breaks, main=expression(theta[1]), xlab="",ylim = c(0, 1100))
+box()
+
+hist(theta1_post, breaks=breaks, col=rgb(1,0,0,0.5), border="white", xlab="",
+     xlim=range(breaks), main=expression(theta),ylim = c(0, 1100))
+hist(theta2_post, breaks=breaks, col=rgb(0,0,1,0.5), border="white", add=TRUE)
+legend("topright", legend=c(expression(theta[1]), expression(theta[2])),
+       fill=c(rgb(1,0,0,0.5), rgb(0,0,1,0.5)), border="white")
+box()
+
+hist(theta2_post, breaks=breaks, main=expression(theta[2]), xlab="")
+box()
+```
+
+### (d) While doing Gibbs sampling, simultaneously construct two parameters, say $\boldsymbol{\eta_1}$ and $\boldsymbol{\eta_2}$ which are standardized versions of $\boldsymbol{\theta_1}$ and $\boldsymbol{\theta_2}$, respectively. Plot the distribution of $\boldsymbol{\eta_1/\eta_2}$ after the burn-in. What do you observe? Can you recognize its distribution?
+
+```{r, fig.width=10, fig.height=5, fig.cap="Distribution of $\\eta_{1}/\\eta_{2}$"}
+ratio = eta1_post / eta2_post
+x = seq(-10, 10, length = 10000)
+y = dcauchy(x, 0, 1)
+
+hist(ratio, breaks=20000, main=expression(eta[1]/eta[2]), xlab="", xlim=c(-10,10),
+     ylim=c(0, 0.4), cex.lab=0.8, cex.main=0.8, cex.axis=0.8, freq=FALSE)
+lines(x, y, col = "blue3", lwd = 1.8)
+legend("topright", legend=c("Cauchy (0,1)"), col = c("blue3"), lty=c(1), border="white",
+       cex = 0.8)
+box()
+```
+```{=tex}
+Upon standardization $\eta_{1}$ and $\eta_{2}$ follow $N(0,1)$ and they are independent of each other, the ratio $\eta_{1}/\eta_{2}$ shall follows Cauchy(0,1). In plot above, the histogram is overlayed with Cauchy(0,1) distribution.
+```
+\newpage
+
+## Question 2
+
+### Generate 10,000 draws from a $\boldsymbol{Beta(3, 4)}$ distribution with $\boldsymbol{U(0, 1)}$ as proposal density with independent chain, where $\boldsymbol{U}$ denotes a Uniform distribution. Report the acceptance rate, mean, variance of the MH draws. Present a trace plot and a histogram of the draws. For a $\boldsymbol{Beta(3, 4)}$ distribution, what are the theoretical mean and variance? Are the mean and variance from MH draws different from the theoretical counterpart?
+
+```{r}
+set.seed(123)
+n_iter = 10000
+beta_draws = numeric(n_iter)
+beta_draws[1] = runif(1)
+accepts = 0
+
+for (i in 2:n_iter) {
+  proposal = runif(1)
+  num = dbeta(proposal, 3, 4)
+  den = dbeta(beta_draws[i-1], 3, 4)
+  alpha = min(1, num/den)
+  if (runif(1) < alpha) {
+    beta_draws[i] = proposal
+    accepts = accepts + 1
+  } else {
+    beta_draws[i] = beta_draws[i-1]
+  }
+}
+
+# Acceptance Rate, Mean and Variance of draws
+accept_rate = round(accepts / (n_iter - 1),4)
+mean_draws = round(mean(beta_draws),4)
+var_draws = round(var(beta_draws),4)
+cat("Acceptance Rate:", accept_rate, " Draw Mean:", mean_draws, "Draw Var:", var_draws)
+
+# Theoretical mean and variance
+theo_mean = 3 / (3 + 4)
+theo_var = (3 * 4) / ((3 + 4)^2 * (3 + 4 + 1))
+cat("Theoretical Mean:", round(theo_mean,4), "Theoretical Var:", round(theo_var,4))
+```
+```{=tex}
+The mean and variance from MH draws are very close to the theoretical counterpart.
+
+$\mid$Simulated Mean $-$ Theoretical Mean $\mid$ = 0.0005
+
+$\mid$Simulated Variance $-$ Theoretical Variance $\mid$ = 0.0004
+```
+
+\newpage
+
+```{r, fig.width=12, fig.height=5, fig.cap="Trace plot and histogram of simulated draws from $\\beta(2,3)$"}
+x = seq(0, 1, length = 10000)
+y = dbeta(x, 3, 4)
+
+par(mfrow=c(1,2))
+plot(1:n_iter, beta_draws, type="l", main="", ylab="", xlab="")
+hist(beta_draws, breaks=30, main="", xlab="", freq=FALSE)
+lines(x, y, col = "blue3", lwd = 1.8)
+legend("topright", legend=c("Beta (3,4)"), col = c("blue3"), lty=c(1), border="white",
+       cex = 0.9)
+box()
+```
+
+\newpage
+
+## Question 3
+
+### (a) Fit a Bayesian linear regression model and report the posterior mean and posterior standard deviation of the parameters in a table (the name of the variables should be present in the first column). Are there reasons to believe that a linear regression framework will not be appropriate for this data?
+
+```{r}
+library(MASS)
+
+# function to implement Gibbs Sampling for Normal Linear Regression
+bayesian_lr = function(y, X, n_iter = 25000, burn = 5000) {
+  n = length(y)
+  k = ncol(X)
+  beta_samples = matrix(0, nrow = n_iter, ncol = k)
+  sigma2_samples = numeric(n_iter)
+  
+  # initial values (using OLS estimates)
+  ols_fit = lm(y ~ X-1)
+  beta = coef(ols_fit)
+  sigma2 = sigma(ols_fit)^2
+  
+  # prior parameters
+  beta0 = rep(0, k)
+  B0inv = diag(1/1000, k)
+  alpha0 = 100000
+  delta0 = 10
+  
+  XtX = t(X) %*% X
+  Xty = t(X) %*% y
+  
+  beta_samples[1,] = beta
+  sigma2_samples[1] = sigma2
+  
+  for (i in 2:n_iter) {
+    # sample beta from its conditional posterior
+    B1 = solve(XtX/sigma2 + B0inv)
+    beta_bar = B1 %*% (B0inv %*% beta0 + Xty/sigma2)
+    beta = mvrnorm(1, beta_bar, B1)
+    
+    # sample sigma2 from its conditional posterior
+    alpha1 = (alpha0 + n)
+    delta1 = (delta0 + sum((y - X %*% beta)^2))
+    sigma2 = 1/rgamma(1, alpha1/2, delta1/2)
+    
+    beta_samples[i, ] = beta
+    sigma2_samples[i] = sigma2
+  }
+  beta_samples = beta_samples[(burn+1):n_iter, ]
+  sigma2_samples = sigma2_samples[(burn+1):n_iter]
+  samples = as.matrix(cbind(beta_samples, sigma2_samples))
+  colnames(samples) = c("Intercept", colnames(X)[2:5], "$\\sigma^2$")
+  return(samples)
+}
+```
+
+\newpage
+
+```{r}
+post_summary = function(x){
+  df=  data.frame(posterior_mean = colMeans(x),posterior_sd = apply(x, 2, sd)) 
+  return(df)
+}
+```
+
+```{r}
+mroz = read.csv("mroz.csv", header = TRUE)
+X = cbind(1, as.matrix(mroz[,1:4]))
+y = as.matrix(mroz$WHRS)
+results_lr = bayesian_lr(y, X, n_iter = 25000, burn = 5000)
+knitr::kable(post_summary(results_lr), digits = 3,
+       col.names = c("Posterior Mean","Posterior Std. Dev"))
+```
+
+
+
+```{r, fig.width=12, fig.height=5.5, echo=FALSE, fig.cap="Trace plots of simulated draws for the covariates using normal linear regression model"}
+# trace plots
+par(mfrow = c(2, 3))
+for (i in 1:dim(results_lr)[2]){
+    if (i==6){
+    plot(results_lr[, i], type = "l", main = expression(sigma^2),
+         ylab="", xlab="", cex.main=1.8)        
+    }
+    else {
+    plot(results_lr[, i], type = "l", main = colnames(results_lr)[i],
+         font.main=1, ylab="", xlab="", cex.main=1.8)        
+    }
+}
+```
+
+```{=tex}
+Due to the following reasons to believe that a linear regression framework will not be appropriate for this data
+
+- Approximately 43\% of the surveyed women worked zero hours, while the remaining women worked an average of 1,303 hours per year. This large proportion of zeros cannot be adequately handled by standard linear regression.
+
+- Women cannot work negative hours, so the data has a natural lower bound at zero, creating a discontinuity in the distribution that linear regression cannot properly model.
+```
+
+```{r, fig.width=12, fig.height=8, include=FALSE}
+par(mfrow = c(2, 2))
+ols_fit = lm(y ~ X-1)
+fits = cbind(X %*% colMeans(results_lr[,1:5]), t(t(ols_fit$fitted.values)))
+plot_titles = c("Bayesian Model", "OLS Model")
+for (i in 1:2){
+    fit_vals = fits[,i]
+    resid = y - fit_vals 
+    plot(fit_vals, resid, pch=19, col = rgb(0,0,0,0.4), xlab = "Fitted Values",
+         main = paste("Residuals Plot -", plot_titles[i]), ylab = "Residuals")
+    abline(h = 0, col = "red", lty = 2, lwd=2.5)
+    
+    qqnorm(resid, pch=19, col = rgb(0,0,0,0.4), main = paste("QQ Plot -", plot_titles[i]))
+    qqline(resid, col = "red", lwd=2)
+}
+```
+
+\newpage
+
+### (b) Write down a Tobit model and the corresponding augmented posterior distribution. Derive the conditional posteriors for $\boldsymbol{(\beta, \sigma^2, z)}$.
+
+```{=tex}
+The Tobit model with censoring from below is given by,
+$$z_i = x_{i}^{\prime}\beta + \epsilon_{i},\quad \quad \epsilon_{i}\sim N(0,\sigma^{2}),$$
+$$
+y_i = \begin{cases}
+z_i, & \text{if}  z_{i}>0,\\
+0,   & otherwise.
+\end{cases}
+$$
+
+The augmented joint posterior ditribution is given by, 
+\begin{align*}
+\pi(\beta,\sigma^2,z\mid y) &\propto \pi(\beta)\,\pi(\sigma^2)\,f(z\mid\beta,\sigma^2)\,f(y\mid z)\\
+&\propto
+\exp\Bigl[-\frac{1}{2}(\beta-\beta_{0})^{\prime}B_{0}^{-1}(\beta-\beta_{0})\Bigr] \left(\frac{1}{\sigma^2}\right)^{\left(\frac{n}{2}\right)} \cdot 
+\exp\left[ -\frac{\delta_{1}}{2\sigma^2} \right] \left(\frac{1}{\sigma^2}\right)^{\left(\frac{\alpha_{1}}{2} + 1\right)}\\
+& \quad \quad \exp\Bigl[-\frac{1}{2\sigma^2}(z-X\beta)^{\prime}(z-X\beta)\Bigr] \cdot \prod_{i=1}^{n}\bigl[I(y_i=0)I(z_i\le 0)+I(y_{i}=z_{i})I(z_{i}>0)\bigr]
+\end{align*}
+
+The conditional posterior distribution can be can be derived from the augmented joint posterior by collecting terms involving one parameters at a time while holding the remaining fixed.
+
+The conditional posterior distribution of $\beta$ is given by,
+\begin{align*}
+\pi(\beta \mid \sigma^2, z) &\propto f(z \mid \beta, \sigma^2) \cdot \pi(\beta)\\
+&\propto \exp\left[ -\frac{1}{2\sigma^2}(z - X\beta)^{\prime}(z - X\beta) \right]  \left(\frac{1}{\sigma^2}\right)^{\frac{n}{2}} \cdot \exp\left[ -\frac{1}{2}(\beta - \beta_{0})^{\prime} B_{0}^{-1} (\beta - \beta_{0}) \right]\\
+&\propto \exp\left[ -\frac{1}{2}\Bigl\{\sigma^{-2}(z - X\beta)^{\prime}(z - X\beta) + (\beta - \beta_{0})^{\prime} B_{0}^{-1} (\beta - \beta_{0})\Bigr\} \right]
+\end{align*}
+
+Expanding the terms inside the curly bracket,
+\begin{align*}
+(z - X\beta)^\prime(z - X\beta) &= z^\prime z - 2\beta^\prime X^\prime z + \beta^\prime X^\prime X \beta \\
+(\beta - \beta_0)^\prime B_0^{-1}(\beta - \beta_0) &= \beta^\prime B_0^{-1} \beta - 2\beta^\prime B_0^{-1} \beta_0 + \beta_0^\prime B_0^{-1} \beta_0
+\end{align*}
+
+Substituting back and grouping together,
+\begin{align*}
+\pi(\beta \mid \sigma^2, z) &\propto \exp\left[ -\frac{1}{2} \Bigl\{ \beta^\prime(\sigma^{-2} X^\prime X + B_0^{-1})\beta - 2\beta^\prime(\sigma^{-2} X^\prime z + B_0^{-1}\beta_0) + \beta_0^\prime B_0^{-1} \beta_0 + \sigma^{-2} z^\prime z \Bigr\} \right]\\
+&\propto \exp\left[ -\frac{1}{2} \Bigl\{ \beta^\prime(\sigma^{-2}X^\prime X + B_0^{-1})\beta - 2\beta^\prime(\sigma^{-2}X^\prime z + B_0^{-1}\beta_0) \Bigr\} \right]
+\end{align*}
+
+Let $A = \sigma^{-2}X^\prime X + B_0^{-1}$, $b = \sigma^{-2}X^\prime z + B_0^{-1}\beta_0$ and $\bar{\beta} = A^{-1}b$
+\begin{align*}
+\pi(\beta \mid \sigma^2, z) &\propto \exp\left[ -\frac{1}{2} \Bigl\{ \beta^{\prime}A\beta - 2\beta^{\prime}b \Bigr\} \right] \\
+&\propto \exp\left[ -\frac{1}{2} \Bigl\{ \beta^{\prime}A\beta - 2\beta^{\prime}b + \bar{\beta^{\prime}}A\bar{\beta} - \bar{\beta^{\prime}}A\bar{\beta} \Bigr\} \right] \\
+&\propto \exp\left[ -\frac{1}{2} \Bigl\{\left( \beta^{\prime}A\beta - 2\beta^{\prime}(A\bar{\beta}) + \bar{\beta^{\prime}}A\bar{\beta}\right) - \bar{\beta^{\prime}}A\bar{\beta} \Bigr\} \right] \\
+&\propto \exp\left[ -\frac{1}{2} \Bigl\{\left( \beta - \bar{\beta}\right)^{\prime}A\left( \beta - \bar{\beta}\right) - \bar{\beta^{\prime}}A\bar{\beta} \Bigr\} \right] \\
+&\propto \exp\left[ -\frac{1}{2} \Bigl\{\left( \beta - \bar{\beta}\right)^{\prime}A\left( \beta - \bar{\beta}\right) \Bigr\} \right] \\
+&\propto N(\bar{\beta}, B_{1}) \quad \quad \text{where} \enspace B_{1} = A^{-1} = [\sigma^{-2}X^\prime X + B_0^{-1}]^{-1}  \enspace \text{and} \enspace \bar{\beta} = B_{1}[\sigma^{-2}X^\prime z + B_0^{-1}\beta_0]
+\end{align*}
+```
+
+\newpage
+
+```{=tex}
+The conditional posterior distribution of $\sigma^{2}$ is given by,
+\begin{align*}
+\pi(\beta \mid \sigma^2, z) &\propto f(z \mid \beta, \sigma^2) \cdot \pi(\sigma^{2})\\
+&\propto \exp\left[ -\frac{1}{2\sigma^2}(z - X\beta)^{\prime}(z - X\beta) \right]  \left(\frac{1}{\sigma^2}\right)^{\frac{n}{2}} \cdot \exp\left[ -\frac{\delta_{0}}{2\sigma^2} \right] \left(\frac{1}{\sigma^2}\right)^{\left(\frac{\alpha_{0}}{2} + 1\right)}\\
+&\propto \exp\left[ -\frac{1}{2\sigma^2}\Bigl(\delta_{0} + (z - X\beta)^{\prime}(z - X\beta)\Bigr) \right] \cdot \left(\frac{1}{\sigma^2}\right)^{\left(\frac{\alpha_{0}+n}{2} + 1\right)}\\
+&\propto \exp\left[ -\frac{\delta_{1}}{2\sigma^2} \right] \cdot \left(\frac{1}{\sigma^2}\right)^{\left(\frac{\alpha_{1}}{2} + 1\right)}\\
+&\propto IG\left(\frac{\alpha_{1}}{2},\frac{\delta_{1}}{2}\right) \quad \quad \text{where} \enspace  \alpha_{1} = \alpha_{0} + n \enspace  \text{and} \enspace  \delta_{1} = \delta_{0} + (z-X\beta)^{\prime}(z-X\beta)
+\end{align*}
+
+The conditional posterior distribution of $z$ is given by,
+$$
+f(z_i \mid \beta \sigma^2, y_i) \propto \exp\Bigl[-\frac{1}{2\sigma^2}(z_i-X_{i}^{prime}\beta)^2\Bigr] \cdot \prod_{i=1}^{n}\bigl[I(y_i=0)I(z_i\le 0)+I(y_{i}=z_{i})I(z_{i}>0)\bigr]\\
+$$
+which implies
+\begin{align*}
+f(z_i \mid \beta \sigma^2, y_i = 0) &\propto \exp\Bigl[-\frac{1}{2\sigma^2}(z_i-X_{i}^{\prime}\beta)^2\Bigr] \cdot I(z_i\le 0),\\
+f(z_i \mid \beta \sigma^2, y_i = z_i) &= 1
+\end{align*}
+```
+
+
+### (c) Fit a Tobit model and report the posterior mean and standard deviations in a table. Comment on the effect of each variable on the response variable.
+
+```{r}
+library(truncnorm)
+
+# function to implement Gibbs Sampling for Tobit Model
+bayesian_tr = function(y, X, n_iter = 25000, burn = 5000) {
+  n = length(y)
+  k = ncol(X)
+  beta_samples = matrix(0, nrow = n_iter, ncol = k)
+  sigma2_samples = numeric(n_iter)
+  
+  # initial values
+  non_zero = which(y > 0)
+  if (length(non_zero) > k) {
+    ols_fit = lm(y[non_zero] ~ X[non_zero,] - 1)
+    beta = coef(ols_fit)
+    sigma2 = sigma(ols_fit)^2
+  } else {
+    beta = rep(0, k)
+    sigma2 = 1
+  }
+  
+  # initialize latent variables
+  z = y
+  censored = which(y == 0)
+  
+  if (length(censored) > 0) {
+    # For censored observations, initialize z to valid values <= 0
+    mu = X[censored,] %*% beta
+    z[censored] = rtruncnorm(length(censored), mean = as.vector(mu), 
+                             sd = sqrt(sigma2), a = -Inf, b = 0)
+  }
+  
+  # prior parameters
+  beta0 = rep(0, k)
+  B0inv = diag(1/1000, k)
+  alpha0 = 100000
+  delta0 = 10
+
+  XtX = t(X) %*% X
+  
+  beta_samples[1,] = beta
+  sigma2_samples[1] = sigma2
+  
+  for (i in 2:n_iter) {
+    # sample beta from its conditional posterior
+    Xtz = t(X) %*% z
+    B1 = solve(XtX/sigma2 + B0inv)
+    beta_bar = B1 %*% (B0inv %*% beta0 + Xtz/sigma2)
+    beta = mvrnorm(1, beta_bar, B1)
+    
+    # sample sigma2 from its conditional posterior
+    residuals = z - X %*% beta
+    alpha1 = alpha0 + n
+    delta1 = delta0 + sum(residuals^2)
+    sigma2 = 1/rgamma(1, alpha1/2, delta1/2)
+    
+    # sample z for censored observations from truncated normal
+    if (length(censored) > 0) {
+      mu = X[censored,] %*% beta
+      z[censored] = rtruncnorm(length(censored), mean = as.vector(mu), 
+                             sd = sqrt(sigma2), a = -Inf, b = 0)
+    }
+    
+    beta_samples[i,] = beta
+    sigma2_samples[i] = sigma2
+  }
+  
+  beta_samples = beta_samples[(burn+1):n_iter, ]
+  sigma2_samples = sigma2_samples[(burn+1):n_iter]
+  samples = as.matrix(cbind(beta_samples, sigma2_samples))
+  colnames(samples) = c("Intercept", colnames(X)[-1], "$\\sigma^2$")
+  return(samples)
+}
+```
+
+\newpage
+
+```{r}
+mroz = read.csv("mroz.csv", header = TRUE)
+X = cbind(1, as.matrix(mroz[,1:4]))
+y = as.matrix(mroz$WHRS)
+results_tr = bayesian_tr(y, X, n_iter = 5000, burn = 1000)
+
+knitr::kable(post_summary(results_tr), row.names = ,
+      col.names = c("Posterior Mean", "Posterior Std. Dev"), digits = 3)
+```
+
+```{r, fig.width=12, fig.height=5.5, echo=FALSE, fig.cap="Trace plots of simulated draws for the covariates using tobit model"}
+# trace plots
+par(mfrow = c(2, 3))
+for (i in 1:dim(results_tr)[2]){
+    if (i==6){
+    plot(results_tr[, i], type = "l", main = expression(sigma^2),
+         ylab="", xlab="", cex.main=1.8)        
+    }
+    else {
+    plot(results_tr[, i], type = "l", main = colnames(results_tr)[i],
+         font.main=1, ylab="", xlab="", cex.main=1.8)        
+    }
+}
+```
+
+```{=tex}
+- The large positive \textbf{intercept} represents the baseline expected hours worked when all other predictors are zero.
+
+- Each additional \textbf{child under six years old} is associated with a substantial reduction of approximately 446 hours worked per year. 
+
+- Each additional \textbf{child in the age group 6 to 18} is associated with a decrease of about 70 hours worked annually. This aligns with expectations that older children require less intensive care, allowing mothers more time for employment.
+
+- Each additional year of a \textbf{woman's age} is associated with a decrease of approximately 13 hours worked annually. This negative relationship suggests that older women in the sample tend to work fewer hours.
+
+- Each additional unit of \textbf{husband's wage} corresponding to about 15 fewer hours worked by the wife. This suggests an income effect where women in households with higher husband earnings may choose to work less.
+
+- The \textbf{error variance} is substantial, indicating considerable unexplained variation in women's hours worked beyond what's captured by the model's predictors.
+```
+
+\newpage
+
+### (d) Report the 95\% probability interval or credible interval. Explain the difference between confidence interval and credible interval.
+
+```{r}
+ci_df = data.frame(matrix(nrow = 6, ncol = 4))
+rownames(ci_df) = c("Intercept", colnames(X)[-1], "$\\sigma^2$")
+colnames(ci_df) = c("Linear Regression 2.5%", "Linear Regression 97.5%",
+                    "Tobit Regression 2.5%", "Tobit Regression 97.5%")
+for (i in 1:6) {
+  x_lr = results_lr[, i]
+  prob_int_lr = quantile(x_lr, probs=c(0.025, 0.975))
+  ci_df[i, 1:2] = prob_int_lr
+  
+  x_tr = results_tr[, i]
+  prob_int_tr = quantile(x_tr, probs=c(0.025, 0.975))
+  ci_df[i, 3:4] = prob_int_tr
+}
+knitr::kable(ci_df, digits=3)
+```
+
+```{=tex}
+\textbf{Treatment of Parameters}
+
+- In confidence intervals, the parameter is considered fixed (not a random variable), while the interval is random
+
+- In credible intervals, the parameter is treated as a random variable with a probability distribution
+
+\textbf{Interpretation}
+
+- A 95\% confidence interval means that with repeated sampling, 95\% of similarly constructed intervals would contain the true parameter value
+
+- A 95\% credible interval means there's a 95\% probability that the parameter falls within the interval, given the observed data and prior information
+```
+
+\newpage
+
+### (e) Compute the ineffciency factor for each parameter using the batch-means method (Greenberg, 2012). Comment on the cost of using MCMC for each parameter to get an iid draw.
+
+```{r}
+library(bqror)
+inf_lr = ineffactorOR2(x, t(results_lr[,1:5]), t(results_lr[,6]), 0.05, 400, FALSE)
+inf_tr = ineffactorOR2(x, t(results_tr[,1:5]), t(results_tr[,6]), 0.05, 400, FALSE)
+inf_df = cbind(inf_lr, inf_tr)
+rownames(inf_df) = c("Intercept", colnames(X)[-1], "$\\sigma^2$")
+colnames(inf_df) = c("Linear Regression", "Tobit Regression")
+knitr::kable(inf_df, digits = 3)
+```
+```{=tex}
+\textbf{Intercept}: With factors of 1.009 (Linear) and 1.014 (Tobit), the intercept parameter shows excellent mixing in both models, requiring only about 1% more draws than truly independent sampling.
+
+\textbf{childl6}: This parameter shows the most notable difference between models. While the linear model has an excellent factor of 1.008, the Tobit model's factor of 1.128 indicates that approximately 13% more draws are needed for this parameter, making it the least efficient parameter in either model.
+
+\textbf{childg6}: With very low inefficiency factors (1.001 for Linear and 1.007 for Tobit), this parameter demonstrates the best mixing in the Linear model and excellent performance in the Tobit model.
+
+\textbf{age}: Both models show similar performance for this parameter (1.011 for Linear and 1.013 for Tobit), indicating slightly more autocorrelation than the best-performing parameters.
+
+\textbf{huswage}: The Linear model achieves near-perfect mixing (1.001) for this parameter, while the Tobit model still performs very well at 1.008.
+
+$\boldsymbol{\sigma^2}$: Both models show good performance for the variance parameter (1.009 for Linear and 1.011 for Tobit), contradicting the common pattern where variance parameters often mix poorly compared to mean parameters.
+```
+
+
+\newpage
+
+## Question 4
+
+### First, estimate the model using the classical method. Second, fit a binary probit model using Bayesian methods assuming the prior  $\boldsymbol{\beta \sim N(0_k, 100 * I_k)}$. Prepare a table where you report the maxmimum likelihood (ML) estimate and standard error of the regression coecients. In the same table, report the posterior estimates (mean and standard deviation) based on 10,000 MCMC iterations after a burn-in of 2,500 iterations. Present a trace plot of the MCMC draws of the 20 parameters (including the intercept) in one figure.
+
+### Do you find any evidence of racial bias in granting loans to black family? What is average covariate effect of loan denial for a black family?
+
+```{r}
+hmda = read.csv("hmda.csv", header = TRUE)
+
+for(i in 5:13) {
+  hmda[,i] = as.factor(hmda[,i])
+}
+
+hmda$deny = as.integer(hmda$deny == "yes")
+
+# classical probit model
+probit_model = glm(deny ~ ., data = hmda, family = binomial(link = "probit"))
+ml_est = coef(probit_model)
+ml_se = sqrt(diag(vcov(probit_model)))
+df_pr = cbind(ml_est, ml_se)
+```
+
+```{r}
+
+# function to implement Gibbs Sampling for Binary Probit Model
+bayesian_probit = function(y, X, n_iter = 10000, burn = 2500) {
+  n = length(y)
+  k = ncol(X)
+  beta_samples = matrix(0, nrow = n_iter, ncol = k)
+  idx0 = (y == 0)
+  idx1 = (y == 1)
+  
+  # Initial values 
+  beta = rep(0,k)
+  z = rep(0, n)
+  z[y == 1] = 1
+  z[y == 0] = -1
+  
+  # Prior parameters
+  beta0 = rep(0, k)
+  B0inv = diag(1/1000, k)
+  
+  XtX = t(X) %*% X
+  B1 = solve(XtX + B0inv)
+  
+  # Store initial values
+  beta_samples[1,] = beta
+  
+  for (i in 2:n_iter) {
+    # Sample beta from its conditional posterior
+    beta_bar = B1 %*% (B0inv %*% beta0 + t(X) %*% z)
+    beta = mvrnorm(1, beta_bar, B1)
+    
+    # Sample latent z from its conditional posterior
+    Xbeta = X %*% beta
+
+    # Sample for y == 0 (truncated normal below 0)
+    if (any(idx0)) {
+      z[idx0] = rtruncnorm(sum(idx0), mean = Xbeta[idx0], sd = 1, a = -Inf, b = 0)
+    }
+    
+    # Sample for y == 1 (truncated normal above 0)
+    if (any(idx1)) {
+      z[idx1] = rtruncnorm(sum(idx1), mean = Xbeta[idx1], sd = 1, a = 0, b = Inf)
+    }
+    
+    beta_samples[i,] = beta
+  }
+  
+  beta_samples = beta_samples[(burn+1):n_iter, ]
+  colnames(beta_samples) = c("Intercept", colnames(X)[2:20])
+  return(beta_samples)
+}
+```
+
+```{r}
+hmda = read.csv("hmda.csv", header = TRUE)
+
+X = matrix(nrow = length(hmda$deny), ncol = length(probit_model$coefficients))
+colnames(X) = names(probit_model$coefficients)
+X = as.data.frame(X)
+
+X$pirat = hmda$pirat
+X$hirat = hmda$hirat
+X$lvrat = hmda$lvrat
+X$unemp = hmda$unemp
+X$`(Intercept)` = 1
+
+for(i in 7:13){
+    X[,i+7] = as.integer(hmda[,i]=="yes")
+}
+
+for(i in 2:6){
+  col = paste0("chist",i)
+  X[[col]] = as.integer(hmda$chist == i)
+}
+
+for(i in 2:4){
+  col = paste0("mhist",i)
+  X[[col]] = as.integer(hmda$mhist == i)
+}
+
+X = as.matrix(X)
+y = as.integer(hmda$deny == "yes")
+
+results_probit = bayesian_probit(y, X, n_iter = 12500, burn = 2500)
+```
+
+\newpage
+
+```{r}
+knitr::kable(cbind(df_pr, post_summary(results_probit)), digits = 3,
+      col.names = c("ML Mean", "ML Std. Dev", "Posterior Mean", "Posterior Std. Dev"))
+```
+
+```{r}
+X_black  = X; X_black[, "afamyes"] = 1
+X_nblack = X; X_nblack[, "afamyes"] = 0
+
+
+delta_prob = pnorm(results_probit %*% t(X_black)) - pnorm(results_probit %*% t(X_nblack))
+
+# Average over both dimensions to get Average Covariate Effect
+ACE = mean(delta_prob)
+paste("Average Covariate Effect for African American:", round(ACE,4))
+```
+
+```{=tex}
+An african-american person is more likely to get his application denied 6.4\% more than a non-african-american person, given all the factors remain constant.
+```
+
+```{r, fig.width=12, fig.height=12, fig.cap="Trace plots of simulated draws for the covariates using binary probit model"}
+# trace plots
+par(mfrow = c(5, 4))
+for (i in 1:dim(results_probit)[2]){
+    plot(results_probit[, i], type = "l", main = colnames(results_probit)[i],
+         font.main=1, ylab="", xlab="", cex.main=1.4)        
+}
+```
